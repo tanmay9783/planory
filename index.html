@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Planory — Soft Minimal Planner</title>
+  <meta name="description" content="A soft minimal, Notion-inspired weekly planner, monthly calendar, and productivity focus workspace." />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <div id="app">
+    <!-- Onboarding / Profile Setup -->
+    <div id="onboarding-overlay" class="hidden">
+      <div class="onboarding-card">
+        <div class="onboarding-icon">⬡</div>
+        <h1>Welcome to Planory</h1>
+        <p>Let's set up your workspace</p>
+        <div class="form-group">
+          <label for="profile-name-input">Your Name</label>
+          <input type="text" id="profile-name-input" placeholder="e.g. Tanmay" autocomplete="off" />
+        </div>
+        <div class="form-group">
+          <label for="profile-bio-input">Short Bio / Focus</label>
+          <input type="text" id="profile-bio-input" placeholder="e.g. Builder, dreamer, chai lover ☕" />
+        </div>
+        <div class="form-group">
+          <label for="profile-timezone-input">Timezone</label>
+          <select id="profile-timezone-input">
+            <option value="Asia/Kolkata">India (IST)</option>
+            <option value="America/New_York">New York (EST)</option>
+            <option value="America/Los_Angeles">Los Angeles (PST)</option>
+            <option value="Europe/London">London (GMT)</option>
+            <option value="Europe/Paris">Paris (CET)</option>
+            <option value="Asia/Tokyo">Tokyo (JST)</option>
+            <option value="Asia/Dubai">Dubai (GST)</option>
+            <option value="Australia/Sydney">Sydney (AEST)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Pick an Avatar</label>
+          <div class="avatar-picker" id="avatar-picker">
+            <span class="avatar-opt selected" data-avatar="🦁">🦁</span>
+            <span class="avatar-opt" data-avatar="🐯">🐯</span>
+            <span class="avatar-opt" data-avatar="🦊">🦊</span>
+            <span class="avatar-opt" data-avatar="🐺">🐺</span>
+            <span class="avatar-opt" data-avatar="🦅">🦅</span>
+            <span class="avatar-opt" data-avatar="🐉">🐉</span>
+            <span class="avatar-opt" data-avatar="🌙">🌙</span>
+            <span class="avatar-opt" data-avatar="⚡">⚡</span>
+            <span class="avatar-opt" data-avatar="🔥">🔥</span>
+          </div>
+        </div>
+        <button class="btn-primary" id="onboarding-save">Let's Go →</button>
+      </div>
+    </div>
+
+    <!-- CLEAN LEFT SIDEBAR: Pinned Views, Habit Loggers & Brain Dumps -->
+    <aside class="sidebar" id="sidebar">
+      <!-- Profile displaying name, avatar and short bio -->
+      <div class="sidebar-profile" id="sidebar-profile">
+        <div style="display: flex; width: 100%; align-items: center; gap: 16px;">
+          <div class="avatar-ring-container">
+            <svg class="avatar-xp-ring" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="44" stroke="rgba(255,255,255,0.03)" stroke-width="4" fill="none"></circle>
+              <circle cx="50" cy="50" r="44" stroke="var(--accent)" stroke-width="4" fill="none" stroke-dasharray="276" stroke-dashoffset="276" id="avatar-ring-fill" stroke-linecap="round"></circle>
+            </svg>
+            <div class="profile-avatar" id="profile-avatar-display">🦁</div>
+          </div>
+          <div class="profile-info" style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span class="profile-name" id="profile-name-display">Tanmay</span>
+              <div style="display:flex; gap:6px;">
+                <button class="icon-btn" id="auth-login-btn" title="Enable Cloud Sync" style="font-size:12px; color:var(--text-muted);">☁️ Off</button>
+                <button class="icon-btn" id="edit-profile-btn" title="Edit Profile" style="font-size:12px; opacity:0.6;">✏️</button>
+              </div>
+            </div>
+            <div class="profile-bio" id="profile-bio-display">Builder</div>
+          </div>
+        </div>
+        
+        <!-- Level Progress Bar -->
+        <div class="level-container" style="width: 100%; margin-top: 8px;">
+          <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+            <span id="level-display" style="color: var(--accent);">Level 1</span>
+            <span id="xp-display">0 / 100 XP</span>
+          </div>
+          <div class="budget-progress-bg" style="height: 6px; background: rgba(255,255,255,0.04); border-radius:3px; overflow:hidden;">
+            <div class="budget-progress-fill" id="xp-progress-fill" style="width: 0%; background: var(--accent-gradient);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Streak info and Virtual Pet -->
+      <div class="sidebar-section toggle-collapse" data-target="streak-pet-section">
+        <div class="section-header">
+          <span>Focus</span>
+        </div>
+        <div id="streak-pet-section" class="sidebar-section-body" style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+          <div class="streak-card">
+            <div class="streak-flame">—</div>
+            <div class="streak-info">
+              <div class="streak-count" id="streak-count">0</div>
+              <div class="streak-label">Day Streak</div>
+            </div>
+            <div class="streak-badges" id="streak-badges"></div>
+          </div>
+          
+          <!-- Virtual Focus Pet / Productivity Score -->
+          <div class="streak-card pet-card">
+            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+              <div class="streak-info">
+                <div class="streak-count" id="daily-score-display" style="color: #aa95cc; font-size: 24px;">0</div>
+                <div class="streak-label">Daily Score</div>
+              </div>
+              <div id="virtual-pet-container" style="font-size: 32px; filter: drop-shadow(0 0 8px rgba(170,149,204,0.4)); animation: floatFlame 3s ease-in-out infinite alternate; cursor: pointer;" title="Your Focus Pet. Complete tasks to grow it!">🌱</div>
+            </div>
+            <div class="helper-text" id="pet-status-msg" style="font-size: 11px; line-height: 1.3; color: var(--text-secondary); margin-top: 6px;">Your plant is sprouting! Add tasks and focus to grow it.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clean view selection toggles -->
+      <div class="sidebar-section">
+        <div class="view-selector" style="flex-direction: column; gap: 6px; background: none; border: none; padding: 0;">
+          <button class="view-tab active full-width" id="view-weekly-btn" style="text-align: left; padding: 10px 14px;">Weekly Timetable</button>
+          <button class="view-tab full-width" id="view-calendar-btn" style="text-align: left; padding: 10px 14px;">Month Calendar</button>
+        </div>
+      </div>
+
+      <!-- Quick Hydration Sidebar mini widget -->
+      <div class="sidebar-section toggle-collapse" data-target="hydration-section">
+        <div class="section-header">
+          <span>Hydration</span>
+          <button class="btn-primary-sm" id="sidebar-quick-water-btn" style="border-radius: 8px; margin-left: 8px;">+ 250ml</button>
+        </div>
+        <div id="hydration-section" class="sidebar-section-body" style="margin-top:12px;">
+          <div class="budget-card" style="display:flex; align-items:center; gap:12px; padding: 12px 14px; cursor:pointer;" id="sidebar-water-widget-card" title="Click to view hydration stats">
+            <div style="flex:1;">
+              <div class="helper-text" id="water-widget-volume" style="font-weight:600; font-size:12px;">0 / 2000 ml</div>
+            </div>
+            <span id="water-widget-pct" style="font-weight:700; color:#789ed4; font-size:12px;">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Habit trackers -->
+      <div class="sidebar-section toggle-collapse" data-target="habits-section">
+        <div class="section-header">
+          <span>Daily Habits</span>
+          <button class="icon-btn" id="add-habit-btn" title="Add Habit" style="margin-left: 8px;">+</button>
+        </div>
+        <div id="habits-section" class="sidebar-section-body" style="margin-top:12px;">
+          <div id="habits-list"></div>
+        </div>
+      </div>
+
+      <!-- Brain Dump quick-add text area -->
+      <div class="sidebar-section brain-dump-section toggle-collapse" data-target="brain-dump-section-body" style="border-bottom:none;">
+        <div class="section-header">
+          <span>Quick Capture</span>
+          <span class="badge" id="brain-dump-count" style="margin-left: 8px;">0</span>
+        </div>
+        <div id="brain-dump-section-body" class="sidebar-section-body" style="margin-top:12px;">
+          <div class="brain-dump-input-wrap">
+            <textarea id="brain-dump-input" placeholder="Quick thought? Dump here..."></textarea>
+            <div class="brain-dump-actions">
+              <button class="btn-ghost" id="brain-dump-voice-btn" title="Voice input" style="font-size: 14px;">⌘</button>
+              <button class="btn-primary-sm" id="brain-dump-add-btn">Add</button>
+            </div>
+          </div>
+          <div id="brain-dump-list" style="max-height: 140px; overflow-y:auto; margin-top:8px;"></div>
+        </div>
+      </div>
+
+      <div class="sidebar-section" style="padding-top:0; border-bottom:none;">
+        <button class="btn-ghost full-width" id="open-settings-btn">Settings</button>
+      </div>
+    </aside>
+
+    <!-- Main Workspace Content -->
+    <main class="main-content">
+      <!-- Clean Top Bar -->
+      <header class="top-bar">
+        <div class="top-bar-left">
+          <!-- HAMBURGER MENU: Opens the Unified Premium Productivity Hub Overlay -->
+          <button class="sidebar-toggle" id="global-hub-hamburger-btn" title="Open Apps Menu Drawer" style="font-size:22px; color:var(--accent); font-weight:bold; margin-right:12px;">☰ Apps</button>
+          <div class="app-brand">
+            <span class="brand-icon" style="font-size: 20px; color: var(--text-primary);">⬡</span>
+            <span class="brand-name" style="font-weight: 700; letter-spacing: -0.5px;">Planory</span>
+          </div>
+        </div>
+
+        <!-- Intentions Mantra / Quote bar -->
+        <div class="daily-quote-bar" id="daily-quote-bar">
+          <span class="quote-text" id="quote-text">Start your day with clear intentions...</span>
+          <button class="icon-btn" id="refresh-quote-btn" title="New Quote" style="font-size: 13px; opacity: 0.5;">↺</button>
+        </div>
+
+        <div class="top-bar-right">
+          <div class="presence-widget" id="presence-widget" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: rgba(111,138,183,0.1); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--accent); margin-right: 12px;">
+            <span class="presence-dot" style="width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite;"></span>
+            <span id="presence-count">12 studying now</span>
+          </div>
+          <button class="icon-btn" id="theme-toggle-btn" title="Toggle Theme" style="font-size: 16px; margin-right: 8px; opacity: 0.65;">◑</button>
+          <button class="icon-btn" id="zen-mode-btn" title="Zen Mode" style="font-size: 14px; margin-right: 12px; opacity: 0.65;">Zen</button>
+          <button class="btn-voice" id="global-voice-btn" title="Voice add task" style="font-size: 14px;">◉</button>
+          <div class="week-nav">
+            <button class="nav-btn" id="prev-week-btn">‹</button>
+            <span class="week-label" id="week-label">This Week</span>
+            <button class="nav-btn" id="next-week-btn">›</button>
+          </div>
+          <button class="btn-primary" id="add-task-btn">+ Add Task</button>
+        </div>
+      </header>
+
+      <!-- Weekly Ruled columns view -->
+      <div class="weekly-grid-container" id="weekly-grid-view">
+        <div class="weekly-grid">
+          <!-- Left Column (Mon, Wed, Fri) -->
+          <div class="left-col" id="left-col"></div>
+          <!-- Right Column (Tue, Thu, Sat, Sun) -->
+          <div class="right-col" id="right-col"></div>
+        </div>
+      </div>
+
+      <!-- Dedicated Monthly grid view -->
+      <div class="monthly-calendar-container hidden" id="monthly-calendar-view">
+        <div class="calendar-header-bar">
+          <button class="nav-btn" id="cal-prev-month-btn">‹</button>
+          <h2 id="cal-month-label">May 2026</h2>
+          <button class="nav-btn" id="cal-next-month-btn">›</button>
+        </div>
+        <div class="calendar-days-header">
+          <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+        </div>
+        <div class="calendar-month-grid" id="calendar-month-grid"></div>
+      </div>
+
+      <!-- Bottom Productivity Statistics Bar -->
+      <div class="stat-bar" id="stat-bar">
+        <div style="display: flex; gap: 24px; flex: 1;">
+          <div class="stat-item"><span class="stat-value" id="stat-total">0</span><span class="stat-label">Total Tasks</span></div>
+          <div class="stat-item"><span class="stat-value" id="stat-done">0</span><span class="stat-label">Completed</span></div>
+          <div class="stat-item"><span class="stat-value" id="stat-focus">0h 0m</span><span class="stat-label">Focus Time</span></div>
+          <div class="stat-item"><span class="stat-value" id="stat-productive">—</span><span class="stat-label">Best Day</span></div>
+        </div>
+        <button class="btn-primary" id="week-review-btn" style="font-weight: 600;">Week Review</button>
+      </div>
+    </main>
+
+    <!-- PREMIUM UNIFIED APPS HUB OVERLAY DRAWER -->
+    <div id="apps-hub-overlay" class="modal-overlay hidden" style="justify-content: flex-start; background: rgba(0,0,0,0.85); backdrop-filter: blur(16px); z-index:1500;">
+      <div class="notes-drawer" style="width: 480px; background:#111014; animation: slideDrawer 0.3s cubic-bezier(0.16, 1, 0.3, 1);">
+        <div class="notes-drawer-header" style="border-bottom-color: rgba(255,255,255,0.06); padding: 24px;">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <h2 style="font-family:var(--font-display); font-size:22px; font-weight:800; background:linear-gradient(135deg,#fff,#a1a0a5); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">⚡ Radhe Workspace Hub</h2>
+            <span class="helper-text">Select a productivity module to expand</span>
+          </div>
+          <button class="modal-close" id="apps-hub-close-btn" style="font-size:28px;">×</button>
+        </div>
+        <div class="notes-drawer-body" style="padding: 24px; gap: 20px;">
+          <!-- 1. Rich notes manager tile -->
+          <div class="budget-card hub-tile" id="hub-tile-notes" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size: 24px;">📝</span>
+              <span class="badge" style="background: rgba(167, 139, 250, 0.1); color: #a78bfa; font-weight:600;">Rich Notes</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Subject Notes & Text Editor</h3>
+            <p class="helper-text" style="line-height:1.4;">Access your full library of day-linked rich lecture drafts, past versions, templates, and full text search keywords.</p>
+          </div>
+
+          <!-- 2. Daily hydration tracker tile -->
+          <div class="budget-card hub-tile" id="hub-tile-water" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size: 24px;">💧</span>
+              <span class="badge" style="background: rgba(79, 140, 255, 0.1); color: #4f8cff; font-weight:600;">Water Log</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Water Hydration Workspace</h3>
+            <p class="helper-text" style="line-height:1.4;">Log preset beverages (glasses, bottles, diuretic tea coffee), check weekly SVG statistics and study alerts.</p>
+          </div>
+
+          <!-- 3. Expense Student Budget planner tile -->
+          <div class="budget-card hub-tile" id="hub-tile-budget" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size: 24px;">💸</span>
+              <span class="badge" style="background: rgba(52, 211, 153, 0.1); color: #34d399; font-weight:600;">Student Budget</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Expense Tracker & Savings goals</h3>
+            <p class="helper-text" style="line-height:1.4;">Log daily expenses, calculate budget warning limits, check savings goal progress and dynamic EOM advice.</p>
+          </div>
+
+          <!-- 4. Focus Pomodoro focus trainer tile -->
+          <div class="budget-card hub-tile" id="hub-tile-pomodoro" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size: 24px;">🍅</span>
+              <span class="badge" style="background: rgba(239, 68, 68, 0.1); color: #f87171; font-weight:600;">Pomodoro Focus</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Pomodoro Focus Timer</h3>
+            <p class="helper-text" style="line-height:1.4;">Start focus interval rounds, auto-track productivity, and assign active timetable tasks to countdown timers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Side Notes Drawer (Slides in from the right) -->
+    <div id="notes-drawer-overlay" class="notes-drawer-overlay hidden">
+      <div class="notes-drawer" id="notes-drawer">
+        <div class="notes-drawer-header">
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <h2 id="drawer-date-label">Monday Notes</h2>
+            <span class="helper-text" id="draft-autosave-status">Auto-saved</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; margin-left:auto; margin-right:12px;">
+            <button class="btn-ghost" id="note-immersive-toggle-btn" style="padding: 6px 12px; font-size:11px; font-weight:700; border-radius: 8px;">🧘 Focus Writing</button>
+          </div>
+          <button class="modal-close" id="notes-drawer-close-btn">×</button>
+        </div>
+        <div class="notes-drawer-body">
+          <!-- Dynamic Custom Page Title Input (Replaces rigid Subject Tag system) -->
+          <div class="form-group full" style="margin-bottom: 12px;">
+            <label style="font-size:10px;">Page Title</label>
+            <input type="text" id="note-page-title" placeholder="Enter custom title... (e.g. Physics Lesson, Daily reflections)" style="padding: 8px 12px; font-size:13px; font-weight: 600; width:100%;" />
+          </div>
+
+          <!-- Formatting & Tools Toolbar -->
+          <div class="editor-toolbar">
+            <button class="toolbar-btn" data-cmd="bold" title="Bold"><b>B</b></button>
+            <button class="toolbar-btn" data-cmd="italic" title="Italic"><i>I</i></button>
+            <button class="toolbar-btn" data-cmd="formatBlock" data-val="h1" title="Heading 1">H1</button>
+            <button class="toolbar-btn" data-cmd="formatBlock" data-val="h2" title="Heading 2">H2</button>
+            <button class="toolbar-btn" data-cmd="formatBlock" data-val="h3" title="Heading 3">H3</button>
+            <button class="toolbar-btn" data-cmd="insertUnorderedList" title="Bullet List">• List</button>
+            <button class="toolbar-btn" data-cmd="insertOrderedList" title="Numbered List">1. List</button>
+            <button class="toolbar-btn" data-cmd="hiliteColor" title="Highlight text">🖍️</button>
+            
+            <!-- Note Templates -->
+            <select id="editor-template-picker" style="padding: 2px 6px; font-size:11px; margin-left:auto; border-radius:4px; background: rgba(255,255,255,0.05);" title="Load structure">
+              <option value="">Choose Template</option>
+              <option value="lecture">Lecture Notes 📚</option>
+              <option value="problem">Problem Set ✏️</option>
+              <option value="journal">Daily Journal 📖</option>
+            </select>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-bottom: 12px;">
+            <!-- Version History Dropdown -->
+            <div class="form-group" style="flex:1;">
+              <label style="font-size:10px;">Restore Version</label>
+              <select id="note-drafts-history" style="padding: 6px 8px; font-size:12px; width:100%;">
+                <option value="">No past versions</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Sketch & Image Uploader -->
+          <div class="editor-file-drop" id="editor-file-drop">
+            <span style="font-size: 11px; color: var(--text-secondary);">📎 Drag & Drop or paste slide screenshots/diagrams</span>
+            <input type="file" id="note-file-input" class="hidden" accept="image/*" />
+          </div>
+          <div id="note-attachments-preview" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;"></div>
+
+          <!-- Interactive Editor Area -->
+          <div class="editor-area" contenteditable="true" id="editor-content-area" placeholder="Start typing your second brain here..."></div>
+
+          <!-- AI Floating/Fixed Action Row -->
+          <div style="display:flex; gap:8px; margin-top:16px;">
+            <button class="btn-ghost" id="ai-summarise-btn" style="flex:1; font-size:12px; padding:8px 12px;">🤖 AI Summarise</button>
+            <button class="btn-ghost" id="ai-flashcards-btn" style="flex:1; font-size:12px; padding:8px 12px;">🃏 Make Flashcards</button>
+          </div>
+          
+          <!-- AI Outputs display area -->
+          <div id="ai-summary-output" class="hidden" style="margin-top:12px; background: rgba(102,126,234,0.05); border: 1px solid rgba(102,126,234,0.15); padding:12px; border-radius: var(--radius-sm); font-size: 12px; line-height: 1.5;"></div>
+          <div id="ai-flashcards-output" class="hidden" style="margin-top:12px; background: rgba(52,211,153,0.05); border: 1px solid rgba(52,211,153,0.15); padding:12px; border-radius: var(--radius-sm); font-size: 12px; line-height: 1.5;"></div>
+        </div>
+
+        <div class="notes-drawer-footer">
+          <span class="helper-text" id="editor-stats">Words: 0 • Read Time: 0 min</span>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button class="btn-ghost" id="note-pin-btn" style="padding:6px 12px; font-size:12px;">📌 Pin to Day</button>
+            <button class="btn-primary" id="note-export-btn" style="padding:6px 16px; font-size:12px; border-radius:14px;">📤 Export</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full Paged Notes Library Modal (Now launches cleanly from the apps hub!) -->
+  <div class="modal-overlay hidden" id="notes-library-modal-overlay">
+    <div class="modal wide-modal" id="notes-library-modal" style="max-width: 900px;">
+      <div class="modal-header">
+        <h2 style="font-family:var(--font-display);">📚 Subject Notes Library</h2>
+        <button class="modal-close" id="notes-library-close-btn">×</button>
+      </div>
+      <div class="modal-body" style="max-height: 80vh; display:flex; flex-direction:column; gap:16px;">
+        <div style="display:flex; gap:12px; align-items:center;">
+          <input type="text" id="notes-search-input" placeholder="🔍 Search page titles & note contents..." style="padding: 8px 16px; font-size:13px; flex:1;" />
+        </div>
+        <div id="notes-library-grid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; overflow-y:auto; max-height: 480px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Full Water Hydration Dashboard Modal -->
+  <div class="modal-overlay hidden" id="water-modal-overlay">
+    <div class="modal wide-modal" id="water-modal">
+      <div class="modal-header">
+        <h2>💧 Water Hydration Workspace</h2>
+        <button class="modal-close" id="water-modal-close-btn">×</button>
+      </div>
+      <div class="modal-body settings-body" style="padding: 24px;">
+        <!-- Left Side: Log and settings -->
+        <div style="flex: 1; border-right: 1px solid var(--border-color); padding-right: 20px; display:flex; flex-direction:column; gap:16px;">
+          <!-- Wellness Ring Visualizer -->
+          <div class="wellness-ring-container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 8px;">
+            <div style="position: relative; width: 140px; height: 140px;">
+              <svg viewBox="0 0 100 100" style="width: 100%; height: 100%; transform: rotate(-90deg);">
+                <circle cx="50" cy="50" r="42" stroke="rgba(120, 158, 212, 0.05)" stroke-width="6" fill="none"></circle>
+                <circle cx="50" cy="50" r="42" stroke="url(#hydration-glow-gradient)" stroke-width="6" fill="none" stroke-dasharray="264" stroke-dashoffset="264" id="water-ring-fill" stroke-linecap="round" style="transition: stroke-dashoffset 0.8s ease-out;"></circle>
+                <defs>
+                  <linearGradient id="hydration-glow-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#789ed4"></stop>
+                    <stop offset="100%" stop-color="#34d399"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 2;">
+                <span style="font-size: 28px;">💧</span>
+                <span id="water-widget-pct-large" style="font-size: 20px; font-weight: 800; font-family: var(--font-display); margin-top: 4px; color: var(--text-primary);">0%</span>
+              </div>
+            </div>
+            <div id="water-widget-status" style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-top: 12px; text-transform: uppercase; letter-spacing: 0.08em;">drink some water</div>
+          </div>
+
+          <h3>Log Preset Beverages</h3>
+          <div class="presets-grid" style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <button class="btn-ghost log-water-preset" data-ml="250" style="padding: 8px 12px; font-size: 12px;">💧 Water (250ml)</button>
+            <button class="btn-ghost log-water-preset" data-ml="150" style="padding: 8px 12px; font-size: 12px;">🥛 Small Glass (150ml)</button>
+            <button class="btn-ghost log-water-preset" data-ml="500" style="padding: 8px 12px; font-size: 12px;">🥤 Bottle (500ml)</button>
+            <button class="btn-ghost log-water-preset" data-ml="-100" style="padding: 8px 12px; font-size: 12px; border-color: rgba(239,68,68,0.2); color: #f87171;">☕ Coffee (-100ml)</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="coffee-diuretic-toggle" checked />
+            <label for="coffee-diuretic-toggle" style="font-size:10px; text-transform:none;">Deduct coffee/tea (diuretic effect)</label>
+          </div>
+
+          <h3>Hydration Goal & Sleep Settings</h3>
+          <div class="form-group">
+            <label>Daily Water Goal (ml)</label>
+            <input type="number" id="settings-water-goal" placeholder="e.g. 2000" />
+          </div>
+          <div class="form-group">
+            <label>Reminder Schedule</label>
+            <select id="settings-water-interval">
+              <option value="60">Every 1 Hour</option>
+              <option value="90">Every 90 Mins</option>
+              <option value="120">Every 2 Hours</option>
+            </select>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="checkbox" id="settings-water-quiet" checked />
+            <label for="settings-water-quiet" style="font-size:10px; text-transform:none;">Pause reminders at night (Quiet hours)</label>
+          </div>
+          <button class="btn-primary" id="save-water-settings-btn" style="margin-top: 8px;">Save Settings</button>
+        </div>
+
+        <!-- Right Side: Weekly Hydration Stats, Streaks & Contextual alert -->
+        <div style="flex: 1.2; padding-left: 20px; display:flex; flex-direction:column; gap:16px;">
+          <h3>🔥 Hydration Streak</h3>
+          <div class="streak-card" style="padding: 10px 14px; background: rgba(79,140,255,0.05); border-color: rgba(79,140,255,0.15);">
+            <span style="font-size:24px;">💧</span>
+            <div>
+              <div id="water-streak-label" style="font-weight:700; color:#4facfe;">0 Day Streak</div>
+              <div class="helper-text" id="water-best-average">Average: 0 ml • Best Day: —</div>
+            </div>
+            <div id="water-badges-list" style="margin-left:auto; display:flex; gap:4px;"></div>
+          </div>
+
+          <!-- Contextual Task Hydration Alert -->
+          <div id="water-contextual-alert" style="background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.15); padding:10px 14px; border-radius: var(--radius-sm); font-size:11px; line-height:1.5;">
+            💡 Study block starting soon! Drink a glass of water to maximize concentration.
+          </div>
+
+          <h3>Weekly Hydration Chart</h3>
+          <!-- High Fidelity CSS/SVG chart container -->
+          <div style="height: 120px; display:flex; align-items: flex-end; justify-content:space-around; background: rgba(0,0,0,0.1); border-radius: var(--radius-sm); padding:12px;" id="water-weekly-chart">
+            <!-- Rendered dynamically -->
+          </div>
+
+          <h3>Drink Log History</h3>
+          <div id="water-logs-list" style="max-height: 120px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
+            <!-- Loaded dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Pomodoro Focus Overlay Modal -->
+  <div class="modal-overlay hidden" id="pomodoro-modal-overlay">
+    <div class="modal" id="pomodoro-modal">
+      <div class="modal-header">
+        <h2>🍅 Pomodoro Focus Workspace</h2>
+        <button class="btn-ghost" id="pomo-fullscreen-btn" style="padding: 6px 12px; font-size:11px; font-weight:700; margin-left: auto; margin-right: 12px; border-radius: 8px;">🧘 Immersive Focus</button>
+        <button class="modal-close" id="pomodoro-modal-close-btn">×</button>
+      </div>
+      <div class="modal-body" style="text-align:center; padding: 32px 24px;">
+        <div class="pomodoro-card" style="background:none; border:none; padding:0;">
+          <div class="pomo-header" style="justify-content:center; gap:12px; margin-bottom:16px;">
+            <span class="badge" id="pomo-mode" style="background:rgba(239,68,68,0.1); color:#f87171; font-size:13px; padding: 6px 12px;">Work Mode</span>
+          </div>
+          <div class="pomo-display" id="pomo-display" style="font-size: 72px; font-weight:800; color: #f87171; margin-bottom: 24px;">25:00</div>
+          <div class="pomo-rounds" id="pomo-rounds" style="font-size:18px; margin-bottom: 16px;">○○○○</div>
+          <div class="pomo-task" id="pomo-task-label" style="font-size: 14px; font-weight:600; color:var(--text-secondary); margin-bottom:24px;">No active task selected</div>
+          <div class="pomo-controls" style="gap:16px;">
+            <button class="btn-primary" id="pomo-start-btn" style="padding: 12px 32px; font-size:15px;">▶ Start Focus Session</button>
+            <button class="btn-ghost" id="pomo-reset-btn" style="padding: 12px 20px; font-size:15px;">↺ Reset</button>
+          </div>
+          
+          <div class="ambient-sounds-container" style="margin-top: 32px; border-top: 1px solid var(--border-color); padding-top: 24px; text-align: left;">
+            <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+              <span>🎵</span> Ambient Focus Sounds
+            </h3>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+              <button class="btn-ghost ambient-sound-btn" data-sound="rain" style="padding: 8px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>🌧️</span> Rain
+              </button>
+              <button class="btn-ghost ambient-sound-btn" data-sound="cafe" style="padding: 8px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>☕</span> Cafe
+              </button>
+              <button class="btn-ghost ambient-sound-btn" data-sound="lofi" style="padding: 8px 12px; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+                <span>🎧</span> Lo-Fi Beats
+              </button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 11px; color: var(--text-secondary); min-width: 45px;">Volume:</span>
+              <input type="range" id="ambient-volume" min="0" max="1" step="0.05" value="0.5" style="flex: 1; height: 4px; background: var(--border-color); border-radius: 2px; cursor: pointer; -webkit-appearance: none;" />
+            </div>
+          </div>
+          
+          <div class="focus-scenes-container" style="margin-top: 20px; border-top: 1px solid var(--border-color); padding-top: 20px; text-align: left;">
+            <h3 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary); display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.05em;">
+              <span>🏞️</span> Focus Scenes
+            </h3>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="focus-scene-picker">
+              <button class="btn-ghost scene-btn active" data-scene="rain" style="padding: 8px 12px; font-size: 12px;">🌧️ Rain Study</button>
+              <button class="btn-ghost scene-btn" data-scene="midnight" style="padding: 8px 12px; font-size: 12px;">🌙 Midnight Coding</button>
+              <button class="btn-ghost scene-btn" data-scene="library" style="padding: 8px 12px; font-size: 12px;">📚 Library Focus</button>
+              <button class="btn-ghost scene-btn" data-scene="sprint" style="padding: 8px 12px; font-size: 12px;">🔥 Exam Sprint</button>
+              <button class="btn-ghost scene-btn" data-scene="morning" style="padding: 8px 12px; font-size: 12px;">✨ Calm Morning</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Task Modal -->
+  <div class="modal-overlay hidden" id="task-modal-overlay">
+    <div class="modal" id="task-modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Add Task</h2>
+        <button class="modal-close" id="modal-close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Task Title *</label>
+            <input type="text" id="task-title" placeholder="What needs to be done?" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Description</label>
+            <textarea id="task-desc" placeholder="Add notes, links, context..." rows="2"></textarea>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="task-date" />
+          </div>
+          <div class="form-group">
+            <label>Start Time</label>
+            <input type="time" id="task-start" />
+          </div>
+          <div class="form-group">
+            <label>End Time</label>
+            <input type="time" id="task-end" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="task-category">
+              <option value="work">💼 Work</option>
+              <option value="personal">🌿 Personal</option>
+              <option value="health">🏃 Health</option>
+              <option value="study">📚 Study</option>
+              <option value="other">✨ Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <div class="priority-picker" id="priority-picker">
+              <button class="priority-btn" data-p="low">Low</button>
+              <button class="priority-btn active" data-p="medium">Med</button>
+              <button class="priority-btn" data-p="high">High</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Reminder</label>
+            <select id="task-reminder">
+              <option value="none">No reminder</option>
+              <option value="5">5 minutes before</option>
+              <option value="15">15 minutes before</option>
+              <option value="30">30 minutes before</option>
+              <option value="60">1 hour before</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" id="modal-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="modal-save-btn">Save Task ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay hidden" id="settings-modal-overlay">
+    <div class="modal wide-modal" id="settings-modal">
+      <div class="modal-header">
+        <h2>Settings & Themes</h2>
+        <button class="modal-close" id="settings-close-btn">×</button>
+      </div>
+      <div class="modal-body settings-body">
+        <div class="settings-tabs">
+          <button class="settings-tab active" data-tab="theme">🎨 Theme</button>
+          <button class="settings-tab" data-tab="quotes">💬 Quotes</button>
+          <button class="settings-tab" data-tab="profile">👤 Profile</button>
+        </div>
+        <div class="settings-panel active" id="panel-theme">
+          <div class="setting-group">
+            <label>Accent Color</label>
+            <div class="color-swatches" id="color-swatches">
+              <button class="swatch active" data-color="#667eea" style="background:#667eea"></button>
+              <button class="swatch" data-color="#f093fb" style="background:#f093fb"></button>
+              <button class="swatch" data-color="#4facfe" style="background:#4facfe"></button>
+              <button class="swatch" data-color="#43e97b" style="background:#43e97b"></button>
+              <button class="swatch" data-color="#fa709a" style="background:#fa709a"></button>
+              <button class="swatch" data-color="#ffecd2" style="background:#ffecd2"></button>
+              <button class="swatch" data-color="#a18cd1" style="background:#a18cd1"></button>
+              <button class="swatch" data-color="#fd7013" style="background:#fd7013"></button>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label>Font</label>
+            <select id="font-picker">
+              <option value="Inter">Inter (Default)</option>
+              <option value="Outfit">Outfit</option>
+              <option value="Georgia">Georgia (Serif)</option>
+              <option value="monospace">Monospace</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label>Background Pattern</label>
+            <div class="pattern-picker" id="pattern-picker">
+              <button class="pattern-btn active" data-pattern="none">None</button>
+              <button class="pattern-btn" data-pattern="dots">Dots</button>
+              <button class="pattern-btn" data-pattern="grid">Grid</button>
+              <button class="pattern-btn" data-pattern="noise">Noise</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-panel" id="panel-quotes">
+          <div class="setting-group">
+            <label>My Mantras</label>
+            <div id="mantras-list"></div>
+            <div class="mantra-add-row">
+              <input type="text" id="mantra-input" placeholder="Add your own mantra..." />
+              <button class="btn-primary-sm" id="add-mantra-btn">Add</button>
+            </div>
+          </div>
+        </div>
+        <div class="settings-panel" id="panel-profile">
+          <div class="setting-group">
+            <label>Name</label>
+            <input type="text" id="settings-name" />
+          </div>
+          <div class="setting-group">
+            <label>Bio</label>
+            <input type="text" id="settings-bio" />
+          </div>
+          <div class="setting-group">
+            <label>Avatar</label>
+            <div class="avatar-picker" id="settings-avatar-picker">
+              <span class="avatar-opt" data-avatar="🦁">🦁</span>
+              <span class="avatar-opt" data-avatar="🐯">🐯</span>
+              <span class="avatar-opt" data-avatar="🦊">🦊</span>
+              <span class="avatar-opt" data-avatar="🐺">🐺</span>
+              <span class="avatar-opt" data-avatar="🦅">🦅</span>
+              <span class="avatar-opt" data-avatar="🐉">🐉</span>
+              <span class="avatar-opt" data-avatar="🌙">🌙</span>
+              <span class="avatar-opt" data-avatar="⚡">⚡</span>
+              <span class="avatar-opt" data-avatar="🔥">🔥</span>
+            </div>
+          </div>
+          <button class="btn-primary" id="save-profile-btn">Save Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Expense Modal -->
+  <div class="modal-overlay hidden" id="expense-modal-overlay">
+    <div class="modal" id="expense-modal">
+      <div class="modal-header">
+        <h2>Log Expense</h2>
+        <button class="modal-close" id="expense-close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Amount (₹) *</label>
+            <input type="number" id="expense-amount" placeholder="e.g. 150" min="1" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Category</label>
+            <select id="expense-category">
+              <option value="Food">🍔 Food</option>
+              <option value="Transport">🚌 Transport</option>
+              <option value="Books">📚 Books/Study</option>
+              <option value="Entertainment">🎬 Entertainment</option>
+              <option value="Others">✨ Others</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="expense-date" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full">
+            <label>Notes</label>
+            <input type="text" id="expense-notes" placeholder="e.g. Lunch with friends" />
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-ghost" id="expense-cancel-btn">Cancel</button>
+        <button class="btn-primary" id="expense-save-btn">Log Expense ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Budget Insights & Logs Modal -->
+  <div class="modal-overlay hidden" id="budget-insights-modal-overlay">
+    <div class="modal wide-modal" id="budget-insights-modal" style="max-width: 850px;">
+      <div class="modal-header">
+        <h2 style="font-family: var(--font-display); background: linear-gradient(135deg, #fff, #a1a0a5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">💸 Student Budget Workspace</h2>
+        <button class="modal-close" id="insights-close-btn">×</button>
+      </div>
+      <div class="modal-body settings-body" style="padding: 24px; gap: 28px;">
+        <!-- Left Side: Budget Settings & Actions -->
+        <div style="flex: 1; border-right: 1px solid var(--border-color); padding-right: 24px; display: flex; flex-direction: column; gap: 18px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff;">Goal & Budget Limits</h3>
+          <div class="form-group">
+            <label>Monthly Budget (₹)</label>
+            <input type="number" id="settings-budget-limit" placeholder="e.g. 10000" />
+          </div>
+          <div class="form-group">
+            <label>Savings Goal Name</label>
+            <input type="text" id="settings-savings-name" placeholder="e.g. Headphones" />
+          </div>
+          <div class="form-group">
+            <label>Savings Goal Target (₹)</label>
+            <input type="number" id="settings-savings-target" placeholder="e.g. 2000" />
+          </div>
+          <div class="form-group">
+            <label>Add Progress to Savings Goal (₹)</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="number" id="settings-savings-add-amount" placeholder="e.g. 200" style="flex: 1;" />
+              <button class="btn-primary" id="settings-savings-add-btn" style="padding: 8px 16px; border-radius: 6px;">Add</button>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
+            <button class="btn-primary" id="save-budget-settings-btn" style="border-radius: 20px; font-size: 12px; padding: 10px 16px;">Save Settings ✓</button>
+            <button class="btn-primary" id="budget-add-expense-btn" style="background: linear-gradient(135deg, #10b981, #059669); color:#fff; box-shadow: 0 4px 14px rgba(16,185,129,0.25); border-radius: 20px; font-size: 13px; padding: 12px 16px; font-weight:700;">💸 + Log Expense</button>
+          </div>
+        </div>
+
+        <!-- Right Side: Visual Progress Charts, EOM Insight & Logs -->
+        <div style="flex: 1.3; display: flex; flex-direction: column; gap: 18px;">
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff;">Monthly Spending Progress</h3>
+          <div class="budget-card" style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md);">
+            <div class="budget-progress-wrap">
+              <div class="budget-bar-labels" style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px;">
+                <span class="budget-title-sm" style="color: var(--text-secondary);">Spent this Month</span>
+                <span id="budget-spending-ratio" style="color: var(--text-primary);">₹0 / ₹10000</span>
+              </div>
+              <div class="budget-progress-bg" style="width: 100%; height: 10px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; position: relative;">
+                <div class="budget-progress-fill" id="budget-progress-fill" style="height: 100%; width: 0%; background: var(--accent-gradient); border-radius: 6px; transition: width 0.4s ease;"></div>
+              </div>
+              <span class="helper-text hidden" id="budget-warning-label" style="color: var(--color-high); font-size: 11px; font-weight: 700; margin-top: 8px; display: inline-block;">⚠️ Warning: You've spent over 80% of your budget limit!</span>
+            </div>
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff;">Savings Goal Progress</h3>
+          <div class="budget-card" style="background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); padding: 16px; border-radius: var(--radius-md);">
+            <div class="budget-progress-wrap">
+              <div class="budget-bar-labels" style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: 6px;">
+                <span id="savings-goal-label" style="color: var(--text-primary); font-weight: 700;">Goal: Headphones</span>
+                <span id="savings-progress-ratio" style="color: var(--text-secondary);">₹0 / ₹2000</span>
+              </div>
+              <div class="budget-progress-bg" style="width: 100%; height: 10px; background: rgba(255,255,255,0.06); border-radius: 6px; overflow: hidden; position: relative;">
+                <div class="budget-progress-fill" id="savings-progress-fill" style="height: 100%; width: 0%; background: linear-gradient(135deg, #34d399, #059669); border-radius: 6px; transition: width 0.4s ease;"></div>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff;">EOM Insight & Breakdown</h3>
+          <div class="insights-box" id="insights-box" style="background: rgba(255,255,255,0.02); padding: 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); line-height: 1.5; font-size: 13px;">
+            No insight generated yet. Log more expenses to see category breakdowns.
+          </div>
+
+          <h3 style="font-size: 15px; font-weight: 700; color: #fff;">Recent Expenses</h3>
+          <div id="expense-logs-list" style="max-height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heatmap Modal -->
+  <div class="modal-overlay hidden" id="heatmap-modal-overlay">
+    <div class="modal" id="heatmap-modal">
+      <div class="modal-header">
+        <h2>Habit Heatmap</h2>
+        <button class="modal-close" id="heatmap-close-btn">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="heatmap-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Voice Overlay -->
+  <div class="voice-overlay hidden" id="voice-overlay">
+    <div class="voice-card">
+      <div class="voice-wave" id="voice-wave">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="voice-status" id="voice-status">Listening... speak in English or Hindi</div>
+      <div class="voice-preview" id="voice-preview"></div>
+      <div class="voice-actions">
+        <button class="btn-ghost" id="voice-cancel-btn">Cancel</button>
+        <button class="btn-primary hidden" id="voice-confirm-btn">Confirm Task ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week in Review Modal -->
+  <div class="modal-overlay hidden" id="week-review-overlay" style="z-index: 2000; background: rgba(0,0,0,0.95); backdrop-filter: blur(20px);">
+    <div style="position: relative; width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center;">
+      <button id="close-week-review-btn" style="position: absolute; top: 30px; right: 40px; color: white; font-size: 40px; cursor: pointer; background: none; border: none;">×</button>
+      
+      <div id="week-review-content" style="width: 380px; height: 650px; background: linear-gradient(180deg, #667eea, #764ba2); border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: white; padding: 40px; animation: slideUpBounce 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden;">
+        
+        <!-- Animated Background Elements -->
+        <div style="position: absolute; top: -50px; left: -50px; width: 200px; height: 200px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+        <div style="position: absolute; bottom: -80px; right: -50px; width: 250px; height: 250px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%); border-radius: 50%;"></div>
+        
+        <h3 style="font-family: var(--font-display); font-size: 16px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.8; margin-bottom: 24px;">Your Week Wrapped</h3>
+        
+        <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; gap: 24px; width: 100%;">
+          
+          <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; backdrop-filter: blur(10px);">
+            <div style="font-size: 48px; font-weight: 800; font-family: var(--font-display); margin-bottom: 4px;" id="wr-score">A+</div>
+            <div style="font-size: 14px; opacity: 0.9;">Average Daily Score</div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px);">
+              <div style="font-size: 28px; font-weight: 800; margin-bottom: 4px;" id="wr-tasks">32</div>
+              <div style="font-size: 12px; opacity: 0.9;">Tasks Done</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 16px; backdrop-filter: blur(10px);">
+              <div style="font-size: 28px; font-weight: 800; margin-bottom: 4px;" id="wr-focus">12h</div>
+              <div style="font-size: 12px; opacity: 0.9;">Focus Time</div>
+            </div>
+          </div>
+          
+          <div style="background: rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; backdrop-filter: blur(10px);">
+            <div style="font-size: 24px; font-weight: 800; margin-bottom: 4px;" id="wr-best-day">Wednesday</div>
+            <div style="font-size: 14px; opacity: 0.9;">Most Productive Day</div>
+          </div>
+          
+        </div>
+        
+        <div style="margin-top: 32px; font-size: 13px; opacity: 0.7;">
+          Take a screenshot to share!
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <!-- Undo Toast -->
+  <div class="undo-toast hidden" id="undo-toast">
+    <span id="undo-msg">Task moved</span>
+    <button class="btn-undo" id="undo-btn">Undo</button>
+    <div class="undo-progress" id="undo-progress"></div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="notif-toast hidden" id="notif-toast">
+    <span id="notif-msg"></span>
+  </div>
+
+  <!-- Auth Modal -->
+  <div class="modal-overlay hidden" id="auth-modal-overlay" style="z-index: 2000;">
+    <div class="modal" style="width: 360px;">
+      <div class="modal-header">
+        <h2>Cloud Sync</h2>
+        <button class="modal-close" id="auth-close-btn">×</button>
+      </div>
+      <div class="modal-body" style="display: flex; flex-direction: column; gap: 16px;">
+        <p class="helper-text" style="margin-bottom: 8px;">Sign in to sync your data securely across all devices.</p>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="auth-email" placeholder="you@example.com" />
+        </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="auth-password" placeholder="••••••••" />
+        </div>
+        <div id="auth-error-msg" style="color: var(--color-high); font-size: 12px; display: none;"></div>
+        <div style="display: flex; gap: 12px; margin-top: 8px;">
+          <button class="btn-primary full-width" id="auth-login-submit">Log In</button>
+          <button class="btn-ghost full-width" id="auth-signup-submit">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
