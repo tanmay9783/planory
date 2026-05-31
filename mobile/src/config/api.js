@@ -9,7 +9,7 @@
 
 // ── Your deployed cloud proxy URL (set this after deploying to Railway/Render) ──
 // Example: 'https://planory-proxy.up.railway.app'
-export const CLOUD_PROXY_URL = '';   // ← Paste your Railway URL here after deploy
+export const CLOUD_PROXY_URL = 'https://planory-ocr-proxy.onrender.com';   // ← Paste your Railway URL here after deploy
 
 // ── Fallback URLs for local development (emulator + simulator) ──
 const LOCAL_PROXY_URLS = [
