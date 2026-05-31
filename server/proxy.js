@@ -26,7 +26,7 @@ function loadEnv() {
 }
 loadEnv();
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const GROQ_KEY = process.env.GROQ_API_KEY || '';
 
 if (!GROQ_KEY || GROQ_KEY === 'your_groq_api_key_here') {
