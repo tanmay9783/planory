@@ -46,20 +46,20 @@ export default function DashboardScreen() {
   };
 
   // Core Firestore States
-  const [profile, setProfile] = useFirestoreData(`${userId}_user_profile`, { name: emailPrefix, bio: 'Builder', avatar: null });
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [tasks, setTasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [hydration, setHydration] = useFirestoreData(`${userId}_hydration`, { water: 0, target: 8 });
-  const [pomodoroStats, setPomodoroStats] = useFirestoreData(`${userId}_pomodoro_stats`, { roundsToday: 0, date: new Date().toISOString().split('T')[0] });
+  const [profile, setProfile] = useFirestoreData('user_profile', { name: emailPrefix, bio: 'Builder', avatar: null });
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [tasks, setTasks] = useFirestoreData('tasks', []);
+  const [hydration, setHydration] = useFirestoreData('hydration', { water: 0, target: 8 });
+  const [pomodoroStats, setPomodoroStats] = useFirestoreData('pomodoro_stats', { roundsToday: 0, date: new Date().toISOString().split('T')[0] });
   
   // New Layout & Feature states
-  const [timetable] = useFirestoreData(`${userId}_timetable`, { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] });
-  const [dayRatings, setDayRatings] = useFirestoreData(`${userId}_day_ratings`, {});
-  const [sleepLogs, setSleepLogs] = useFirestoreData(`${userId}_sleep_logs`, []);
-  const [semesterDates] = useFirestoreData(`${userId}_semester_dates`, { start: '2026-01-01', end: '2026-06-30', examStart: '', examEnd: '' });
-  const [habits] = useFirestoreData(`${userId}_user_habits`, []);
-  const [attendance, setAttendance] = useFirestoreData(`${userId}_attendance`, { attended: {} });
-  const [expenses, setExpenses] = useFirestoreData(`${userId}_expenses`, []);
+  const [timetable] = useFirestoreData('timetable', { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] });
+  const [dayRatings, setDayRatings] = useFirestoreData('day_ratings', {});
+  const [sleepLogs, setSleepLogs] = useFirestoreData('sleep_logs', []);
+  const [semesterDates] = useFirestoreData('semester_dates', { start: '2026-01-01', end: '2026-06-30', examStart: '', examEnd: '' });
+  const [habits] = useFirestoreData('user_habits', []);
+  const [attendance, setAttendance] = useFirestoreData('attendance', { attended: {} });
+  const [expenses] = useFirestoreData('expenses', []);
   
   const defaultDashboardConfig = [
     { id: "profile", title: "Student ID Profile", visible: true, size: "full" },
@@ -71,7 +71,7 @@ export default function DashboardScreen() {
     { id: "timetable", title: "Next Lecture", visible: true, size: "compact" },
     { id: "quote", title: "Quote of the Day", visible: false, size: "compact" }
   ];
-  const [dashboardConfig, setDashboardConfig] = useFirestoreData(`${userId}_dashboard_config`, defaultDashboardConfig);
+  const [dashboardConfig, setDashboardConfig] = useFirestoreData('dashboard_config', defaultDashboardConfig);
 
   // Widget editing mode
   const [isEditingLayout, setIsEditingLayout] = useState(false);
@@ -87,9 +87,9 @@ export default function DashboardScreen() {
   const [sleepRating, setSleepRating] = useState(4);
 
   // Gamification additions
-  const [loginReward, setLoginReward] = useFirestoreData(`${userId}_login_rewards`, { lastClaimed: '', streak: 0 });
-  const [dailyQuestStatus, setDailyQuestStatus] = useFirestoreData(`${userId}_daily_quest_status`, { date: '', claimed: false });
-  const [streaks, setStreaks] = useFirestoreData(`${userId}_streaks`, {
+  const [loginReward, setLoginReward] = useFirestoreData('login_rewards', { lastClaimed: '', streak: 0 });
+  const [dailyQuestStatus, setDailyQuestStatus] = useFirestoreData('daily_quest_status', { date: '', claimed: false });
+  const [streaks, setStreaks] = useFirestoreData('streaks', {
     tasks: 0,
     focus: 0,
     hydration: 0,

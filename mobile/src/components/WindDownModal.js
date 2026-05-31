@@ -107,12 +107,12 @@ export default function WindDownModal({
     Vibration.vibrate(40);
     
     try {
-      // Save rating to users/{uid}/appData/{uid}_day_ratings
-      const ratingRef = doc(db, 'users', userId, 'appData', `${userId}_day_ratings`);
+      // Save rating to users/{uid}/appData/day_ratings
+      const ratingRef = doc(db, 'users', userId, 'appData', 'day_ratings');
       // Since ratings are stored by date, retrieve existing ratings or update
       // For simplicity, write as key-value under the document
       await setDoc(ratingRef, {
-        id: `${userId}_day_ratings`,
+        id: 'day_ratings',
         [`rating_${todayStr}`]: selectedRating,
         updated_at: Date.now()
       }, { merge: true });

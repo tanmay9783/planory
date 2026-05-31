@@ -4,7 +4,7 @@ import { setFocusTask } from './pomodoro.js';
 import { renderMonthlyCalendar } from './monthly-cal.js';
 import { appendNotesButtonToHeader, renderPinnedNoteInsideColumn } from './notes.js';
 
-const TASKS_KEY = 'radhe_tasks';
+const TASKS_KEY = 'tasks';
 let currentWeekStart = getStartOfWeek(new Date());
 let lastDeletedTask = null;
 let deleteTimeout = null;
@@ -90,7 +90,7 @@ export function renderGrid() {
     renderPinnedNoteInsideColumn(col, dayStr);
 
     // If day has no tasks and no pinned note, show premium empty state
-    const notes = getStorageItem('radhe_notes', {});
+    const notes = getStorageItem('notes', {});
     const note = notes[dayStr];
     const hasPinnedNote = note && note.pinned;
     if (dayTasks.length === 0 && !hasPinnedNote) {
@@ -504,13 +504,13 @@ function setupDropZones() {
     } else if (type === 'dump') {
       // Move from Brain Dump
       const dumpIdx = parseInt(idOrIdx);
-      const dumps = getStorageItem('radhe_dump', []);
+      const dumps = getStorageItem('brain_dump', []);
       const val = dumps[dumpIdx];
       
       if (val) {
         // Add as task
         const newTask = {
-          title: val,
+          title: typeof val === 'string' ? val : val.text, // support both string & unified object format
           date: targetDate,
           category: 'personal',
           priority: 'medium'
@@ -519,7 +519,7 @@ function setupDropZones() {
         
         // Remove from dump
         dumps.splice(dumpIdx, 1);
-        setStorageItem('radhe_dump', dumps);
+        setStorageItem('brain_dump', dumps);
         
         // Rerender braindump list
         import('./brain-dump.js').then(m => m.initBrainDump());

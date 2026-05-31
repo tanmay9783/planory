@@ -33,7 +33,7 @@ export default function FocusScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
 
   // Durations & Settings state stored in Firestore
-  const [focusSettings, setFocusSettings] = useFirestoreData(`${userId}_focus_settings`, {
+  const [focusSettings, setFocusSettings] = useFirestoreData('focus_settings', {
     workTime: 25,
     breakTime: 5,
     customSoundtracks: []
@@ -54,7 +54,7 @@ export default function FocusScreen() {
   const targetTimeRef = useRef(null);
   
   // Tasks & Intention State
-  const [tasks, setTasks] = useFirestoreData(`${userId}_tasks`, []);
+  const [tasks, setTasks] = useFirestoreData('tasks', []);
   const [activeTaskId, setActiveTaskId] = useState(null);
   
   const [showIntentionModal, setShowIntentionModal] = useState(false);
@@ -298,8 +298,8 @@ export default function FocusScreen() {
   }, [isActive, showIntentionModal, selectedFocusSound, soundVolumes, focusSettings.customSoundtracks]);
 
   // Gamification & Tracking
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [pomodoroStats, setPomodoroStats] = useFirestoreData(`${userId}_pomodoro_stats`, { roundsToday: 0, date: new Date().toISOString().split('T')[0] });
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [pomodoroStats, setPomodoroStats] = useFirestoreData('pomodoro_stats', { roundsToday: 0, date: new Date().toISOString().split('T')[0] });
 
   // Reset stats if new day
   useEffect(() => {

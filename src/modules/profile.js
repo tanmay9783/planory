@@ -1,6 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 
-const PROFILE_KEY = 'radhe_user_profile';
+const PROFILE_KEY = 'user_profile';
 
 const defaultProfile = {
   name: 'Tanmay',

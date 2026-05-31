@@ -11,10 +11,10 @@ export default function AnalyticsScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
 
   // Load database states
-  const [tasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [habits] = useFirestoreData(`${userId}_user_habits`, []);
-  const [pomodoroStats] = useFirestoreData(`${userId}_pomodoro_stats`, { roundsToday: 0 });
-  const [hydration] = useFirestoreData(`${userId}_hydration`, { water: 0, target: 8 });
+  const [tasks] = useFirestoreData('tasks', []);
+  const [habits] = useFirestoreData('user_habits', []);
+  const [pomodoroStats] = useFirestoreData('pomodoro_stats', { roundsToday: 0 });
+  const [hydration] = useFirestoreData('hydration', { water: 0, target: 8 });
 
   // Get date range helper for this week and last week
   const getWeekDates = (offset = 0) => {

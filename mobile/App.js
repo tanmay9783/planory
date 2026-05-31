@@ -380,7 +380,7 @@ export default function App() {
 
       if (usr) {
         const checkProfileAndProceed = () => {
-          const profileRef = doc(db, 'users', usr.uid, 'appData', `${usr.uid}_user_profile`);
+          const profileRef = doc(db, 'users', usr.uid, 'appData', 'user_profile');
           profileUnsubRef.current = onSnapshot(profileRef, (docSnap) => {
             if (docSnap.exists()) {
               const cloudData = docSnap.data();
@@ -643,9 +643,9 @@ export default function App() {
 
     try {
       // 1. Save User Profile
-      const profileRef = doc(db, 'users', userId, 'appData', `${userId}_user_profile`);
+      const profileRef = doc(db, 'users', userId, 'appData', 'user_profile');
       await setDoc(profileRef, {
-        id: `${userId}_user_profile`,
+        id: 'user_profile',
         value: JSON.stringify({
           name: obName.trim(),
           college: obCollege.trim(),
@@ -666,9 +666,9 @@ export default function App() {
         fire: 0,
         logs: []
       }));
-      const habitsRef = doc(db, 'users', userId, 'appData', `${userId}_user_habits`);
+      const habitsRef = doc(db, 'users', userId, 'appData', 'user_habits');
       await setDoc(habitsRef, {
-        id: `${userId}_user_habits`,
+        id: 'user_habits',
         value: JSON.stringify(selectedHabitsList.length > 0 ? selectedHabitsList : [
           { id: '1', name: 'Drink 3L Water', icon: 'water-outline', fire: 0, logs: [] },
           { id: '2', name: 'Read 10 Pages', icon: 'book-outline', fire: 0, logs: [] }
@@ -678,18 +678,18 @@ export default function App() {
       }, { merge: true });
 
       // 3. Save Hydration
-      const hydrationRef = doc(db, 'users', userId, 'appData', `${userId}_hydration`);
+      const hydrationRef = doc(db, 'users', userId, 'appData', 'hydration');
       await setDoc(hydrationRef, {
-        id: `${userId}_hydration`,
+        id: 'hydration',
         value: JSON.stringify({ water: 0, target: parseInt(obWaterTarget) || 2000 }),
         updated_at: Date.now(),
         deleted: false
       }, { merge: true });
 
       // 4. Save Budget Settings
-      const budgetRef = doc(db, 'users', userId, 'appData', `${userId}_budget_settings`);
+      const budgetRef = doc(db, 'users', userId, 'appData', 'budget_settings');
       await setDoc(budgetRef, {
-        id: `${userId}_budget_settings`,
+        id: 'budget_settings',
         value: JSON.stringify({
           monthlyLimit: parseInt(obPocketLimit) || 5000,
           savingsGoalName: 'Semester Exam Fees',
@@ -701,9 +701,9 @@ export default function App() {
       }, { merge: true });
 
       // 5. Initialize Streaks
-      const streaksRef = doc(db, 'users', userId, 'appData', `${userId}_streaks`);
+      const streaksRef = doc(db, 'users', userId, 'appData', 'streaks');
       await setDoc(streaksRef, {
-        id: `${userId}_streaks`,
+        id: 'streaks',
         value: JSON.stringify({
           tasks: 0,
           focus: 0,
@@ -718,18 +718,18 @@ export default function App() {
       }, { merge: true });
 
       // 6. Initialize Gamification State
-      const gamificationRef = doc(db, 'users', userId, 'appData', `${userId}_gamification_state`);
+      const gamificationRef = doc(db, 'users', userId, 'appData', 'gamification');
       await setDoc(gamificationRef, {
-        id: `${userId}_gamification_state`,
+        id: 'gamification',
         value: JSON.stringify({ level: 1, xp: 0 }),
         updated_at: Date.now(),
         deleted: false
       }, { merge: true });
 
       // 7. Save repeating weekly timetable
-      const timetableRef = doc(db, 'users', userId, 'appData', `${userId}_timetable`);
+      const timetableRef = doc(db, 'users', userId, 'appData', 'timetable');
       await setDoc(timetableRef, {
-        id: `${userId}_timetable`,
+        id: 'timetable',
         value: JSON.stringify(obTimetable),
         updated_at: Date.now(),
         deleted: false

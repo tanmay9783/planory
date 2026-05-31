@@ -28,7 +28,7 @@ export default function ProfileScreen() {
   const emailPrefix = auth.currentUser?.email ? auth.currentUser.email.split('@')[0] : 'Student';
 
   // Firestore States
-  const [profile, setProfile] = useFirestoreData(`${userId}_user_profile`, { 
+  const [profile, setProfile] = useFirestoreData('user_profile', { 
     name: emailPrefix, 
     bio: 'Student', 
     college: 'Your School / College', 
@@ -36,13 +36,13 @@ export default function ProfileScreen() {
     semester: 'Grade / Semester',
     onboarded: true 
   });
-  const [gamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [tasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [hydration] = useFirestoreData(`${userId}_hydration`, { water: 0, target: 8 });
-  const [hydrationLogs] = useFirestoreData(`${userId}_hydration_logs`, []);
-  const [streaks] = useFirestoreData(`${userId}_streaks`, { tasks: 0, focus: 0, hydration: 0, habits: 0, budget: 0 });
-  const [pomodoroStats] = useFirestoreData(`${userId}_pomodoro_stats`, { roundsToday: 0 });
-  const [xpHistory] = useFirestoreData(`${userId}_xp_history`, []);
+  const [gamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [tasks] = useFirestoreData('tasks', []);
+  const [hydration] = useFirestoreData('hydration', { water: 0, target: 8 });
+  const [hydrationLogs] = useFirestoreData('hydration_logs', []);
+  const [streaks] = useFirestoreData('streaks', { tasks: 0, focus: 0, hydration: 0, habits: 0, budget: 0 });
+  const [pomodoroStats] = useFirestoreData('pomodoro_stats', { roundsToday: 0 });
+  const [xpHistory] = useFirestoreData('xp_history', []);
 
   // Custom ID Card state additions
   const [showQRModal, setShowQRModal] = useState(false);

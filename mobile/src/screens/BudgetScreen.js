@@ -14,14 +14,14 @@ const BUDGET_PRESETS = [
 
 export default function BudgetScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [expenses, setExpenses] = useFirestoreData(`${userId}_expenses`, []);
-  const [settings, setSettings] = useFirestoreData(`${userId}_budget_settings`, {
+  const [expenses, setExpenses] = useFirestoreData('expenses', []);
+  const [settings, setSettings] = useFirestoreData('budget_settings', {
     monthlyLimit: 5000,
     savingsGoalName: 'Study Materials',
     savingsGoalTarget: 1500,
     savingsGoalCurrent: 500
   });
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
 
   const [expenseInput, setExpenseInput] = useState('');
   const [expenseDesc, setExpenseDesc] = useState('');

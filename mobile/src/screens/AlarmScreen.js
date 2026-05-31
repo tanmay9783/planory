@@ -60,7 +60,7 @@ export default function AlarmScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
 
   // Firestore sync for Alarms Configuration
-  const [alarms, setAlarms] = useFirestoreData(`${userId}_daily_alarms`, {
+  const [alarms, setAlarms] = useFirestoreData('daily_alarms', {
     wakeTime: '06:30',
     wakeEnabled: true,
     wakeMission: 'math', // math, shake, typing, walking, none
@@ -79,12 +79,12 @@ export default function AlarmScreen() {
   });
 
   // Firestore sync for Sleep Logs
-  const [sleepLogs, setSleepLogs] = useFirestoreData(`${userId}_sleep_logs`, []);
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [semesterEvents] = useFirestoreData(`${userId}_semester_events`, []);
+  const [sleepLogs, setSleepLogs] = useFirestoreData('sleep_logs', []);
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [semesterEvents] = useFirestoreData('semester_events', []);
 
   // Multiple Custom Alarms List
-  const [alarmsList, setAlarmsList] = useFirestoreData(`${userId}_alarms_list`, [
+  const [alarmsList, setAlarmsList] = useFirestoreData('alarms_list', [
     {
       id: 'default-1',
       time: '07:00',

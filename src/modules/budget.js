@@ -1,8 +1,8 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { formatDate } from '../utils/date.js';
 
-const BUDGET_SETTINGS_KEY = 'radhe_budget_settings';
-const EXPENSES_KEY = 'radhe_expenses';
+const BUDGET_SETTINGS_KEY = 'budget_settings';
+const EXPENSES_KEY = 'expenses';
 
 const defaultSettings = {
   monthlyLimit: 10000,

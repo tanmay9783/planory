@@ -37,7 +37,7 @@ const NOTIFICATION_STYLES = [
 export default function NotificationCenterScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
   
-  const [settings, setSettings] = useFirestoreData(`${userId}_notification_settings`, {
+  const [settings, setSettings] = useFirestoreData('notification_settings', {
     waterReminders: true,
     taskDeadlines: true,
     habitNudges: true,

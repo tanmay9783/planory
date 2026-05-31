@@ -27,6 +27,7 @@ export function initAuth() {
       authBtn.title = `Logged in as ${user.email} (Click to logout)`;
       
       authModal.classList.add('hidden');
+      if (closeBtn) closeBtn.style.display = '';
       
       // Start Background Sync Engine!
       startRealtimeSync();
@@ -36,6 +37,9 @@ export function initAuth() {
       authBtn.innerHTML = '☁️ Off';
       authBtn.style.color = 'var(--text-muted)';
       authBtn.title = 'Enable Cloud Sync';
+      
+      authModal.classList.remove('hidden');
+      if (closeBtn) closeBtn.style.display = 'none';
       
       stopRealtimeSync();
     }
@@ -57,6 +61,7 @@ export function initAuth() {
 
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
+      if (!auth.currentUser) return; // Prevent close if not logged in
       authModal.classList.add('hidden');
     });
   }

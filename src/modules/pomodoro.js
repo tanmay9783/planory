@@ -1,7 +1,7 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { addXP, logDailyActivity } from './gamification.js';
 
-const POMO_STATS_KEY = 'radhe_pomo_stats';
+const POMO_STATS_KEY = 'pomodoro_stats';
 
 let currentTimer = null;
 let secondsRemaining = 1500; // 25 min default

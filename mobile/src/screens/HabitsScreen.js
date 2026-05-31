@@ -11,9 +11,9 @@ import React, { useEffect, useRef, useState } from 'react';
 
 export default function HabitsScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [hydration, setHydration] = useFirestoreData(`${userId}_hydration`, { water: 0, target: 2000 });
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [habits, setHabits] = useFirestoreData(`${userId}_user_habits`, []);
+  const [hydration, setHydration] = useFirestoreData('hydration', { water: 0, target: 2000 });
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [habits, setHabits] = useFirestoreData('user_habits', []);
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {

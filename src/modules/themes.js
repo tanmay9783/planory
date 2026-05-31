@@ -1,6 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 
-const THEME_KEY = 'radhe_theme_settings';
+const THEME_KEY = 'theme_settings';
 
 const defaultTheme = {
   accent: '#667eea',

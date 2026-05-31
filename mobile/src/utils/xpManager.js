@@ -13,16 +13,16 @@ export const awardXP = async (userId, currentGamification, amount, reason) => {
 
   try {
     // 1. Save new gamification state
-    const gamificationRef = doc(db, 'users', userId, 'appData', `${userId}_gamification_state`);
+    const gamificationRef = doc(db, 'users', userId, 'appData', 'gamification');
     await setDoc(gamificationRef, {
-      id: `${userId}_gamification_state`,
+      id: 'gamification',
       value: JSON.stringify({ level: progress.level, xp: progress.xp }),
       updated_at: Date.now(),
       deleted: false
     }, { merge: true });
 
     // 2. Load and update XP history logs
-    const historyRef = doc(db, 'users', userId, 'appData', `${userId}_xp_history`);
+    const historyRef = doc(db, 'users', userId, 'appData', 'xp_history');
     const historySnap = await getDoc(historyRef);
     let logs = [];
     if (historySnap.exists()) {
@@ -47,7 +47,7 @@ export const awardXP = async (userId, currentGamification, amount, reason) => {
     logs = [newLog, ...logs].slice(0, 100); // limit to last 100 entries
 
     await setDoc(historyRef, {
-      id: `${userId}_xp_history`,
+      id: 'xp_history',
       value: JSON.stringify(logs),
       updated_at: Date.now(),
       deleted: false

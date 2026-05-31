@@ -16,6 +16,8 @@ import { initNotes, renderNotesLibrary } from './modules/notes.js';
 import { initGamification, populateWeekInReview } from './modules/gamification.js';
 import { initThemeToggle, initZenMode, initLivePresence, initCollapsibleSections } from './modules/advanced-focus.js';
 import { initAuth } from './modules/auth.js';
+import { auth } from './db/firebase.js';
+import { onAuthStateChanged } from 'firebase/auth';
 
 console.log("⚡ main.js evaluated!");
 
@@ -25,9 +27,6 @@ function runInit() {
   const safeInit = (name, fn) => {
     try { fn(); } catch (e) { console.error(`Error initializing ${name}:`, e); }
   };
-
-  // 0. Initialize Authentication / Sync
-  safeInit('Auth', initAuth);
 
   // 1. Initialize Profile & Settings tabs
   safeInit('Profile', initProfile);
@@ -62,21 +61,53 @@ function applyTimeOfDayTheme() {
   else body.classList.add('theme-night');
 }
 
+function initAppFlow() {
+  let appInitialized = false;
+
+  // Initialize Auth listeners (login/signup buttons, status updates) immediately
+  try {
+    initAuth();
+  } catch (e) {
+    console.error("Error initializing Auth module:", e);
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    const authModal = document.getElementById('auth-modal-overlay');
+    const closeBtn = document.getElementById('auth-close-btn');
+
+    if (user) {
+      if (authModal) authModal.classList.add('hidden');
+      if (closeBtn) closeBtn.style.display = ''; // restore close button visibility
+      
+      if (!appInitialized) {
+        appInitialized = true;
+        // Wait for DB cache to preload before rendering any module
+        await preloadCache();
+        runInit();
+      }
+    } else {
+      // Force show auth modal overlay and hide its close button
+      if (authModal) {
+        authModal.classList.remove('hidden');
+        if (closeBtn) closeBtn.style.display = 'none';
+      }
+      
+      // If the app was previously initialized and user logs out, reload to clear memory/UI states
+      if (appInitialized) {
+        window.location.reload();
+      }
+    }
+  });
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', async () => {
-    console.log('⚡ DOMContentLoaded fired!');
+  document.addEventListener('DOMContentLoaded', () => {
     applyTimeOfDayTheme();
-    // Wait for DB cache to preload before rendering any module
-    await preloadCache();
-    runInit();
+    initAppFlow();
   });
 } else {
-  (async () => {
-    console.log('⚡ document already loaded, initializing immediately!');
-    applyTimeOfDayTheme();
-    await preloadCache();
-    runInit();
-  })();
+  applyTimeOfDayTheme();
+  initAppFlow();
 }
 
 function setupGeneralUI() {
@@ -232,6 +263,10 @@ function setupGeneralUI() {
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => {
       if (e.target === overlay) {
+        // Prevent closing the auth overlay when the user is logged out (forced auth screen)
+        if (overlay.id === 'auth-modal-overlay' && !auth.currentUser) {
+          return;
+        }
         overlay.classList.add('hidden');
         if (overlay.id === 'pomodoro-modal-overlay') {
           stopAmbientSound();

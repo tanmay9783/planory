@@ -2,7 +2,7 @@ import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { parseNaturalLanguageTask } from '../utils/nlp.js';
 import { addTaskDirectly } from './tasks.js';
 
-const DUMP_KEY = 'radhe_brain_dump';
+const DUMP_KEY = 'brain_dump';
 
 export function initBrainDump() {
   const items = getStorageItem(DUMP_KEY, []);
@@ -23,12 +23,13 @@ function renderBrainDumpList(items) {
   }
   
   items.forEach((item, index) => {
+    const text = typeof item === 'string' ? item : item.text;
     const div = document.createElement('div');
     div.className = 'dump-item';
     div.draggable = true;
     div.dataset.index = index;
     div.innerHTML = `
-      <div class="dump-item-text">${item}</div>
+      <div class="dump-item-text">${text}</div>
       <div class="dump-item-actions">
         <button class="icon-btn convert-item" data-idx="${index}" title="Convert to Task">📅</button>
         <button class="icon-btn delete-item" data-idx="${index}" title="Delete">🗑️</button>
@@ -48,7 +49,8 @@ function renderBrainDumpList(items) {
   container.querySelectorAll('.convert-item').forEach(btn => {
     btn.addEventListener('click', () => {
       const idx = parseInt(btn.dataset.idx);
-      const val = items[idx];
+      const item = items[idx];
+      const val = typeof item === 'string' ? item : item.text;
       
       // Auto parse with NLP
       const parsed = parseNaturalLanguageTask(val);
@@ -83,7 +85,13 @@ function setupBrainDumpEvents(items) {
     const val = input.value.trim();
     if (!val) return;
     
-    items.unshift(val);
+    const newDump = {
+      id: 'd_' + Date.now(),
+      text: val,
+      date: new Date().toISOString()
+    };
+    
+    items.unshift(newDump);
     setStorageItem(DUMP_KEY, items);
     input.value = '';
     renderBrainDumpList(items);
@@ -103,7 +111,12 @@ function setupBrainDumpEvents(items) {
 // Public API to append external dumps
 export function appendBrainDump(text) {
   const items = getStorageItem(DUMP_KEY, []);
-  items.unshift(text);
+  const newDump = {
+    id: 'd_' + Date.now(),
+    text: text,
+    date: new Date().toISOString()
+  };
+  items.unshift(newDump);
   setStorageItem(DUMP_KEY, items);
   initBrainDump();
 }

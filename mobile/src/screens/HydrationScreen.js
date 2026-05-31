@@ -20,9 +20,9 @@ const DRINK_TYPES = [
 
 export default function HydrationScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [hydration, setHydration] = useFirestoreData(`${userId}_hydration`, { water: 0, target: 2000 });
-  const [logs, setLogs] = useFirestoreData(`${userId}_hydration_logs`, []);
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
+  const [hydration, setHydration] = useFirestoreData('hydration', { water: 0, target: 2000 });
+  const [logs, setLogs] = useFirestoreData('hydration_logs', []);
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
 
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = () => {

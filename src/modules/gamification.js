@@ -1,6 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 
-const GAMIFICATION_KEY = 'radhe_gamification_state';
+const GAMIFICATION_KEY = 'gamification';
 
 const defaultState = {
   xp: 0,

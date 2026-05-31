@@ -35,7 +35,7 @@ export function renderMonthlyCalendar() {
   // Number of days in previous month (to fill blank cells)
   const prevMonthTotalDays = new Date(year, month, 0).getDate();
   
-  const tasks = getStorageItem('radhe_tasks', []);
+  const tasks = getStorageItem('tasks', []);
   const todayStr = formatDate(new Date());
   
   // Render empty cells from previous month

@@ -73,10 +73,10 @@ export default function TabNavigator() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
 
   // Firestore collections for Quick Add Modal
-  const [tasks, setTasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [expenses, setExpenses] = useFirestoreData(`${userId}_expenses`, []);
-  const [notes, setNotes] = useFirestoreData(`${userId}_notes`, []);
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
+  const [tasks, setTasks] = useFirestoreData('tasks', []);
+  const [expenses, setExpenses] = useFirestoreData('expenses', []);
+  const [notes, setNotes] = useFirestoreData('notes', []);
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
 
   // Modal States
   const [showQuickAdd, setShowQuickAdd] = useState(false);

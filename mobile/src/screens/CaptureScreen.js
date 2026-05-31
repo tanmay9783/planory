@@ -7,7 +7,7 @@ import { auth } from '../firebase';
 
 export default function CaptureScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [brainDump, setBrainDump] = useFirestoreData(`${userId}_brain_dump`, []);
+  const [brainDump, setBrainDump] = useFirestoreData('brain_dump', []);
   const [dumpText, setDumpText] = useState('');
 
   const addBrainDump = () => {

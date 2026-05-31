@@ -1,8 +1,9 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { formatDate } from '../utils/date.js';
 
-const HYDRATION_KEY = 'radhe_hydration';
-const HYDRATION_SETTINGS_KEY = 'radhe_hydration_settings';
+const HYDRATION_KEY = 'hydration_logs';
+const HYDRATION_SETTINGS_KEY = 'hydration_settings';
+const HYDRATION_STATUS_KEY = 'hydration';
 
 const defaultSettings = {
   goal: 2000,
@@ -13,6 +14,17 @@ const defaultSettings = {
 
 export function initHydration() {
   const settings = getStorageItem(HYDRATION_SETTINGS_KEY, defaultSettings);
+  const dailyStatus = getStorageItem(HYDRATION_STATUS_KEY, { water: 0, target: 2000 });
+  
+  // Sync setting goal from daily status target if available
+  if (dailyStatus && dailyStatus.target) {
+    settings.goal = dailyStatus.target;
+  }
+  
+  // Defensive fallbacks for safety
+  if (typeof settings.goal !== 'number') settings.goal = 2000;
+  if (typeof settings.interval !== 'number') settings.interval = 60;
+
   const logs = getStorageItem(HYDRATION_KEY, []);
   
   updateHydrationUI(settings, logs);
@@ -224,6 +236,14 @@ function renderWaterLogsList(logs) {
       const id = btn.dataset.id;
       const updated = logs.filter(l => l.id !== id);
       setStorageItem(HYDRATION_KEY, updated);
+      
+      // Update hydration status for mobile sync
+      const todayStr = formatDate(new Date());
+      const todayVol = updated.filter(l => l.date === todayStr).reduce((sum, l) => sum + parseInt(l.amount), 0);
+      const dailyStatus = getStorageItem(HYDRATION_STATUS_KEY, { water: 0, target: 2000 });
+      dailyStatus.water = todayVol;
+      setStorageItem(HYDRATION_STATUS_KEY, dailyStatus);
+      
       initHydration();
     });
   });
@@ -286,6 +306,12 @@ function setupHydrationEvents(settings, logs) {
         settings.quietHours = quietCheck.checked;
         
         setStorageItem(HYDRATION_SETTINGS_KEY, settings);
+        
+        // Update target in daily status for mobile sync
+        const dailyStatus = getStorageItem(HYDRATION_STATUS_KEY, { water: 0, target: 2000 });
+        dailyStatus.target = settings.goal;
+        setStorageItem(HYDRATION_STATUS_KEY, dailyStatus);
+        
         initHydration();
         showToast("Water settings saved! 💧");
       }
@@ -316,6 +342,11 @@ function logBeverage(amount, type, settings, logs) {
   logs.push(newLog);
   setStorageItem(HYDRATION_KEY, logs);
   
+  // Update hydration daily status for mobile sync
+  const todayStr = formatDate(new Date());
+  const todayVol = logs.filter(l => l.date === todayStr).reduce((sum, l) => sum + parseInt(l.amount), 0);
+  setStorageItem(HYDRATION_STATUS_KEY, { water: todayVol, target: settings.goal });
+  
   initHydration();
   showToast(amount > 0 ? `Logged +${amount}ml of hydration! 💧` : `Logged coffee: ${amount}ml deduction! ☕`);
   
@@ -329,7 +360,7 @@ function checkForContextualTaskHydration() {
   const alertBox = document.getElementById('water-contextual-alert');
   if (!alertBox) return;
   
-  const tasks = getStorageItem('radhe_tasks', []);
+  const tasks = getStorageItem('tasks', []);
   const todayStr = formatDate(new Date());
   
   // Look for any study task today (e.g. titles containing study, exam, reading, learn, revision)
@@ -355,9 +386,10 @@ let waterReminderTimer = null;
 function setupIntervalReminders(settings) {
   clearInterval(waterReminderTimer);
   
-  // Convert settings interval (minutes) to milliseconds
-  // For demo/hackathon purpose, we also prompt quickly or simulate a check
-  const intervalMs = settings.interval * 60 * 1000;
+  const intervalMins = parseInt(settings.interval) || 60;
+  const intervalMs = intervalMins * 60 * 1000;
+  
+  if (isNaN(intervalMs) || intervalMs <= 0) return;
   
   waterReminderTimer = setInterval(() => {
     if (settings.quietHours) {

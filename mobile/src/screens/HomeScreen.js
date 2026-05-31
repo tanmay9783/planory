@@ -15,8 +15,8 @@ import { auth } from '../firebase';
 
 export default function HomeScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [tasks, setTasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [habits, setHabits] = useFirestoreData(`${userId}_user_habits`, []);
+  const [tasks, setTasks] = useFirestoreData('tasks', []);
+  const [habits, setHabits] = useFirestoreData('user_habits', []);
   const [newTaskText, setNewTaskText] = useState('');
   const [viewMode, setViewMode] = useState('list'); // 'list' or 'calendar'
   const [quote, setQuote] = useState({ content: "Loading quote...", author: "" });

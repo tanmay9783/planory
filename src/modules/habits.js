@@ -1,8 +1,8 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { addXP, logDailyActivity } from './gamification.js';
 
-const HABITS_KEY = 'radhe_user_habits';
-const HABIT_LOG_KEY = 'radhe_habit_logs'; // Logs completed habit dates: { habitId: ['YYYY-MM-DD', ...] }
+const HABITS_KEY = 'user_habits';
+const HABIT_LOG_KEY = 'habit_logs'; // Logs completed habit dates: { habitId: ['YYYY-MM-DD', ...] }
 
 const defaultHabits = [
   { id: 'h1', name: 'Drink 3L Water 💧', streak: 4 },

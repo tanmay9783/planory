@@ -12,12 +12,12 @@ import { callOcrProxy } from '../config/api';
 
 export default function ScheduleScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
-  const [tasks, setTasks] = useFirestoreData(`${userId}_tasks`, []);
-  const [pomodoroStats] = useFirestoreData(`${userId}_pomodoro_stats`, { roundsToday: 0 });
-  const [expenses] = useFirestoreData(`${userId}_expenses`, []);
-  const [habits] = useFirestoreData(`${userId}_user_habits`, []);
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
-  const [timetable] = useFirestoreData(`${userId}_timetable`, { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] });
+  const [tasks, setTasks] = useFirestoreData('tasks', []);
+  const [pomodoroStats] = useFirestoreData('pomodoro_stats', { roundsToday: 0 });
+  const [expenses] = useFirestoreData('expenses', []);
+  const [habits] = useFirestoreData('user_habits', []);
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
+  const [timetable] = useFirestoreData('timetable', { Monday: [], Tuesday: [], Wednesday: [], Thursday: [], Friday: [], Saturday: [], Sunday: [] });
   
   // Segment view control: 'weekly' or 'semester'
   const [scheduleView, setScheduleView] = useState('weekly');
@@ -31,13 +31,13 @@ export default function ScheduleScreen() {
   };
   
   // Semester Planner States
-  const [semesterDates, setSemesterDates] = useFirestoreData(`${userId}_semester_dates`, { 
+  const [semesterDates, setSemesterDates] = useFirestoreData('semester_dates', { 
     start: '2026-01-01', 
     end: '2026-06-30',
     examStart: '',
     examEnd: ''
   });
-  const [semesterEvents, setSemesterEvents] = useFirestoreData(`${userId}_semester_events`, []);
+  const [semesterEvents, setSemesterEvents] = useFirestoreData('semester_events', []);
   
   const [editingDates, setEditingDates] = useState(false);
   const [semStartInput, setSemStartInput] = useState('2026-01-01');

@@ -1,8 +1,8 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { formatDate } from '../utils/date.js';
 
-const NOTES_KEY = 'radhe_notes';
-const DRAFTS_HISTORY_KEY = 'radhe_notes_drafts';
+const NOTES_KEY = 'notes';
+const DRAFTS_HISTORY_KEY = 'notes_drafts';
 
 let activeNoteDate = '';
 
@@ -31,8 +31,8 @@ export function appendNotesButtonToHeader(headerEl, dateStr) {
 
 // Renders pinned notes inside the weekly column so they are always visible!
 export function renderPinnedNoteInsideColumn(columnEl, dateStr) {
-  const notes = getStorageItem(NOTES_KEY, {});
-  const note = notes[dateStr];
+  const notes = getStorageItem(NOTES_KEY, []);
+  const note = notes.find(n => n.date === dateStr);
   
   // Remove existing pinned card first
   const existing = columnEl.querySelector('.pinned-note-card');
@@ -74,8 +74,8 @@ export function renderPinnedNoteInsideColumn(columnEl, dateStr) {
 function openNotesDrawer(dateStr) {
   activeNoteDate = dateStr;
   
-  const notes = getStorageItem(NOTES_KEY, {});
-  const note = notes[dateStr] || { content: '', title: '', pinned: false, attachments: [] };
+  const notes = getStorageItem(NOTES_KEY, []);
+  const note = notes.find(n => n.date === dateStr) || { content: '', title: '', pinned: false, attachments: [] };
   
   // Set date title label
   const formattedDate = new Date(dateStr).toLocaleDateString('default', { weekday: 'long', month: 'short', day: 'numeric' });
@@ -129,12 +129,12 @@ function renderAttachmentsPreview(attachments) {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const idx = parseInt(btn.dataset.idx);
-      const notes = getStorageItem(NOTES_KEY, {});
-      const note = notes[activeNoteDate];
-      if (note && note.attachments) {
-        note.attachments.splice(idx, 1);
+      const notes = getStorageItem(NOTES_KEY, []);
+      const noteIndex = notes.findIndex(n => n.date === activeNoteDate);
+      if (noteIndex !== -1 && notes[noteIndex].attachments) {
+        notes[noteIndex].attachments.splice(idx, 1);
         setStorageItem(NOTES_KEY, notes);
-        renderAttachmentsPreview(note.attachments);
+        renderAttachmentsPreview(notes[noteIndex].attachments);
       }
     });
   });
@@ -304,11 +304,28 @@ function setupNotesEvents() {
   
   // Pin note to weekly calendar
   document.getElementById('note-pin-btn').addEventListener('click', () => {
-    const notes = getStorageItem(NOTES_KEY, {});
-    const note = notes[activeNoteDate] || { content: '', title: '', pinned: false, attachments: [] };
+    const notes = getStorageItem(NOTES_KEY, []);
+    let noteIndex = notes.findIndex(n => n.date === activeNoteDate);
+    let note = noteIndex !== -1 ? notes[noteIndex] : null;
+    
+    if (!note) {
+      note = {
+        id: activeNoteDate,
+        date: activeNoteDate,
+        title: document.getElementById('note-page-title').value.trim() || 'Untitled Note',
+        content: document.getElementById('editor-content-area').innerHTML,
+        text: document.getElementById('editor-content-area').innerText.trim(),
+        subject: 'General',
+        pinned: false,
+        color: '#171B22',
+        attachments: []
+      };
+      notes.push(note);
+      noteIndex = notes.length - 1;
+    }
     
     note.pinned = !note.pinned;
-    notes[activeNoteDate] = note;
+    notes[noteIndex] = note;
     setStorageItem(NOTES_KEY, notes);
     
     updatePinButtonState(note.pinned);
@@ -407,13 +424,30 @@ function handleImageUpload(file) {
   reader.onload = (event) => {
     const base64 = event.target.result;
     
-    const notes = getStorageItem(NOTES_KEY, {});
-    const note = notes[activeNoteDate] || { content: '', title: '', pinned: false, attachments: [] };
+    const notes = getStorageItem(NOTES_KEY, []);
+    let noteIndex = notes.findIndex(n => n.date === activeNoteDate);
+    let note = noteIndex !== -1 ? notes[noteIndex] : null;
+    
+    if (!note) {
+      note = {
+        id: activeNoteDate,
+        date: activeNoteDate,
+        title: document.getElementById('note-page-title').value.trim() || 'Untitled Note',
+        content: document.getElementById('editor-content-area').innerHTML,
+        text: document.getElementById('editor-content-area').innerText.trim(),
+        subject: 'General',
+        pinned: false,
+        color: '#171B22',
+        attachments: []
+      };
+      notes.push(note);
+      noteIndex = notes.length - 1;
+    }
     
     if (!note.attachments) note.attachments = [];
     note.attachments.push(base64);
     
-    notes[activeNoteDate] = note;
+    notes[noteIndex] = note;
     setStorageItem(NOTES_KEY, notes);
     
     renderAttachmentsPreview(note.attachments);
@@ -428,13 +462,33 @@ function saveActiveNote(forceBackup = false) {
   const content = document.getElementById('editor-content-area').innerHTML;
   const title = document.getElementById('note-page-title').value.trim();
   
-  const notes = getStorageItem(NOTES_KEY, {});
-  const note = notes[activeNoteDate] || { content: '', title: '', pinned: false, attachments: [] };
+  const notes = getStorageItem(NOTES_KEY, []);
+  let noteIndex = notes.findIndex(n => n.date === activeNoteDate);
+  let note = noteIndex !== -1 ? notes[noteIndex] : null;
   
-  note.content = content;
-  note.title = title || 'Untitled Note';
+  const temp = document.createElement('div');
+  temp.innerHTML = content;
+  const plainText = temp.textContent || temp.innerText || "";
   
-  notes[activeNoteDate] = note;
+  if (!note) {
+    note = {
+      id: activeNoteDate,
+      date: activeNoteDate,
+      subject: 'General',
+      title: title || 'Untitled Note',
+      content: content,
+      text: plainText,
+      pinned: false,
+      color: '#171B22',
+      attachments: []
+    };
+    notes.push(note);
+  } else {
+    note.content = content;
+    note.text = plainText;
+    note.title = title || 'Untitled Note';
+  }
+  
   setStorageItem(NOTES_KEY, notes);
   
   // Storing drafts backups (max 10 versions)
@@ -462,14 +516,13 @@ export function renderNotesLibrary() {
   if (!container) return;
   container.innerHTML = '';
   
-  const notes = getStorageItem(NOTES_KEY, {});
+  const notes = getStorageItem(NOTES_KEY, []);
   const query = document.getElementById('notes-search-input').value.toLowerCase().trim();
   
-  const keys = Object.keys(notes);
   let renderedCount = 0;
   
-  keys.forEach(dateStr => {
-    const note = notes[dateStr];
+  notes.forEach(note => {
+    const dateStr = note.date;
     
     // Search query match (highlight matches)
     const temp = document.createElement('div');

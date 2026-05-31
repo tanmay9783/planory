@@ -28,12 +28,12 @@ const MOCK_OCR_RESULTS = [
 export default function NotesScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
   const [viewMode, setViewMode] = useState('notes'); // 'notes' or 'braindump'
-  const [notes, setNotes] = useFirestoreData(`${userId}_notes`, []);
-  const [brainDump, setBrainDump] = useFirestoreData(`${userId}_brain_dump`, []);
-  const [gamification, setGamification] = useFirestoreData(`${userId}_gamification_state`, { level: 1, xp: 0 });
+  const [notes, setNotes] = useFirestoreData('notes', []);
+  const [brainDump, setBrainDump] = useFirestoreData('brain_dump', []);
+  const [gamification, setGamification] = useFirestoreData('gamification', { level: 1, xp: 0 });
 
   // Flashcards state
-  const [flashcards, setFlashcards] = useFirestoreData(`${userId}_flashcards`, []);
+  const [flashcards, setFlashcards] = useFirestoreData('flashcards', []);
   
   // Create Card Modal states
   const [showCreateCardModal, setShowCreateCardModal] = useState(false);

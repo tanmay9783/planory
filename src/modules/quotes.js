@@ -1,6 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 
-const MANTRAS_KEY = 'radhe_user_mantras';
+const MANTRAS_KEY = 'user_mantras';
 
 const fallbackQuotes = [
   "Start where you are. Use what you have. Do what you can.",
