@@ -16,23 +16,30 @@ function triggerWelcomeAnimation() {
   const welcomeOverlay = document.getElementById('welcome-loader-overlay');
   const welcomeUserText = document.getElementById('welcome-user-name');
   
-  if (welcomeOverlay) {
-    const profile = getStorageItem('user_profile', { name: 'User' });
-    if (welcomeUserText) {
-      welcomeUserText.textContent = `Welcome back, ${profile.name}`;
-    }
-    
-    welcomeOverlay.classList.remove('hidden');
-    void welcomeOverlay.offsetWidth; // force reflow
-    welcomeOverlay.style.opacity = '1';
-    
-    setTimeout(() => {
-      welcomeOverlay.style.opacity = '0';
-      setTimeout(() => {
-        welcomeOverlay.classList.add('hidden');
-      }, 800);
-    }, 2200);
+  if (!welcomeOverlay) return;
+
+  const profile = getStorageItem('user_profile', { name: 'User' });
+  if (welcomeUserText) {
+    welcomeUserText.textContent = `Welcome back, ${profile.name}`;
   }
+
+  // Phase 1: Show
+  welcomeOverlay.classList.remove('hidden');
+  welcomeOverlay.style.opacity = '0';
+  // Force reflow so the transition fires
+  void welcomeOverlay.getBoundingClientRect();
+  welcomeOverlay.style.transition = 'opacity 0.6s ease';
+  welcomeOverlay.style.opacity = '1';
+
+  // Phase 2: After 2.2s, fade out then hide
+  setTimeout(() => {
+    welcomeOverlay.style.opacity = '0';
+    setTimeout(() => {
+      welcomeOverlay.classList.add('hidden');
+      welcomeOverlay.style.opacity = '';
+      welcomeOverlay.style.transition = '';
+    }, 650);
+  }, 2200);
 }
 
 export function initAuth() {
