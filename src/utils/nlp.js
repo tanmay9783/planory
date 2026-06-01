@@ -9,15 +9,53 @@ export function parseNaturalLanguageTask(text) {
 
 function splitMultiTasks(text) {
   if (!text) return [];
-  // Split on boundaries of "and", "then", "also", "plus"
-  return text.split(/\s+\b(?:and|then|also|plus)\b\s+/i).filter(p => p.trim().length > 0);
+  // Split on boundaries of "and", "then", "also", "plus", or commas/semicolons
+  return text.split(/\s*(?:\band\b|\bthen\b|\balso\b|\bplus\b|[,;])\s*/i).filter(p => p.trim().length > 0);
 }
 
 function parseSingleTask(text) {
   const now = new Date();
   
-  // Pipeline:
+  // Preprocess
   const preprocessed = preprocessText(text);
+
+  // Check for Water Command
+  const waterMatch = preprocessed.match(/(?:log|drink)?\s*(\d+)\s*ml\s*(?:of)?\s*(?:water)?/i);
+  if (waterMatch && preprocessed.toLowerCase().includes('water')) {
+    return {
+      action: 'water',
+      amount: parseInt(waterMatch[1])
+    };
+  } else if (preprocessed.toLowerCase().includes('drink water') || preprocessed.toLowerCase().includes('log water') || preprocessed.toLowerCase().includes('remind me to drink water') || preprocessed.toLowerCase().includes('remind to drink water')) {
+    return {
+      action: 'water',
+      amount: 250
+    };
+  }
+
+  // Check for Expense Command
+  const expenseMatch = preprocessed.match(/(?:log|spend|expense)\s*(?:a|an|the|my)?\s*(?:\$|₹|rs\.?)?\s*(\d+)\s*(?:on|for)?\s*(.*)/i);
+  if (expenseMatch) {
+    return {
+      action: 'expense',
+      amount: parseFloat(expenseMatch[1]),
+      notes: expenseMatch[2] ? expenseMatch[2].trim() : 'Voice logged expense'
+    };
+  }
+
+  // Check for Timer Command
+  const timerMatch = preprocessed.match(/(?:set|start)?\s*(?:a)?\s*(\d+)\s*(?:minute|min|mins|hour|hr|hours)?\s*(?:study)?\s*(?:timer|pomodoro)/i);
+  if (timerMatch) {
+    let mins = parseInt(timerMatch[1]);
+    const isHour = /hour|hr/i.test(timerMatch[0]);
+    if (isHour) mins *= 60;
+    return {
+      action: 'timer',
+      duration: mins
+    };
+  }
+  
+  // Pipeline for standard tasks:
   const { date, dateFound, textWithoutDate } = parseDate(preprocessed, now);
   const { startTime, endTime, timeFound, textWithoutTime } = parseTime(textWithoutDate, dateFound, now);
   const { recurring, recurrenceType, recurrenceDays, textWithoutRecurrence } = parseRecurrence(textWithoutTime);

@@ -480,7 +480,7 @@ const styles = StyleSheet.create({
     color: '#8B92A0',
   },
   segmentBtnTextActive: {
-    color: '#BA7517',
+    color: '#C2A878',
     fontFamily: 'PlusJakartaSans_700Bold',
   },
   standardContainer: {
@@ -529,16 +529,16 @@ const styles = StyleSheet.create({
     color: '#F3F1EC',
   },
   operatorBtn: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517',
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878',
   },
   clearDelBtn: {
     backgroundColor: 'rgba(196, 112, 112, 0.08)',
     borderColor: 'rgba(196, 112, 112, 0.15)',
   },
   equalsBtn: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517',
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878',
   },
   scrollContent: {
     padding: 20,
@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 10,
     paddingVertical: 12,
     marginTop: 16,
@@ -635,7 +635,7 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   calculateBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
@@ -659,13 +659,13 @@ const styles = StyleSheet.create({
   resultLabel: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 11,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 0.5,
   },
   resultValue: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 32,
-    color: '#BA7517',
+    color: '#C2A878',
     marginTop: 6,
   },
   resultSub: {

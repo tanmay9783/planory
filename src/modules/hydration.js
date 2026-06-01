@@ -1,5 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { formatDate } from '../utils/date.js';
+import { addCoins } from './shop.js';
 
 const HYDRATION_KEY = 'hydration_logs';
 const HYDRATION_SETTINGS_KEY = 'hydration_settings';
@@ -413,6 +414,7 @@ function logBeverage(amount, type) {
     if (amount > 0) {
       addXP(5);
       logDailyActivity('water');
+      addCoins(5);
     }
   } catch (err) {
     console.error("Error in logBeverage:", err);

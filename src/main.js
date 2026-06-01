@@ -4,6 +4,8 @@ import { initProfile } from './modules/profile.js';
 import { initThemes } from './modules/themes.js';
 import { initQuotes } from './modules/quotes.js';
 import { initNotifications } from './modules/notifications.js';
+import { initShop } from './modules/shop.js';
+import { initStudypool } from './modules/studypool.js';
 import { initBrainDump } from './modules/brain-dump.js';
 import { initVoiceInput } from './modules/voice.js';
 import { initPomodoro, stopAmbientSound } from './modules/pomodoro.js';
@@ -69,6 +71,8 @@ function runInit() {
   safeInit('Themes', initThemes);
   safeInit('Quotes', initQuotes);
   safeInit('Notifications', initNotifications);
+  safeInit('Shop', initShop);
+  safeInit('Studypool', initStudypool);
 
   // 2. Initialize Core Features
   safeInit('Gamification', initGamification);
@@ -160,21 +164,24 @@ function setupGeneralUI() {
     });
   }
 
-  // View switches (Weekly Timetable vs Dedicated Month Calendar vs Focus Forest)
+  // View switches (Weekly Timetable vs Dedicated Month Calendar vs Focus Forest vs Social Studypool)
   const viewWeeklyBtn = document.getElementById('view-weekly-btn');
   const viewCalendarBtn = document.getElementById('view-calendar-btn');
   const viewForestBtn = document.getElementById('sidebar-nav-forest');
+  const viewStudypoolBtn = document.getElementById('sidebar-nav-studypool');
   
   const weeklyGrid = document.getElementById('weekly-grid-view');
   const monthlyCalendar = document.getElementById('monthly-calendar-view');
   const forestView = document.getElementById('forest-garden-view');
+  const studypoolView = document.getElementById('studypool-view');
 
   function switchMainView(viewId) {
     if (weeklyGrid) weeklyGrid.classList.add('hidden');
     if (monthlyCalendar) monthlyCalendar.classList.add('hidden');
     if (forestView) forestView.classList.add('hidden');
+    if (studypoolView) studypoolView.classList.add('hidden');
 
-    [viewWeeklyBtn, viewCalendarBtn, viewForestBtn].forEach(btn => {
+    [viewWeeklyBtn, viewCalendarBtn, viewForestBtn, viewStudypoolBtn].forEach(btn => {
       if (btn) btn.classList.remove('active');
     });
 
@@ -190,6 +197,10 @@ function setupGeneralUI() {
       if (forestView) forestView.classList.remove('hidden');
       if (viewForestBtn) viewForestBtn.classList.add('active');
       import('./modules/pomodoro.js').then(m => m.updateForestPageView());
+    } else if (viewId === 'studypool') {
+      if (studypoolView) studypoolView.classList.remove('hidden');
+      if (viewStudypoolBtn) viewStudypoolBtn.classList.add('active');
+      import('./modules/studypool.js').then(m => m.initStudypool());
     }
   }
 
@@ -204,6 +215,9 @@ function setupGeneralUI() {
   }
   if (viewForestBtn) {
     viewForestBtn.addEventListener('click', () => switchMainView('forest'));
+  }
+  if (viewStudypoolBtn) {
+    viewStudypoolBtn.addEventListener('click', () => switchMainView('studypool'));
   }
 
   // Settings Tab switches

@@ -1,4 +1,5 @@
-import { auth } from '../db/firebase.js';
+import { auth, db } from '../db/firebase.js';
+import { doc, setDoc } from 'firebase/firestore';
 import { 
   signInWithEmailAndPassword, 
   createUserWithEmailAndPassword, 
@@ -119,8 +120,19 @@ export function initAuth() {
   if (backToLoginBtn) backToLoginBtn.addEventListener('click', () => setAuthMode('login'));
 
   // Handle Auth State Changes
-  onAuthStateChanged(auth, (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if (user) {
+      // Register user in public directory so friends can add them by email
+      try {
+        await setDoc(doc(db, 'users_directory', user.uid), {
+          email: user.email,
+          uid: user.uid,
+          lastSeen: Date.now()
+        }, { merge: true });
+      } catch (e) {
+        console.error("Failed to register in users_directory", e);
+      }
+
       // Logged in
       const statusDot = '<span class="auth-dot" style="width: 6px; height: 6px; background: var(--color-success); border-radius: 50%; display: inline-block; margin-right: 4px;"></span>';
       authBtn.innerHTML = statusDot + 'Synced';

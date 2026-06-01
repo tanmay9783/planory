@@ -1,15 +1,24 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { calculateXPProgress } from './gamification';
+import * as Haptics from 'expo-haptics';
 
 /**
  * Centrally awards XP, logs the activity, and updates Firestore state.
  * Returns the new gamification state { level, xp, leveledUp }.
  */
 export const awardXP = async (userId, currentGamification, amount, reason) => {
-  if (userId === 'guest') return calculateXPProgress(currentGamification.level, currentGamification.xp, amount);
-
   const progress = calculateXPProgress(currentGamification.level || 1, currentGamification.xp || 0, amount);
+
+  if (progress.leveledUp) {
+    try {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    } catch (e) {
+      console.warn('[XP Manager] Haptics not supported:', e);
+    }
+  }
+
+  if (userId === 'guest') return progress;
 
   try {
     // 1. Save new gamification state

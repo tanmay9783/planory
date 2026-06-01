@@ -15,6 +15,15 @@
   --border-color-hover: rgba(255, 255, 255, 0.07);
   --ruled-line-color:   rgba(255, 255, 255, 0.018);
 
+  --bg-primary: #09080b; /* Slightly warmer deep black */
+  --bg-secondary: #131114; /* Elevated warmer tone */
+  --bg-panel: rgba(255, 255, 255, 0.02);
+  
+  /* Surface Layers */
+  --surface-100: rgba(194, 168, 120, 0.03); /* Extremely subtle gold tint */
+  --surface-200: rgba(194, 168, 120, 0.06);
+  --surface-300: rgba(194, 168, 120, 0.1);
+  --surface-400: rgba(194, 168, 120, 0.15);
   --text-primary:   #F3F1EC;
   --text-secondary: #8B92A0;
   --text-muted:     #5A6070;
@@ -52,8 +61,8 @@
   --shadow-md: 0 10px 40px rgba(0, 0, 0, 0.28);
   --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.32);
 
-  --radius-sm: 8px;
-  --radius-md: 14px;
+  --radius-sm: 12px;
+  --radius-md: 16px;
   --radius-lg: 20px;
   --radius-xl: 24px;
 
@@ -129,6 +138,24 @@ a:hover {
 /* Layout */
 #app {
   display: flex;
+ .auth-card {
+  background: linear-gradient(145deg, rgba(30, 26, 32, 0.8), rgba(15, 14, 18, 0.9));
+  border: 1px solid rgba(194, 168, 120, 0.15);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
+  animation: viewFadeIn 0.5s ease-out;
+}
+
+.auth-toggle-capsule button.active {
+  background: var(--surface-300);
+  color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
   height: 100vh;
   width: 100vw;
   position: relative;
@@ -170,7 +197,8 @@ body.theme-night #app::before {
   flex-shrink: 0;
   transition: transform var(--transition-normal), width var(--transition-normal);
   z-index: 100;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
 }
 
 .sidebar.collapsed {
@@ -375,12 +403,15 @@ body.theme-light .view-tab:hover {
 
 /* Student Budget Widget Elements */
 .budget-card {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 14px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 24px;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
 .budget-progress-wrap {
@@ -672,12 +703,14 @@ body.theme-light .habit-row:hover {
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  background-color: rgba(12, 11, 14, 0.75);
-  backdrop-filter: blur(20px);
+  background-color: rgba(15, 17, 21, 0.65);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
   z-index: 10;
   margin: 16px 24px 0 24px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+  border: 1px solid rgba(255,255,255,0.06);
   transition: all var(--transition-normal);
 }
 
@@ -3713,3 +3746,200 @@ body.theme-light #auth-password {
   line-height: 1.65;
 }
 
+/* ── SOCIAL STUDYPOOL & SHOP STYLES ── */
+#studypool-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.studypool-member-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 12px;
+  width: 90px;
+  text-align: center;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.studypool-member-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(var(--accent-rgb), 0.3);
+}
+.studypool-member-avatar {
+  font-size: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--accent-rgb), 0.1);
+  border-radius: 50%;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+}
+.studypool-member-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+.studypool-member-status {
+  font-size: 9px;
+  color: var(--color-success);
+  font-weight: 600;
+}
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.01);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 12px;
+}
+.leaderboard-rank {
+  font-weight: 800;
+  color: var(--accent);
+  width: 20px;
+}
+.leaderboard-name {
+  flex: 1;
+  font-weight: 600;
+  color: #fff;
+  margin-left: 8px;
+}
+.leaderboard-score {
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+/* Shop Modal Items */
+.shop-item-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.2s, border-color 0.2s;
+}
+.shop-item-card:hover {
+  border-color: rgba(var(--accent-rgb), 0.2);
+  transform: translateY(-2px);
+}
+.shop-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.shop-item-emoji {
+  font-size: 32px;
+}
+.shop-item-price {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fbbf24;
+}
+.shop-item-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+.shop-item-desc {
+  font-size: 11px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+.shop-item-btn {
+  width: 100%;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+.shop-item-btn.buy {
+  background: var(--accent);
+  color: #000;
+}
+.shop-item-btn.owned {
+  background: rgba(255,255,255,0.06);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+/* Glassmorphism tweaks & transitions */
+.glassmorphic-blur {
+  backdrop-filter: blur(12px) saturate(180%);
+  background: rgba(15, 17, 21, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@keyframes viewFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#weekly-grid-view:not(.hidden),
+#monthly-calendar-view:not(.hidden),
+#forest-garden-view:not(.hidden),
+#studypool-view:not(.hidden) {
+  animation: viewFadeIn var(--transition-normal);
+}
+
+.glassmorphic-card {
+  background: rgba(23, 27, 34, 0.45) !important;
+  backdrop-filter: blur(20px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(140%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+#command-palette-overlay .command-palette-card,
+#shop-modal-overlay .shop-modal-content,
+#settings-modal-overlay .settings-modal-content,
+#apps-hub-overlay .apps-hub-drawer,
+.pomo-immersive-active #pomodoro-modal-overlay {
+  background: rgba(15, 17, 21, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(160%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: var(--shadow-lg) !important;
+}
+
+
+
+.auth-card {
+  background: linear-gradient(145deg, rgba(30, 26, 32, 0.8), rgba(15, 14, 18, 0.9));
+  border: 1px solid rgba(194, 168, 120, 0.15);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 10;
+  animation: viewFadeIn 0.5s ease-out;
+}
+
+.auth-toggle-capsule button.active {
+  background: var(--surface-300);
+  color: var(--accent);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}

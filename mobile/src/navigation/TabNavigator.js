@@ -257,7 +257,7 @@ export default function TabNavigator() {
             shadowOpacity: 0.1,
             shadowRadius: 10,
           },
-          tabBarActiveTintColor: '#BA7517',
+          tabBarActiveTintColor: '#C2A878',
           tabBarInactiveTintColor: '#5A6070',
           tabBarShowLabel: true,
           tabBarIcon: ({ focused, color }) => {
@@ -495,11 +495,11 @@ export default function TabNavigator() {
                   }
                 ]}
               >
-                <Ionicons name="star" size={16} color="#BA7517" />
+                <Ionicons name="star" size={16} color="#C2A878" />
               </Animated.View>
             ))}
 
-            <Ionicons name="trophy" size={72} color="#BA7517" style={styles.trophyIcon} />
+            <Ionicons name="trophy" size={72} color="#C2A878" style={styles.trophyIcon} />
             <Text style={styles.levelUpTitle}>LEVEL UP!</Text>
             <Text style={styles.levelUpSubtitle}>Congratulations Grinder!</Text>
             
@@ -538,11 +538,11 @@ const styles = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     justifyContent: 'center',
     alignItems: 'center',
     elevation: 8,
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 6,
@@ -582,7 +582,7 @@ const styles = StyleSheet.create({
     color: '#5A6070'
   },
   modalTabTextActive: {
-    color: '#BA7517'
+    color: '#C2A878'
   },
   form: {
     marginBottom: 12
@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
     marginBottom: 16
   },
   submitBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     padding: 14,
     alignItems: 'center',
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
   },
   trophyIcon: {
     marginBottom: 16,
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 15,
@@ -661,7 +661,7 @@ const styles = StyleSheet.create({
   levelUpTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 32,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 2
   },
   levelUpSubtitle: {
@@ -677,7 +677,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     backgroundColor: 'rgba(186, 117, 23, 0.1)',
     borderWidth: 2,
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 16
@@ -709,7 +709,7 @@ const styles = StyleSheet.create({
     gap: 12
   },
   shareBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingVertical: 14,
     borderRadius: 12,
     alignItems: 'center',

@@ -10,12 +10,13 @@ import XPFlyAnimation from '../components/XPFlyAnimation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { scheduleWaterReminders, cancelReminders, requestNotificationPermission } from '../utils/notifications';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 
 const DRINK_TYPES = [
   { name: 'Water', desc: 'Pure hydration', amount: 250, factor: 1.0, color: '#4B6BFB', icon: 'water-outline' },
   { name: 'Nariyal paani', desc: 'Electrolytes +', amount: 250, factor: 1.0, color: '#7C9B7A', icon: 'leaf-outline' },
-  { name: 'Nimbu paani', desc: 'Vitamin C boost', amount: 250, factor: 1.0, color: '#BA7517', icon: 'sunny-outline' },
+  { name: 'Nimbu paani', desc: 'Vitamin C boost', amount: 250, factor: 1.0, color: '#C2A878', icon: 'sunny-outline' },
   { name: 'Cutting chai', desc: 'Diuretic (-30 ml)', amount: -30, factor: 1.0, color: '#C47070', icon: 'cafe-outline' }
 ];
 
@@ -302,12 +303,14 @@ export default function HydrationScreen() {
 
     if (amountToLog > 0) {
       Vibration.vibrate(40);
+      try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); } catch (e) {}
       let xpEarned = 5 + xpBonus;
       if (hitGoal) {
         xpEarned += 20;
         setTimeout(() => {
           confettiRef.current?.startBurst();
           Vibration.vibrate([0, 100, 50, 200]);
+          try { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } catch (e) {}
         }, 150);
       }
       
@@ -449,8 +452,8 @@ export default function HydrationScreen() {
             <RefreshControl 
               refreshing={refreshing} 
               onRefresh={onRefresh} 
-              colors={['#BA7517']} 
-              tintColor="#BA7517" 
+              colors={['#C2A878']} 
+              tintColor="#C2A878" 
             />
           }
         >
@@ -459,7 +462,7 @@ export default function HydrationScreen() {
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Water log</Text>
             <TouchableOpacity style={styles.settingsBtn} onPress={() => { setGoalError(''); setCustomGoalInput(baseTarget.toString()); setShowSettingsModal(true); }}>
-              <Ionicons name="settings-sharp" size={16} color="#BA7517" />
+              <Ionicons name="settings-sharp" size={16} color="#C2A878" />
               <Text style={styles.settingsBtnText}>Settings</Text>
             </TouchableOpacity>
           </View>
@@ -470,7 +473,7 @@ export default function HydrationScreen() {
               {/* Animated Liquid Fill */}
               <Animated.View style={[styles.fluidFill, { height: fillHeight }]}>
                 <LinearGradient
-                  colors={['#BA7517', '#4B6BFB', '#102A43']}
+                  colors={['#C2A878', '#4B6BFB', '#102A43']}
                   style={{ flex: 1 }}
                 />
                 <WaveOverlay />
@@ -506,7 +509,7 @@ export default function HydrationScreen() {
             </View>
             <View style={styles.progressBarTrack}>
               <LinearGradient
-                colors={['#BA7517', '#4B6BFB']}
+                colors={['#C2A878', '#4B6BFB']}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={[styles.progressBarFill, { width: `${progress}%` }]}
@@ -637,7 +640,7 @@ export default function HydrationScreen() {
                 </View>
                 <Text style={styles.challengeDescText}>Gained +15 XP bonus. Keep hydrating!</Text>
                 <TouchableOpacity style={[styles.challengeActionBtn, { backgroundColor: '#1D2430' }]} onPress={startChallenge}>
-                  <Text style={[styles.challengeActionBtnText, { color: '#BA7517' }]}>Start Challenge Again</Text>
+                  <Text style={[styles.challengeActionBtnText, { color: '#C2A878' }]}>Start Challenge Again</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -663,7 +666,7 @@ export default function HydrationScreen() {
                 value={isIndianSummer} 
                 onValueChange={setIsIndianSummer}
                 trackColor={{ false: '#171B22', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={isIndianSummer ? '#BA7517' : '#8B92A0'}
+                thumbColor={isIndianSummer ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -676,7 +679,7 @@ export default function HydrationScreen() {
                 value={alertsEnabled} 
                 onValueChange={handleAlertsToggle}
                 trackColor={{ false: '#171B22', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={alertsEnabled ? '#BA7517' : '#8B92A0'}
+                thumbColor={alertsEnabled ? '#C2A878' : '#8B92A0'}
               />
             </View>
           </View>
@@ -732,7 +735,7 @@ export default function HydrationScreen() {
                 <Text style={[styles.modalActionBtnText, { color: '#8B92A0' }]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={() => {
                   const goal = parseInt(customGoalInput);
                   if (isNaN(goal) || goal < 500 || goal > 5000) {
@@ -782,7 +785,7 @@ const styles = StyleSheet.create({
   settingsBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
     marginLeft: 6
   },
   capsuleWrapper: {
@@ -794,8 +797,6 @@ const styles = StyleSheet.create({
     width: 180,
     height: 320,
     borderRadius: 90,
-    borderWidth: 2,
-    borderColor: '#BA7517',
     backgroundColor: '#171B22',
     overflow: 'hidden',
     position: 'relative',
@@ -831,7 +832,7 @@ const styles = StyleSheet.create({
   capsulePercentLabel: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 11,
-    color: '#BA7517',
+    color: '#C2A878',
     textTransform: 'uppercase',
     letterSpacing: 1,
     position: 'absolute',
@@ -859,7 +860,7 @@ const styles = StyleSheet.create({
   remainingBadgeMiniText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   statsRow: {
     flexDirection: 'row',
@@ -952,7 +953,7 @@ const styles = StyleSheet.create({
     fontSize: 11
   },
   logPrimaryBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 14,
     paddingVertical: 14,
     alignItems: 'center',
@@ -1061,7 +1062,7 @@ const styles = StyleSheet.create({
   challengeModeTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 15,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   challengeModeSubText: {
     fontFamily: 'PlusJakartaSans_500Medium',
@@ -1071,7 +1072,7 @@ const styles = StyleSheet.create({
     marginBottom: 12
   },
   challengeStartBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 16,
@@ -1100,7 +1101,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   challengeActionBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 10,
     paddingVertical: 10,
     paddingHorizontal: 20
@@ -1209,7 +1210,7 @@ const styles = StyleSheet.create({
   },
   resetBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 12
   },
   waveOverlay: {
@@ -1218,7 +1219,7 @@ const styles = StyleSheet.create({
     left: -20,
     width: '130%',
     height: 12,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     opacity: 0.6,
@@ -1246,7 +1247,7 @@ const styles = StyleSheet.create({
   progressRemainingText: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   progressBarTrack: {
     height: 8,

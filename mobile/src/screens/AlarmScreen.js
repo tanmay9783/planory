@@ -1308,8 +1308,8 @@ export default function AlarmScreen() {
           <RefreshControl 
             refreshing={refreshing} 
             onRefresh={onRefresh} 
-            colors={['#BA7517']} 
-            tintColor="#BA7517" 
+            colors={['#C2A878']} 
+            tintColor="#C2A878" 
           />
         }
       >
@@ -1329,7 +1329,7 @@ export default function AlarmScreen() {
             onPress={() => setActiveTab('alarm')}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-              <Ionicons name="alarm-outline" size={16} color={activeTab === 'alarm' ? '#BA7517' : '#8B92A0'} />
+              <Ionicons name="alarm-outline" size={16} color={activeTab === 'alarm' ? '#C2A878' : '#8B92A0'} />
               <Text style={[styles.segmentBtnText, activeTab === 'alarm' && styles.segmentBtnTextActive]}>Alarm</Text>
             </View>
           </TouchableOpacity>
@@ -1338,7 +1338,7 @@ export default function AlarmScreen() {
             onPress={() => setActiveTab('sleep')}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-              <Ionicons name="moon-outline" size={16} color={activeTab === 'sleep' ? '#BA7517' : '#8B92A0'} />
+              <Ionicons name="moon-outline" size={16} color={activeTab === 'sleep' ? '#C2A878' : '#8B92A0'} />
               <Text style={[styles.segmentBtnText, activeTab === 'sleep' && styles.segmentBtnTextActive]}>Sleep Cycle</Text>
             </View>
           </TouchableOpacity>
@@ -1358,7 +1358,7 @@ export default function AlarmScreen() {
                   <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
                     <Text style={styles.heroTimeText}>{formatTimeWithAmPm(alarms.wakeTime).time}</Text>
                     <Text style={styles.heroAmPm}>{formatTimeWithAmPm(alarms.wakeTime).ampm}</Text>
-                    <Ionicons name="create-outline" size={16} color="#BA7517" style={{ marginLeft: 8, alignSelf: 'center' }} />
+                    <Ionicons name="create-outline" size={16} color="#C2A878" style={{ marginLeft: 8, alignSelf: 'center' }} />
                   </View>
                   <Text style={styles.heroCountdown}>{getLegacyWakeCountdown()}</Text>
                 </TouchableOpacity>
@@ -1366,7 +1366,7 @@ export default function AlarmScreen() {
                   value={alarms.wakeEnabled}
                   onValueChange={(val) => setAlarms({ ...alarms, wakeEnabled: val })}
                   trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                  thumbColor={alarms.wakeEnabled ? '#BA7517' : '#8B92A0'}
+                  thumbColor={alarms.wakeEnabled ? '#C2A878' : '#8B92A0'}
                 />
               </View>
 
@@ -1435,7 +1435,7 @@ export default function AlarmScreen() {
                         value={alarm.enabled}
                         onValueChange={(val) => toggleAlarmStatus(alarm.id, val)}
                         trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                        thumbColor={alarm.enabled ? '#BA7517' : '#8B92A0'}
+                        thumbColor={alarm.enabled ? '#C2A878' : '#8B92A0'}
                       />
                     </TouchableOpacity>
                   );
@@ -1454,7 +1454,7 @@ export default function AlarmScreen() {
                   onPress={() => handleEditRoutinePress('water')}
                 >
                   <View style={styles.routineIconContainer}>
-                    <Ionicons name="water-outline" size={18} color="#BA7517" />
+                    <Ionicons name="water-outline" size={18} color="#C2A878" />
                   </View>
                   <View style={styles.routineTextContainer}>
                     <Text style={styles.routineTitleText}>Drink Water (Tap to Edit)</Text>
@@ -1465,7 +1465,7 @@ export default function AlarmScreen() {
                   value={alarms.waterEnabled}
                   onValueChange={(val) => setAlarms({ ...alarms, waterEnabled: val })}
                   trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                  thumbColor={alarms.waterEnabled ? '#BA7517' : '#8B92A0'}
+                  thumbColor={alarms.waterEnabled ? '#C2A878' : '#8B92A0'}
                 />
               </View>
 
@@ -1477,7 +1477,7 @@ export default function AlarmScreen() {
                   onPress={() => handleEditRoutinePress('meal')}
                 >
                   <View style={styles.routineIconContainer}>
-                    <Ionicons name="restaurant-outline" size={18} color="#BA7517" />
+                    <Ionicons name="restaurant-outline" size={18} color="#C2A878" />
                   </View>
                   <View style={styles.routineTextContainer}>
                     <Text style={styles.routineTitleText}>Meal Reminders (Tap to Edit)</Text>
@@ -1488,7 +1488,7 @@ export default function AlarmScreen() {
                   value={alarms.mealsEnabled}
                   onValueChange={(val) => setAlarms({ ...alarms, mealsEnabled: val })}
                   trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                  thumbColor={alarms.mealsEnabled ? '#BA7517' : '#8B92A0'}
+                  thumbColor={alarms.mealsEnabled ? '#C2A878' : '#8B92A0'}
                 />
               </View>
 
@@ -1500,7 +1500,7 @@ export default function AlarmScreen() {
                   onPress={() => handleEditRoutinePress('medication')}
                 >
                   <View style={styles.routineIconContainer}>
-                    <Ionicons name="medical-outline" size={18} color="#BA7517" />
+                    <Ionicons name="medical-outline" size={18} color="#C2A878" />
                   </View>
                   <View style={styles.routineTextContainer}>
                     <Text style={styles.routineTitleText}>Vitamins Reminder (Tap to Edit)</Text>
@@ -1511,7 +1511,7 @@ export default function AlarmScreen() {
                   value={alarms.medicationEnabled}
                   onValueChange={(val) => setAlarms({ ...alarms, medicationEnabled: val })}
                   trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                  thumbColor={alarms.medicationEnabled ? '#BA7517' : '#8B92A0'}
+                  thumbColor={alarms.medicationEnabled ? '#C2A878' : '#8B92A0'}
                 />
               </View>
             </View>
@@ -1543,7 +1543,7 @@ export default function AlarmScreen() {
             {isExamTomorrow() && (
               <View style={styles.examEnforcerCard}>
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 6 }}>
-                  <Ionicons name="shield-checkmark" size={20} color="#BA7517" style={{ marginRight: 8 }} />
+                  <Ionicons name="shield-checkmark" size={20} color="#C2A878" style={{ marginRight: 8 }} />
                   <Text style={styles.examEnforcerTitle}>PRE-EXAM SLEEP ENFORCER</Text>
                 </View>
                 <Text style={styles.examEnforcerText}>
@@ -1599,7 +1599,7 @@ export default function AlarmScreen() {
                     style={[styles.starBtn, sleepRatingInput === star && styles.starBtnActive]}
                     onPress={() => setSleepRatingInput(star)}
                   >
-                    <Ionicons name={sleepRatingInput >= star ? "star" : "star-outline"} size={22} color={sleepRatingInput >= star ? '#BA7517' : '#8B92A0'} />
+                    <Ionicons name={sleepRatingInput >= star ? "star" : "star-outline"} size={22} color={sleepRatingInput >= star ? '#C2A878' : '#8B92A0'} />
                   </TouchableOpacity>
                 ))}
               </View>
@@ -1619,7 +1619,7 @@ export default function AlarmScreen() {
                         <Text style={styles.logHours}>{log.hours}h ({log.cycles} cycles)</Text>
                         <View style={styles.logStars}>
                           {Array.from({ length: log.rating }).map((_, i) => (
-                            <Ionicons key={i} name="star" size={10} color="#BA7517" />
+                            <Ionicons key={i} name="star" size={10} color="#C2A878" />
                           ))}
                         </View>
                       </View>
@@ -1778,7 +1778,7 @@ export default function AlarmScreen() {
               </TouchableOpacity>
 
               <Text style={styles.selectedToneText}>
-                Selected: <Text style={{ color: '#BA7517', fontFamily: 'PlusJakartaSans_700Bold' }}>{editRingtone?.name}</Text>
+                Selected: <Text style={{ color: '#C2A878', fontFamily: 'PlusJakartaSans_700Bold' }}>{editRingtone?.name}</Text>
               </Text>
 
               {(alarms.customRingtones && alarms.customRingtones.length > 0) && (
@@ -1796,7 +1796,7 @@ export default function AlarmScreen() {
                           <Ionicons 
                             name={isSelected ? "radio-button-on" : "radio-button-off"} 
                             size={16} 
-                            color={isSelected ? '#BA7517' : '#8B92A0'} 
+                            color={isSelected ? '#C2A878' : '#8B92A0'} 
                           />
                           <Text style={[styles.soundItemText, isSelected && styles.soundItemTextActive]}>
                             {tone.name}
@@ -1822,7 +1822,7 @@ export default function AlarmScreen() {
                       <Ionicons 
                         name={isSelected ? "radio-button-on" : "radio-button-off"} 
                         size={16} 
-                        color={isSelected ? '#BA7517' : '#8B92A0'} 
+                        color={isSelected ? '#C2A878' : '#8B92A0'} 
                       />
                       <Text style={[styles.soundItemText, isSelected && styles.soundItemTextActive]}>
                         {tone.name}
@@ -2056,7 +2056,7 @@ export default function AlarmScreen() {
                   <View style={{ alignItems: 'center', width: '100%' }}>
                     <Text style={styles.missionObjective}>Shake phone vigorously to shut off alarm:</Text>
                     <Animated.View style={{ transform: [{ translateX: shakeAnim }] }}>
-                      <Ionicons name="phone-portrait" size={60} color="#BA7517" style={{ marginVertical: 16 }} />
+                      <Ionicons name="phone-portrait" size={60} color="#C2A878" style={{ marginVertical: 16 }} />
                     </Animated.View>
                     <Text style={styles.shakeCounter}>{shakeCount} / {targetShakes} Shakes</Text>
                     <Text style={styles.sensorHelpText}>Accelerometer active. Shake phone, or tap button below as fallback:</Text>
@@ -2133,7 +2133,7 @@ const styles = StyleSheet.create({
   
   card: { backgroundColor: '#171B22', borderRadius: 24, padding: 20, marginBottom: 20, borderWidth: 1, borderColor: 'rgba(255,255,255,0.03)' },
   alarmRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  alarmLabel: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 10, color: '#BA7517', letterSpacing: 0.5 },
+  alarmLabel: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 10, color: '#C2A878', letterSpacing: 0.5 },
   alarmTimeText: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 32, color: '#F3F1EC', marginTop: 4 },
   
   timeInput: {
@@ -2164,8 +2164,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   missionBtnActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   missionBtnText: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 11, color: '#8B92A0' },
   missionBtnTextActive: { color: '#0F1115' },
@@ -2174,7 +2174,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     marginTop: 8
@@ -2207,7 +2207,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginBottom: 20
   },
-  examEnforcerTitle: { fontFamily: 'PlusJakartaSans_700Bold', color: '#BA7517', fontSize: 11, letterSpacing: 0.5 },
+  examEnforcerTitle: { fontFamily: 'PlusJakartaSans_700Bold', color: '#C2A878', fontSize: 11, letterSpacing: 0.5 },
   examEnforcerText: { fontFamily: 'PlusJakartaSans_500Medium', color: '#8B92A0', fontSize: 12, lineHeight: 18, marginTop: 4 },
 
   debtAlertCard: {
@@ -2240,7 +2240,7 @@ const styles = StyleSheet.create({
   starBtn: { padding: 4 },
   starBtnActive: {},
   saveSleepBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center'
@@ -2305,7 +2305,7 @@ const styles = StyleSheet.create({
   missionHeading: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 1.5,
     marginBottom: 16
   },
@@ -2337,7 +2337,7 @@ const styles = StyleSheet.create({
   },
   missionSubmitBtn: {
     width: '70%',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     padding: 12,
     borderRadius: 12,
     alignItems: 'center'
@@ -2358,7 +2358,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 14
   },
-  manualShakeBtnText: { fontFamily: 'PlusJakartaSans_700Bold', color: '#BA7517', fontSize: 12 },
+  manualShakeBtnText: { fontFamily: 'PlusJakartaSans_700Bold', color: '#C2A878', fontSize: 12 },
   
   typingQuoteText: {
     fontFamily: 'PlusJakartaSans_500Medium',
@@ -2426,7 +2426,7 @@ const styles = StyleSheet.create({
   addAlarmHeaderBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   emptyAlarmsCard: {
     backgroundColor: '#171B22',
@@ -2479,7 +2479,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   dayBadgeActive: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     color: '#0F1115',
   },
   dayBadgeInactive: {
@@ -2513,7 +2513,7 @@ const styles = StyleSheet.create({
   heroCard: {
     backgroundColor: '#171B22',
     borderLeftWidth: 4,
-    borderLeftColor: '#BA7517',
+    borderLeftColor: '#C2A878',
     borderRadius: 16,
     padding: 20,
     marginBottom: 8,
@@ -2527,7 +2527,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   nextBadge: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 6,
     paddingHorizontal: 8,
     paddingVertical: 3,
@@ -2577,7 +2577,7 @@ const styles = StyleSheet.create({
   heroMissionText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   heroRingtonePill: {
     flexDirection: 'row',
@@ -2764,7 +2764,7 @@ const styles = StyleSheet.create({
   stepperSeparator: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 32,
-    color: '#BA7517',
+    color: '#C2A878',
     marginHorizontal: 12,
     paddingBottom: 20,
   },
@@ -2784,8 +2784,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.03)',
   },
   dayPickerBadgeActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517',
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878',
   },
   dayPickerText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -2813,8 +2813,8 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   modalMissionBtnActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517',
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878',
   },
   modalMissionBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -2828,7 +2828,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 14,
     paddingVertical: 12,
     marginBottom: 8,
@@ -2896,7 +2896,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   modalSaveBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
   },
   modalSaveBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -2946,7 +2946,7 @@ const styles = StyleSheet.create({
     color: '#8B92A0',
   },
   segmentBtnTextActive: {
-    color: '#BA7517',
+    color: '#C2A878',
     fontFamily: 'PlusJakartaSans_700Bold',
   },
   heroCard: {
@@ -2982,7 +2982,7 @@ const styles = StyleSheet.create({
   heroCountdown: {
     fontFamily: 'PlusJakartaSans_500Medium',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
     marginTop: 2,
     marginBottom: 12,
   },
@@ -3005,7 +3005,7 @@ const styles = StyleSheet.create({
   },
   dayPillActive: {
     backgroundColor: 'rgba(186, 117, 23, 0.15)',
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
   },
   dayPillText: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
@@ -3013,7 +3013,7 @@ const styles = StyleSheet.create({
     color: '#8B92A0',
   },
   dayPillTextActive: {
-    color: '#BA7517',
+    color: '#C2A878',
     fontFamily: 'PlusJakartaSans_700Bold',
   },
   otherAlarmCard: {
@@ -3023,7 +3023,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     borderLeftWidth: 3,
-    borderLeftColor: '#BA7517',
+    borderLeftColor: '#C2A878',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.03)',
   },
@@ -3061,7 +3061,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     borderLeftWidth: 3,
-    borderLeftColor: '#BA7517',
+    borderLeftColor: '#C2A878',
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.03)',
   },
@@ -3152,7 +3152,7 @@ const styles = StyleSheet.create({
     color: '#5A6070',
   },
   scrollPickerItemTextActive: {
-    color: '#BA7517',
+    color: '#C2A878',
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 18,
   },
@@ -3167,7 +3167,7 @@ const styles = StyleSheet.create({
   scrollPickerSeparator: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 22,
-    color: '#BA7517',
+    color: '#C2A878',
     paddingBottom: 0,
   },
 });

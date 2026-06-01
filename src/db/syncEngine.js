@@ -71,18 +71,33 @@ export function startRealtimeSync() {
     snapshot.docChanges().forEach(async (change) => {
       if (change.type === 'added' || change.type === 'modified') {
         const cloudData = change.doc.data();
-        
-        // Check if cloud version is newer than local
         const localRecord = await localDB.kv_store.get(cloudData.id);
         
-        if (!localRecord || cloudData.updated_at > localRecord.updated_at) {
+        if (localRecord && localRecord.sync_status === 'pending') {
+          // Conflict detected!
+          console.log(`[SyncEngine] Conflict detected for key: ${cloudData.id}. Merging...`);
+          const mergedValue = resolveSyncConflict(cloudData.id, localRecord, cloudData);
+          
+          await localDB.kv_store.put({
+            id: cloudData.id,
+            value: typeof mergedValue === 'string' ? mergedValue : JSON.stringify(mergedValue),
+            updated_at: Math.max(localRecord.updated_at, cloudData.updated_at) + 1,
+            sync_status: 'pending', // Queue back to cloud soon
+            deleted: false
+          });
+          
+          window.dispatchEvent(new CustomEvent('planory:cloud_update', { 
+            detail: { key: cloudData.id } 
+          }));
+          
+          setTimeout(syncPendingChanges, 1000);
+        } else if (!localRecord || cloudData.updated_at > localRecord.updated_at) {
           console.log(`[SyncEngine] Cloud update received for ${cloudData.id}`);
           await localDB.kv_store.put({
             ...cloudData,
             sync_status: 'synced'
           });
           
-          // Dispatch event so UI can re-render if needed
           window.dispatchEvent(new CustomEvent('planory:cloud_update', { 
             detail: { key: cloudData.id } 
           }));
@@ -90,6 +105,81 @@ export function startRealtimeSync() {
       }
     });
   });
+}
+
+function resolveSyncConflict(key, localRecord, cloudData) {
+  let localVal = null;
+  let cloudVal = null;
+
+  try {
+    localVal = typeof localRecord.value === 'string' ? JSON.parse(localRecord.value) : localRecord.value;
+  } catch (e) {
+    localVal = localRecord.value;
+  }
+
+  try {
+    cloudVal = typeof cloudData.value === 'string' ? JSON.parse(cloudData.value) : cloudData.value;
+  } catch (e) {
+    cloudVal = cloudData.value;
+  }
+
+  if (!localVal || !cloudVal) {
+    return cloudData.updated_at > localRecord.updated_at ? cloudVal : localVal;
+  }
+
+  const collectionKeys = ['tasks', 'user_habits', 'expenses', 'hydration_logs', 'notes', 'notes_drafts'];
+
+  if (collectionKeys.includes(key) && Array.isArray(localVal) && Array.isArray(cloudVal)) {
+    const uniqueIdKey = (key === 'notes') ? 'date' : 'id';
+    const mergedMap = new Map();
+
+    cloudVal.forEach(item => {
+      if (item && item[uniqueIdKey]) {
+        mergedMap.set(item[uniqueIdKey], item);
+      }
+    });
+
+    localVal.forEach(item => {
+      if (item && item[uniqueIdKey]) {
+        const cloudItem = mergedMap.get(item[uniqueIdKey]);
+        if (cloudItem) {
+          const mergedItem = { ...cloudItem, ...item };
+          if (cloudItem.completed || item.completed) {
+            mergedItem.completed = true;
+          }
+          mergedMap.set(item[uniqueIdKey], mergedItem);
+        } else {
+          mergedMap.set(item[uniqueIdKey], item);
+        }
+      }
+    });
+
+    return Array.from(mergedMap.values());
+  }
+
+  if (typeof localVal === 'object' && typeof cloudVal === 'object') {
+    if (key === 'gamification') {
+      const maxLvl = Math.max(localVal.level || 1, cloudVal.level || 1);
+      const maxXp = Math.max(localVal.xp || 0, cloudVal.xp || 0);
+      return { level: maxLvl, xp: maxXp };
+    }
+    if (key === 'hydration') {
+      const maxWater = Math.max(localVal.water || 0, cloudVal.water || 0);
+      const maxTarget = Math.max(localVal.target || 2000, cloudVal.target || 2000);
+      return { water: maxWater, target: maxTarget };
+    }
+    if (key === 'unlocked_seeds') {
+      const localSeeds = Array.isArray(localVal) ? localVal : ['oak'];
+      const cloudSeeds = Array.isArray(cloudVal) ? cloudVal : ['oak'];
+      return Array.from(new Set([...localSeeds, ...cloudSeeds]));
+    }
+    if (key === 'focus_coins') {
+      return Math.max(parseInt(localVal) || 0, parseInt(cloudVal) || 0);
+    }
+    return { ...cloudVal, ...localVal };
+  }
+
+  return cloudData.updated_at > localRecord.updated_at ? cloudVal : localVal;
 }
 
 /**

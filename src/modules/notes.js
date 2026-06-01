@@ -943,6 +943,30 @@ function setupInlineToolbar(editor) {
       editor.focus();
     });
   }
+
+  const taskBtn = document.getElementById('inline-task-btn');
+  if (taskBtn) {
+    taskBtn.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      const sel = window.getSelection();
+      const text = sel.toString().trim();
+      if (text) {
+        import('../utils/nlp.js').then(m => {
+          const parsed = m.parseSingleTask(text);
+          import('./tasks.js').then(t => {
+            t.addTaskDirectly(parsed);
+            const toast = document.getElementById('notif-toast');
+            if (toast) {
+              document.getElementById('notif-msg').textContent = `Created task: "${parsed.title}"! ✓`;
+              toast.classList.remove('hidden');
+              setTimeout(() => toast.classList.add('hidden'), 3000);
+            }
+          });
+        });
+      }
+      editor.focus();
+    });
+  }
 }
 
 function setupMentionMenu(editor) {

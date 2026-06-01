@@ -299,8 +299,8 @@ export default function ProfileScreen() {
         {(() => {
           const isGold = idCardTheme === 'gold';
           const cardBg = isGold ? '#171B22' : '#FFFFFF';
-          const cardBorder = isGold ? '#BA7517' : '#D1D5DB';
-          const cardTextPrimary = isGold ? '#BA7517' : '#0F1115';
+          const cardBorder = isGold ? '#C2A878' : '#D1D5DB';
+          const cardTextPrimary = isGold ? '#C2A878' : '#0F1115';
           const cardTextSecondary = isGold ? '#F3F1EC' : '#374151';
           const cardTextMuted = isGold ? '#5A6070' : '#6B7280';
 
@@ -379,13 +379,13 @@ export default function ProfileScreen() {
                           <>
                             <Ionicons name="person" size={36} color="rgba(186, 117, 23, 0.4)" />
                             <View style={styles.photoOverlay}>
-                              <Ionicons name="camera-outline" size={12} color="#BA7517" />
+                              <Ionicons name="camera-outline" size={12} color="#C2A878" />
                             </View>
                           </>
                         )}
                       </TouchableOpacity>
                       <TouchableOpacity style={styles.editCardBtn} onPress={() => setIsEditingCard(true)}>
-                        <Ionicons name="create-outline" size={14} color="#BA7517" style={{ marginRight: 4 }} />
+                        <Ionicons name="create-outline" size={14} color="#C2A878" style={{ marginRight: 4 }} />
                         <Text style={styles.editCardBtnText}>Edit ID</Text>
                       </TouchableOpacity>
                     </View>
@@ -481,10 +481,10 @@ export default function ProfileScreen() {
               </View>
 
               <View style={styles.qrDetails}>
-                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#BA7517' }}>Name:</Text> {profile.name}</Text>
-                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#BA7517' }}>College:</Text> {profile.college}</Text>
-                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#BA7517' }}>Branch:</Text> {profile.branch}</Text>
-                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#BA7517' }}>Level:</Text> LVL {gamification.level}</Text>
+                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#C2A878' }}>Name:</Text> {profile.name}</Text>
+                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#C2A878' }}>College:</Text> {profile.college}</Text>
+                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#C2A878' }}>Branch:</Text> {profile.branch}</Text>
+                <Text style={styles.qrDetailsText}><Text style={{ fontWeight: 'bold', color: '#C2A878' }}>Level:</Text> LVL {gamification.level}</Text>
               </View>
 
               <TouchableOpacity 
@@ -585,7 +585,7 @@ export default function ProfileScreen() {
             <View style={styles.historyContainer}>
               {getGroupedXpHistory().slice(0, 10).map((log, idx) => (
                 <View key={log.id || idx} style={styles.historyRow}>
-                  <View style={[styles.historyDot, { backgroundColor: log.amount > 15 ? '#BA7517' : log.amount > 9 ? '#4B6BFB' : '#7C9B7A' }]} />
+                  <View style={[styles.historyDot, { backgroundColor: log.amount > 15 ? '#C2A878' : log.amount > 9 ? '#4B6BFB' : '#7C9B7A' }]} />
                   <View style={{ flex: 1, marginLeft: 12 }}>
                     <Text style={styles.historyReason}>{log.reason}</Text>
                     <Text style={styles.historyTime}>{new Date(log.timestamp).toLocaleString('en-IN', { hour: '2-digit', minute: '2-digit', day: 'numeric', month: 'short' })}</Text>
@@ -620,12 +620,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#171B22',
     borderRadius: 20,
     borderWidth: 1.5,
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     padding: 20,
     marginBottom: 24,
     position: 'relative',
     overflow: 'hidden',
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.08,
     shadowRadius: 12,
@@ -708,7 +708,7 @@ const styles = StyleSheet.create({
   editCardBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   idCardRight: {
     flex: 1,
@@ -717,7 +717,7 @@ const styles = StyleSheet.create({
   idCardName: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 18,
-    color: '#BA7517',
+    color: '#C2A878',
     marginBottom: 8
   },
   idCardLabel: {
@@ -780,7 +780,7 @@ const styles = StyleSheet.create({
   },
   btnSave: {
     flex: 1,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: 'center'
@@ -810,7 +810,7 @@ const styles = StyleSheet.create({
   statVal: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 16,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   statLabel: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
@@ -849,7 +849,7 @@ const styles = StyleSheet.create({
     marginRight: 16
   },
   badgeIconBgUnlocked: {
-    backgroundColor: '#BA7517'
+    backgroundColor: '#C2A878'
   },
   badgeTextCol: {
     flex: 1
@@ -975,7 +975,7 @@ const styles = StyleSheet.create({
   },
   historyXp: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 13
   },
 
@@ -1075,7 +1075,7 @@ const styles = StyleSheet.create({
     color: '#F3F1EC',
   },
   qrCloseBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     width: '100%',
     paddingVertical: 14,
     borderRadius: 12,

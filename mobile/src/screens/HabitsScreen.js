@@ -6,6 +6,7 @@ import { auth } from '../firebase';
 import { calculateXPProgress } from '../utils/gamification';
 import { awardXP } from '../utils/xpManager';
 import XPFlyAnimation from '../components/XPFlyAnimation';
+import * as Haptics from 'expo-haptics';
 
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -52,6 +53,7 @@ export default function HabitsScreen() {
     setSelectedIcon('star-outline');
     setShowAddHabit(false);
     Vibration.vibrate(40);
+    try { Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success); } catch (e) {}
   };
 
   const handleDeleteHabit = (habitId) => {
@@ -66,6 +68,7 @@ export default function HabitsScreen() {
           onPress: () => {
             setHabits(habits.filter(h => h.id !== habitId));
             Vibration.vibrate(50);
+            try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy); } catch (e) {}
           }
         }
       ]
@@ -126,8 +129,11 @@ export default function HabitsScreen() {
         const isCompletedToday = h.logs && h.logs.includes(today);
         if (!isCompletedToday) {
           Vibration.vibrate(40);
+          try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium); } catch (e) {}
           awardXP(userId, gamification, 5, `Completed habit: ${h.name}`).then(setGamification);
           xpFlyRef.current?.trigger(5, width / 2 - 35, height / 2 - 40);
+        } else {
+          try { Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light); } catch (e) {}
         }
         const newLogs = isCompletedToday 
           ? h.logs.filter(d => d !== today)
@@ -180,8 +186,8 @@ export default function HabitsScreen() {
             <RefreshControl 
               refreshing={refreshing} 
               onRefresh={onRefresh} 
-              colors={['#BA7517']} 
-              tintColor="#BA7517" 
+              colors={['#C2A878']} 
+              tintColor="#C2A878" 
             />
           }
         >
@@ -231,7 +237,7 @@ export default function HabitsScreen() {
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
             <Text style={styles.sectionTitle}>DAILY HABITS</Text>
             <TouchableOpacity onPress={() => setShowAddHabit(true)} style={{ padding: 4 }}>
-              <Ionicons name="add" size={20} color="#BA7517" />
+              <Ionicons name="add" size={20} color="#C2A878" />
             </TouchableOpacity>
           </View>
 
@@ -275,7 +281,7 @@ export default function HabitsScreen() {
                       )}
                     </Animated.View>
                     <View style={styles.habitIconContainer}>
-                      <Ionicons name={h.icon || 'star-outline'} size={14} color={isCompleted ? '#BA7517' : '#8B92A0'} />
+                      <Ionicons name={h.icon || 'star-outline'} size={14} color={isCompleted ? '#C2A878' : '#8B92A0'} />
                     </View>
                     <Text style={[styles.habitTitle, isCompleted && styles.habitTitleCompleted]}>
                       {h.name}
@@ -351,7 +357,7 @@ export default function HabitsScreen() {
               </TouchableOpacity>
               
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={handleAddHabit}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Add Habit</Text>
@@ -439,7 +445,7 @@ const styles = StyleSheet.create({
     elevation: 2
   },
   checkbox: { width: 22, height: 22, borderRadius: 11, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.1)', marginRight: 16, backgroundColor: '#0F1115' },
-  checkboxChecked: { backgroundColor: '#BA7517', borderColor: '#BA7517' },
+  checkboxChecked: { backgroundColor: '#C2A878', borderColor: '#C2A878' },
   habitTitle: { flex: 1, fontFamily: 'PlusJakartaSans_600SemiBold', fontSize: 15, color: '#F3F1EC' },
   habitTitleCompleted: { color: '#8B92A0', textDecorationLine: 'line-through' },
   
@@ -467,7 +473,7 @@ const styles = StyleSheet.create({
   progressValueText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 11,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   progressBarBg: {
     height: 6,
@@ -477,7 +483,7 @@ const styles = StyleSheet.create({
   },
   progressBarFill: {
     height: '100%',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 3,
   },
   habitIconContainer: { width: 24, height: 24, justifyContent: 'center', alignItems: 'center', marginRight: 12 },
@@ -538,8 +544,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   iconSelectBtnActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   modalActions: {
     flexDirection: 'row',

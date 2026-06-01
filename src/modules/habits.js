@@ -1,5 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { addXP, logDailyActivity } from './gamification.js';
+import { addCoins } from './shop.js';
 
 const HABITS_KEY = 'user_habits';
 const HABIT_LOG_KEY = 'habit_logs'; // Logs completed habit dates: { habitId: ['YYYY-MM-DD', ...] }
@@ -59,6 +60,7 @@ function renderHabitsList(habits, logs) {
         habits[index].streak = (typeof habits[index].streak === 'number' && !isNaN(habits[index].streak) ? habits[index].streak : 0) + 1;
         addXP(15);
         logDailyActivity('task');
+        addCoins(5);
       } else {
         logs[id] = logs[id].filter(d => d !== todayStr);
         habits[index].streak = Math.max(0, (typeof habits[index].streak === 'number' && !isNaN(habits[index].streak) ? habits[index].streak : 0) - 1);

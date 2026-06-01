@@ -800,8 +800,11 @@ export default function App() {
               ]
             }
           ]}>
-            <Text style={styles.brandTitle}>Planory</Text>
-            <Text style={styles.subtitle}>Ditch distraction, unlock your desk.</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 4 }}>
+              <Ionicons name="sparkles" size={28} color="#C2A878" style={{ marginRight: 8 }} />
+              <Text style={styles.brandTitle}>Planory</Text>
+            </View>
+            <Text style={styles.subtitle}>Your second brain & focus space.</Text>
             
             <View style={styles.inputGroup}>
               <Text style={[styles.label, emailFocused && styles.labelFocused]}>School / College Email</Text>
@@ -1158,16 +1161,17 @@ const styles = StyleSheet.create({
     opacity: 0.06,
   },
   authCard: {
-    backgroundColor: '#171B22',
+    backgroundColor: 'rgba(23, 27, 34, 0.65)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.03)',
-    borderRadius: 28,
-    padding: 24,
-    shadowColor: '#C2A878',
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.04,
-    shadowRadius: 20,
-    elevation: 8,
+    borderColor: 'rgba(255,255,255,0.08)',
+    borderRadius: 32,
+    padding: 28,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 16 },
+    shadowOpacity: 0.4,
+    shadowRadius: 24,
+    elevation: 10,
+    backdropFilter: 'blur(16px)',
   },
   brandTitle: { 
     fontFamily: 'PlusJakartaSans_700Bold', 

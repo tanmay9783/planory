@@ -202,7 +202,7 @@ export default function NotificationCenterScreen() {
                 value={settings.waterReminders} 
                 onValueChange={() => toggleSetting('waterReminders')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.waterReminders ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.waterReminders ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -224,7 +224,7 @@ export default function NotificationCenterScreen() {
                 value={settings.taskDeadlines} 
                 onValueChange={() => toggleSetting('taskDeadlines')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.taskDeadlines ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.taskDeadlines ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -246,7 +246,7 @@ export default function NotificationCenterScreen() {
                 value={settings.habitNudges} 
                 onValueChange={() => toggleSetting('habitNudges')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.habitNudges ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.habitNudges ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -255,7 +255,7 @@ export default function NotificationCenterScreen() {
             {/* Focus Reminders */}
             <View style={styles.row}>
               <View style={styles.rowLeft}>
-                <Ionicons name="timer-outline" size={20} color="#BA7517" style={styles.icon} />
+                <Ionicons name="timer-outline" size={20} color="#C2A878" style={styles.icon} />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.rowTitle}>Focus Nudges</Text>
                   <Text style={styles.rowDesc}>Nudges when study target starts</Text>
@@ -268,7 +268,7 @@ export default function NotificationCenterScreen() {
                 value={settings.focusReminders} 
                 onValueChange={() => toggleSetting('focusReminders')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.focusReminders ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.focusReminders ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -290,7 +290,7 @@ export default function NotificationCenterScreen() {
                 value={settings.winddownReminders} 
                 onValueChange={() => toggleSetting('winddownReminders')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.winddownReminders ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.winddownReminders ? '#C2A878' : '#8B92A0'}
               />
             </View>
 
@@ -299,7 +299,7 @@ export default function NotificationCenterScreen() {
             {/* 9 PM Digest summary */}
             <View style={styles.row}>
               <View style={styles.rowLeft}>
-                <Ionicons name="mail-open-outline" size={20} color="#BA7517" style={styles.icon} />
+                <Ionicons name="mail-open-outline" size={20} color="#C2A878" style={styles.icon} />
                 <View style={{ flex: 1 }}>
                   <Text style={styles.rowTitle}>Smart 9 PM Digest Summary</Text>
                   <Text style={styles.rowDesc}>Combine all daily alarms into one tap review</Text>
@@ -312,7 +312,7 @@ export default function NotificationCenterScreen() {
                 value={settings.digestEnabled} 
                 onValueChange={() => setSettings({ ...settings, digestEnabled: !settings.digestEnabled })}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.digestEnabled ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.digestEnabled ? '#C2A878' : '#8B92A0'}
               />
             </View>
           </View>
@@ -331,7 +331,7 @@ export default function NotificationCenterScreen() {
                 value={settings.quietHoursEnabled} 
                 onValueChange={() => toggleSetting('quietHoursEnabled')}
                 trackColor={{ false: '#0F1115', true: 'rgba(186, 117, 23, 0.4)' }}
-                thumbColor={settings.quietHoursEnabled ? '#BA7517' : '#8B92A0'}
+                thumbColor={settings.quietHoursEnabled ? '#C2A878' : '#8B92A0'}
               />
             </View>
             
@@ -364,10 +364,10 @@ export default function NotificationCenterScreen() {
                   </View>
                   <View style={{ flexDirection: 'row', gap: 6 }}>
                     <TouchableOpacity style={styles.adjustBtn} onPress={() => adjustQuietTime('quietStart', 'down')}>
-                      <Ionicons name="remove" size={16} color="#BA7517" />
+                      <Ionicons name="remove" size={16} color="#C2A878" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.adjustBtn} onPress={() => adjustQuietTime('quietStart', 'up')}>
-                      <Ionicons name="add" size={16} color="#BA7517" />
+                      <Ionicons name="add" size={16} color="#C2A878" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -379,10 +379,10 @@ export default function NotificationCenterScreen() {
                   </View>
                   <View style={{ flexDirection: 'row', gap: 6 }}>
                     <TouchableOpacity style={styles.adjustBtn} onPress={() => adjustQuietTime('quietEnd', 'down')}>
-                      <Ionicons name="remove" size={16} color="#BA7517" />
+                      <Ionicons name="remove" size={16} color="#C2A878" />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.adjustBtn} onPress={() => adjustQuietTime('quietEnd', 'up')}>
-                      <Ionicons name="add" size={16} color="#BA7517" />
+                      <Ionicons name="add" size={16} color="#C2A878" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -409,7 +409,7 @@ export default function NotificationCenterScreen() {
           <View style={styles.previewCard}>
             <Text style={styles.previewLabel}>LIVE NUDGE PREVIEW</Text>
             <View style={styles.nudgeBubble}>
-              <Ionicons name="chatbubble-ellipses" size={22} color="#BA7517" style={{ marginRight: 12 }} />
+              <Ionicons name="chatbubble-ellipses" size={22} color="#C2A878" style={{ marginRight: 12 }} />
               <Text style={styles.nudgeText}>"{previewText}"</Text>
             </View>
           </View>
@@ -459,7 +459,7 @@ const styles = StyleSheet.create({
   },
   timeBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 13
   },
 
@@ -478,8 +478,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.03)'
   },
   styleBtnActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   styleBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
   previewLabel: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 1.5,
     marginBottom: 12
   },
@@ -532,7 +532,7 @@ const styles = StyleSheet.create({
   alarmsLinkTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 14,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   alarmsLinkDesc: {
     fontFamily: 'PlusJakartaSans_500Medium',
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
   },
   timeTextDisplay: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 15,
     marginTop: 2
   },

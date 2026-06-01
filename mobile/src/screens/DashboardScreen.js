@@ -45,7 +45,7 @@ const getTaskSubjectBadge = (title) => {
   } else if (t.includes('cs') || t.includes('code') || t.includes('programming') || t.includes('python') || t.includes('java') || t.includes('javascript') || t.includes('html') || t.includes('react')) {
     return { name: 'CompSci', color: '#3B82F6' };
   }
-  return { name: 'Study', color: '#BA7517' };
+  return { name: 'Study', color: '#C2A878' };
 };
 
 const formatTaskDate = (dateStr) => {
@@ -416,7 +416,7 @@ export default function DashboardScreen() {
               onPress={() => !isFirstRaw && handleSwapWidgets(index, -1)}
               disabled={isFirstRaw}
             >
-              <Ionicons name="arrow-up" size={14} color={isFirstRaw ? "#444" : "#BA7517"} />
+              <Ionicons name="arrow-up" size={14} color={isFirstRaw ? "#444" : "#C2A878"} />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -424,14 +424,14 @@ export default function DashboardScreen() {
               onPress={() => !isLastRaw && handleSwapWidgets(index, 1)}
               disabled={isLastRaw}
             >
-              <Ionicons name="arrow-down" size={14} color={isLastRaw ? "#444" : "#BA7517"} />
+              <Ionicons name="arrow-down" size={14} color={isLastRaw ? "#444" : "#C2A878"} />
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.editBtn} 
               onPress={() => handleToggleWidgetSize(widget.id)}
             >
-              <Ionicons name={widget.size === 'compact' ? "expand-outline" : "contract-outline"} size={14} color="#BA7517" />
+              <Ionicons name={widget.size === 'compact' ? "expand-outline" : "contract-outline"} size={14} color="#C2A878" />
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -653,7 +653,7 @@ export default function DashboardScreen() {
       dailyGrade = 'B';
       focusStatus = 'Steady Progress';
       statusDesc = 'Good job! You are halfway through. Complete one more target!';
-      statusColor = '#BA7517';
+      statusColor = '#C2A878';
       statusIcon = 'trending-up';
     } else {
       dailyGrade = 'C';
@@ -890,8 +890,8 @@ export default function DashboardScreen() {
           backgroundColor: '#11141B', // Neutral dark
           borderColor: 'rgba(255, 255, 255, 0.04)',
           title: 'Planory Desk',
-          streakColor: '#BA7517',
-          textColor: '#BA7517'
+          streakColor: '#C2A878',
+          textColor: '#C2A878'
         };
     }
   };
@@ -910,7 +910,7 @@ export default function DashboardScreen() {
       return (
         <View style={styles.briefingCard}>
           <View style={styles.briefingHeader}>
-            <Ionicons name="calendar-outline" size={20} color="#BA7517" style={{ marginRight: 8 }} />
+            <Ionicons name="calendar-outline" size={20} color="#C2A878" style={{ marginRight: 8 }} />
             <Text style={styles.briefingTitle}>Here's Your Week Ahead 📅</Text>
           </View>
           <Text style={styles.briefingSubtitle}>Sunday Weekly Preview ritual. Set your intentions!</Text>
@@ -951,7 +951,7 @@ export default function DashboardScreen() {
           <Text style={styles.briefingSubtitle}>Morning briefing card ritual for {profile.name}</Text>
           <View style={styles.bulletList}>
             <View style={styles.bulletRow}>
-              <Ionicons name="list" size={14} color="#BA7517" style={{ marginRight: 8 }} />
+              <Ionicons name="list" size={14} color="#C2A878" style={{ marginRight: 8 }} />
               <Text style={styles.bulletText}>Tasks due today: {todayTasks.length} ({completedTodayTasks} completed)</Text>
             </View>
             <View style={styles.bulletRow}>
@@ -965,7 +965,7 @@ export default function DashboardScreen() {
           </View>
           
           <View style={styles.randomDataBox}>
-            <Ionicons name="analytics" size={12} color="#BA7517" style={{ marginRight: 6 }} />
+            <Ionicons name="analytics" size={12} color="#C2A878" style={{ marginRight: 6 }} />
             <Text style={styles.randomDataText}>
               Unexpected stat: You've completed {pomodoroStats.roundsToday || 3} Pomodoros today — that's {((pomodoroStats.roundsToday || 3) * 25 / 60).toFixed(1)} hours of deep study!
             </Text>
@@ -1000,7 +1000,7 @@ export default function DashboardScreen() {
       } else if (nowMinutes < startMinutes) {
         const diff = startMinutes - nowMinutes;
         if (diff < 60) {
-          return { status: 'starting', text: `Starts in ${diff}m ⏳`, color: diff < 5 ? '#D4836A' : '#BA7517' };
+          return { status: 'starting', text: `Starts in ${diff}m ⏳`, color: diff < 5 ? '#D4836A' : '#C2A878' };
         } else {
           const hours = Math.floor(diff / 60);
           const mins = diff % 60;
@@ -1073,7 +1073,7 @@ export default function DashboardScreen() {
         text: "Morning Ritual: Setup today's schedule and focus targets.",
         action: () => navigation.navigate('Schedule'),
         btnText: 'Open Schedule',
-        color: '#BA7517'
+        color: '#C2A878'
       };
     } else if (currentHour >= 12 && currentHour < 18) {
       if (pendingTask) {
@@ -1090,7 +1090,7 @@ export default function DashboardScreen() {
         text: 'All tasks completed! Revise your whiteboard scanned notes.',
         action: () => navigation.navigate('NotesWorkspace'),
         btnText: 'Read Notes',
-        color: '#BA7517'
+        color: '#C2A878'
       };
     } else if (currentHour >= 18 && currentHour < 21) {
       const uncheckedHabits = habits.filter(h => !h.logs || !h.logs.includes(todayStr)).length;
@@ -1166,8 +1166,8 @@ export default function DashboardScreen() {
             <RefreshControl 
               refreshing={refreshing} 
               onRefresh={onRefresh} 
-              colors={['#BA7517']} 
-              tintColor="#BA7517" 
+              colors={['#C2A878']} 
+              tintColor="#C2A878" 
             />
           }
         >
@@ -1312,7 +1312,7 @@ export default function DashboardScreen() {
             <Text style={styles.widgetHeaderTitle}>TODAY'S PRODUCTIVITY</Text>
             <View style={styles.productivityRow}>
               {/* Circle Ring */}
-              <View style={[styles.productivityCircle, { borderColor: todayTasks.length > 0 ? '#BA7517' : '#5A6070' }]}>
+              <View style={[styles.productivityCircle, { borderColor: todayTasks.length > 0 ? '#C2A878' : '#5A6070' }]}>
                 <Text style={styles.productivityCircleText}>
                   {todayTasks.length > 0 ? Math.round((completedTodayTasks / todayTasks.length) * 100) : 0}%
                 </Text>
@@ -1377,7 +1377,7 @@ export default function DashboardScreen() {
               />
               {newTaskText.trim().length > 0 && (
                 <TouchableOpacity style={styles.taskAdderBtn} onPress={handleAddTask}>
-                  <Ionicons name="arrow-up-circle" size={24} color="#BA7517" />
+                  <Ionicons name="arrow-up-circle" size={24} color="#C2A878" />
                 </TouchableOpacity>
               )}
             </View>
@@ -1440,13 +1440,13 @@ export default function DashboardScreen() {
               <View style={styles.customCalendarContainer}>
                 <View style={styles.calendarHeader}>
                   <TouchableOpacity onPress={handlePrevMonth}>
-                    <Ionicons name="chevron-back" size={20} color="#BA7517" />
+                    <Ionicons name="chevron-back" size={20} color="#C2A878" />
                   </TouchableOpacity>
                   <Text style={styles.calendarHeaderTitle}>
                     {currentMonthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
                   </Text>
                   <TouchableOpacity onPress={handleNextMonth}>
-                    <Ionicons name="chevron-forward" size={20} color="#BA7517" />
+                    <Ionicons name="chevron-forward" size={20} color="#C2A878" />
                   </TouchableOpacity>
                 </View>
 
@@ -1480,7 +1480,7 @@ export default function DashboardScreen() {
                         <Text style={[
                           styles.cellDayText, 
                           !cell.isCurrentMonth && styles.cellDayTextMuted,
-                          isToday && { color: '#BA7517' }
+                          isToday && { color: '#C2A878' }
                         ]}>
                           {cell.date.getDate()}
                         </Text>
@@ -1542,7 +1542,7 @@ export default function DashboardScreen() {
           {/* Add Widget Button Row */}
           {isEditingLayout && (
             <TouchableOpacity style={styles.addWidgetBtnRow} onPress={() => setShowAddWidgetModal(true)}>
-              <Ionicons name="add" size={18} color="#BA7517" style={{ marginRight: 6 }} />
+              <Ionicons name="add" size={18} color="#C2A878" style={{ marginRight: 6 }} />
               <Text style={styles.addWidgetBtnRowText}>Add Widgets or Manage Items</Text>
             </TouchableOpacity>
           )}
@@ -1559,7 +1559,7 @@ export default function DashboardScreen() {
       >
         <View style={styles.modalOverlay}>
           <View style={styles.loginModalContent}>
-            <Ionicons name="gift" size={54} color="#BA7517" style={{ marginBottom: 12 }} />
+            <Ionicons name="gift" size={54} color="#C2A878" style={{ marginBottom: 12 }} />
             <Text style={styles.loginModalTitle}>Daily Login Reward!</Text>
             <Text style={styles.loginModalStreak}>Streak: Day {loginReward?.streak || 1}</Text>
             <Text style={styles.loginModalDesc}>Here is some fuel to unlock your study targets.</Text>
@@ -1634,7 +1634,7 @@ export default function DashboardScreen() {
             <View style={styles.shieldCard}>
               <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Ionicons name="shield-checkmark" size={24} color="#BA7517" style={{ marginRight: 10 }} />
+                  <Ionicons name="shield-checkmark" size={24} color="#C2A878" style={{ marginRight: 10 }} />
                   <View>
                     <Text style={styles.shieldTitle}>Streak Shield</Text>
                     <Text style={styles.shieldSubtitle}>Active: {streaks.shields || 0} available</Text>
@@ -1757,7 +1757,7 @@ export default function DashboardScreen() {
                     onPress={() => handleAddWidget(w.id)}
                   >
                     <Text style={styles.addWidgetItemName}>{w.title}</Text>
-                    <Ionicons name="add-circle" size={20} color="#BA7517" />
+                    <Ionicons name="add-circle" size={20} color="#C2A878" />
                   </TouchableOpacity>
                 ));
               })()}
@@ -1813,7 +1813,7 @@ export default function DashboardScreen() {
                   tooltipStep === 2 ? "flame-outline" : "water-outline"
                 } 
                 size={28} 
-                color="#BA7517" 
+                color="#C2A878" 
               />
               <Text style={styles.tooltipTitle}>
                 {tooltipStep === 1 ? "1. Focus Desk Timer" :
@@ -1888,7 +1888,7 @@ const styles = StyleSheet.create({
   hamburger: { padding: 4 },
   headerTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 18, color: '#F3F1EC' },
   headerStreak: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#171B22', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 12, borderWidth: 1, borderColor: 'rgba(255,255,255,0.03)' },
-  headerStreakText: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 12, color: '#BA7517', marginLeft: 6 },
+  headerStreakText: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 12, color: '#C2A878', marginLeft: 6 },
   
   profileCard: { 
     backgroundColor: '#171B22', 
@@ -1897,7 +1897,7 @@ const styles = StyleSheet.create({
     marginBottom: 24, 
     borderWidth: 1, 
     borderColor: 'rgba(186, 117, 23, 0.15)', // Gold tinted premium border
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.04,
     shadowRadius: 16,
@@ -1916,10 +1916,10 @@ const styles = StyleSheet.create({
   name: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 20, color: '#F3F1EC' },
   bio: { fontFamily: 'PlusJakartaSans_500Medium', color: '#8B92A0', marginTop: 4, fontSize: 13 },
   levelHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 },
-  levelText: { fontFamily: 'PlusJakartaSans_700Bold', color: '#BA7517', fontSize: 11, letterSpacing: 0.5 },
+  levelText: { fontFamily: 'PlusJakartaSans_700Bold', color: '#C2A878', fontSize: 11, letterSpacing: 0.5 },
   xpText: { fontFamily: 'PlusJakartaSans_600SemiBold', color: '#8B92A0', fontSize: 11 },
   progressBg: { height: 6, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 3, overflow: 'hidden' },
-  progressFill: { height: '100%', backgroundColor: '#BA7517' },
+  progressFill: { height: '100%', backgroundColor: '#C2A878' },
 
   section: { marginBottom: 24 },
   sectionTitle: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 11, color: '#5A6070', letterSpacing: 1, marginBottom: 12 },
@@ -1968,7 +1968,7 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 3
   },
-  scoreGrade: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 20, color: '#BA7517' },
+  scoreGrade: { fontFamily: 'PlusJakartaSans_700Bold', fontSize: 20, color: '#C2A878' },
   gradeCircle: {
     width: 40,
     height: 40,
@@ -1989,7 +1989,7 @@ const styles = StyleSheet.create({
   toggleBtn: { flex: 1, paddingVertical: 10, borderRadius: 8, alignItems: 'center' },
   toggleBtnActive: { backgroundColor: '#1D2430' },
   toggleBtnText: { color: '#8B92A0', fontFamily: 'PlusJakartaSans_700Bold', fontSize: 13 },
-  toggleBtnTextActive: { color: '#BA7517' },
+  toggleBtnTextActive: { color: '#C2A878' },
 
   customCalendarContainer: {
     backgroundColor: '#171B22',
@@ -2052,7 +2052,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(186, 117, 23, 0.2)'
   },
   gridCellSelected: {
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     backgroundColor: '#171B22'
   },
   cellDayText: {
@@ -2079,7 +2079,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#7C9B7A'
   },
   dotPending: {
-    backgroundColor: '#BA7517'
+    backgroundColor: '#C2A878'
   },
 
   taskCard: { 
@@ -2092,7 +2092,7 @@ const styles = StyleSheet.create({
     borderWidth: 1, 
     borderColor: 'rgba(255,255,255,0.03)',
     borderLeftWidth: 3,
-    borderLeftColor: '#BA7517', // Premium Gold left accent
+    borderLeftColor: '#C2A878', // Premium Gold left accent
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -2104,7 +2104,7 @@ const styles = StyleSheet.create({
     borderLeftColor: '#7C9B7A' // Success Sage green left accent
   },
   checkbox: { width: 20, height: 20, borderRadius: 6, borderWidth: 1.5, borderColor: 'rgba(255,255,255,0.15)', marginRight: 12 },
-  checkboxChecked: { backgroundColor: '#BA7517', borderColor: '#BA7517' },
+  checkboxChecked: { backgroundColor: '#C2A878', borderColor: '#C2A878' },
   taskTitle: { fontFamily: 'PlusJakartaSans_500Medium', color: '#F3F1EC', fontSize: 15, flex: 1 },
   taskTitleCompleted: { textDecorationLine: 'line-through', color: '#8B92A0' },
   emptyState: { padding: 32, alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)', borderStyle: 'dashed', borderRadius: 16 },
@@ -2112,7 +2112,7 @@ const styles = StyleSheet.create({
 
   inlineInputRow: { flexDirection: 'row', alignItems: 'center', marginTop: 12 },
   inlineTaskInput: { flex: 1, backgroundColor: '#0F1115', borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)', borderRadius: 12, paddingHorizontal: 16, paddingVertical: 12, color: '#F3F1EC', fontFamily: 'PlusJakartaSans_500Medium', fontSize: 14, marginRight: 10 },
-  inlineAddBtn: { width: 44, height: 44, backgroundColor: '#BA7517', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  inlineAddBtn: { width: 44, height: 44, backgroundColor: '#C2A878', borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
 
   modalOverlay: {
     flex: 1,
@@ -2174,8 +2174,8 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   modalCheckboxChecked: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   modalTaskText: {
     fontFamily: 'PlusJakartaSans_500Medium',
@@ -2207,7 +2207,7 @@ const styles = StyleSheet.create({
   modalAddBtn: {
     width: 44,
     height: 44,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center'
@@ -2247,7 +2247,7 @@ const styles = StyleSheet.create({
   loginModalStreak: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
     marginTop: 4,
     textTransform: 'uppercase',
     letterSpacing: 1
@@ -2263,7 +2263,7 @@ const styles = StyleSheet.create({
   loginBonusBox: {
     backgroundColor: 'rgba(186, 117, 23, 0.1)',
     borderWidth: 1.5,
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     borderRadius: 16,
     paddingHorizontal: 24,
     paddingVertical: 12,
@@ -2271,11 +2271,11 @@ const styles = StyleSheet.create({
   },
   loginBonusText: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 22
   },
   loginClaimBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     width: '100%',
     padding: 14,
     borderRadius: 12,
@@ -2312,7 +2312,7 @@ const styles = StyleSheet.create({
   streakPanelVal: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
     marginRight: 6
   },
   reviveBtn: {
@@ -2346,7 +2346,7 @@ const styles = StyleSheet.create({
     marginTop: 2
   },
   buyShieldBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 8
@@ -2375,7 +2375,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     opacity: 0.03
   },
   greetingTitle: {
@@ -2440,7 +2440,7 @@ const styles = StyleSheet.create({
   widgetEditTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 9,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 0.5,
     textTransform: 'uppercase'
   },
@@ -2457,14 +2457,14 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderStyle: 'dashed',
     borderWidth: 1,
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     backgroundColor: 'rgba(186, 117, 23, 0.03)',
     marginTop: 10,
     marginBottom: 30
   },
   addWidgetBtnRowText: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 13
   },
   addWidgetItemRow: {
@@ -2638,8 +2638,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   sleepRatingBtnActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   sleepRatingBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -2647,7 +2647,7 @@ const styles = StyleSheet.create({
     color: '#8B92A0'
   },
   sleepSaveBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingVertical: 12,
     borderRadius: 12,
     alignItems: 'center',
@@ -2754,7 +2754,7 @@ const styles = StyleSheet.create({
     width: 4,
     height: 24,
     borderRadius: 2,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     marginRight: 12
   },
   classWidgetSubject: {
@@ -2814,7 +2814,7 @@ const styles = StyleSheet.create({
   },
   quoteCardAuthor: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 11,
     marginTop: 8,
     alignSelf: 'flex-end'
@@ -2915,7 +2915,7 @@ const styles = StyleSheet.create({
   briefingStatVal: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 18,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   briefingStatLabel: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -3162,11 +3162,11 @@ const styles = StyleSheet.create({
   tooltipCard: {
     backgroundColor: '#171B22',
     borderWidth: 1.5,
-    borderColor: '#BA7517',
+    borderColor: '#C2A878',
     borderRadius: 24,
     padding: 24,
     width: '90%',
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.15,
     shadowRadius: 16,
@@ -3201,7 +3201,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   tooltipNextBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 12,
@@ -3290,7 +3290,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   mockWindDownStartBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 10,
@@ -3393,7 +3393,7 @@ const styles = StyleSheet.create({
   productivityViewAll: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
   },
   productivityCountText: {
     fontFamily: 'PlusJakartaSans_500Medium',
@@ -3436,8 +3436,8 @@ const styles = StyleSheet.create({
     marginRight: 12,
   },
   taskCheckboxChecked: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517',
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878',
   },
   taskTitleText: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
@@ -3484,7 +3484,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   calendarSegmentBtnActive: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
   },
   calendarSegmentBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -3521,7 +3521,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   weeklyDayNumberCircleActive: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
   },
   weeklyDayNumberText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -3577,7 +3577,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   addStudyEventBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',

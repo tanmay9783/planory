@@ -54,6 +54,38 @@ export default function ScheduleScreen() {
       setExamEndInput(semesterDates.examEnd || '');
     }
   }, [semesterDates]);
+
+  // Auto-sync daily habits to checkable planner tasks
+  useEffect(() => {
+    if (tasks && habits) {
+      const todayStr = new Date().toLocaleDateString('en-CA');
+      let updated = false;
+      const tasksCopy = [...tasks];
+      
+      habits.forEach(habit => {
+        const exists = tasksCopy.some(t => t.date === todayStr && t.title.toLowerCase() === habit.name.toLowerCase());
+        if (!exists) {
+          const habitTask = {
+            id: 'task_h_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+            title: habit.name,
+            desc: `Daily Habit: ${habit.name}`,
+            date: todayStr,
+            startTime: '',
+            endTime: '',
+            category: 'health',
+            priority: 'low',
+            completed: false
+          };
+          tasksCopy.push(habitTask);
+          updated = true;
+        }
+      });
+      
+      if (updated) {
+        setTasks(tasksCopy);
+      }
+    }
+  }, [tasks, habits]);
   
   // Form add states
   const [showAddEventModal, setShowAddEventModal] = useState(false);
@@ -237,7 +269,7 @@ export default function ScheduleScreen() {
     return (
       <TouchableOpacity 
         key={dayStr} 
-        style={[styles.dayCard, isToday && { borderLeftWidth: 3, borderLeftColor: '#BA7517', backgroundColor: 'rgba(186, 117, 23, 0.1)' }]}
+        style={[styles.dayCard, isToday && { borderLeftWidth: 3, borderLeftColor: '#C2A878', backgroundColor: 'rgba(186, 117, 23, 0.1)' }]}
         onPress={() => setActiveDate(dayStr)}
         activeOpacity={0.9}
       >
@@ -246,13 +278,13 @@ export default function ScheduleScreen() {
             <Text style={[styles.dayName, textOpacityStyle]}>{dayName}</Text>
             <Text style={[styles.dayDate, textOpacityStyle]}>{monthDate}</Text>
           </View>
-          <Ionicons name="add-circle-outline" size={16} color="#BA7517" />
+          <Ionicons name="add-circle-outline" size={16} color="#C2A878" />
         </View>
         
         <View style={styles.tasksContainer}>
           {dayTasks.length === 0 ? (
             <View style={styles.emptyState}>
-              <Ionicons name="sparkles-outline" size={14} color="#BA7517" style={{ marginBottom: 4 }} />
+              <Ionicons name="sparkles-outline" size={14} color="#C2A878" style={{ marginBottom: 4 }} />
               <Text style={[styles.emptyText, textOpacityStyle]}>{getEmptyDayMessage(dayName)}</Text>
               <TouchableOpacity 
                 style={styles.emptyAddBtn} 
@@ -337,7 +369,7 @@ export default function ScheduleScreen() {
     if (taskRatio === 1) {
       return {
         icon: 'trophy-outline',
-        iconColor: '#BA7517',
+        iconColor: '#C2A878',
         title: 'Exam Topper Mode',
         text: 'Outstanding! 100% tasks completed this week. Treat yourself to some extra samosas and tapri chai!'
       };
@@ -355,7 +387,7 @@ export default function ScheduleScreen() {
     if (taskRatio >= 0.75) {
       return {
         icon: 'flame-outline',
-        iconColor: '#BA7517',
+        iconColor: '#C2A878',
         title: 'Solid Momentum',
         text: 'Great work! You are sticking to your targets. Keep this consistency up for the semester.'
       };
@@ -603,8 +635,8 @@ export default function ScheduleScreen() {
               <RefreshControl 
                 refreshing={refreshing} 
                 onRefresh={onRefresh} 
-                colors={['#BA7517']} 
-                tintColor="#BA7517" 
+                colors={['#C2A878']} 
+                tintColor="#C2A878" 
               />
             }
           >
@@ -620,7 +652,7 @@ export default function ScheduleScreen() {
                 >
                   <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
                     <View style={styles.suggestionIconBg}>
-                      <Ionicons name="bulb-outline" size={16} color="#BA7517" />
+                      <Ionicons name="bulb-outline" size={16} color="#C2A878" />
                     </View>
                     <Text style={styles.suggestionText} numberOfLines={1}>{rec.text}</Text>
                   </View>
@@ -675,15 +707,15 @@ export default function ScheduleScreen() {
             <RefreshControl 
               refreshing={refreshing} 
               onRefresh={onRefresh} 
-              colors={['#BA7517']} 
-              tintColor="#BA7517" 
+              colors={['#C2A878']} 
+              tintColor="#C2A878" 
             />
           }
         >
           
           {/* Weeks remaining counter */}
           <View style={styles.countdownCard}>
-            <Ionicons name="hourglass-outline" size={28} color="#BA7517" style={{ marginRight: 16 }} />
+            <Ionicons name="hourglass-outline" size={28} color="#C2A878" style={{ marginRight: 16 }} />
             <View style={{ flex: 1 }}>
               <Text style={styles.countdownText}>{weeksRemaining} Weeks Left</Text>
               <Text style={styles.countdownSub}>Semester ends on {new Date(semesterDates.end).toLocaleDateString()}</Text>
@@ -694,7 +726,7 @@ export default function ScheduleScreen() {
               ) : null}
             </View>
             <TouchableOpacity onPress={() => setEditingDates(!editingDates)} style={{ padding: 4 }}>
-              <Ionicons name={editingDates ? "close-circle" : "create-outline"} size={20} color="#BA7517" />
+              <Ionicons name={editingDates ? "close-circle" : "create-outline"} size={20} color="#C2A878" />
             </TouchableOpacity>
           </View>
 
@@ -780,7 +812,7 @@ export default function ScheduleScreen() {
                 );
               }}
             >
-              <Ionicons name="sparkles" size={14} color="#BA7517" style={{ marginRight: 6 }} />
+              <Ionicons name="sparkles" size={14} color="#C2A878" style={{ marginRight: 6 }} />
               <Text style={styles.importCalendarBtnText}>AI Calendar Import</Text>
             </TouchableOpacity>
           </View>
@@ -822,7 +854,7 @@ export default function ScheduleScreen() {
                 let badgeColor = '#5A6070';
                 if (event.type === 'exam') badgeColor = '#C47070';
                 else if (event.type === 'internal') badgeColor = '#F59E0B';
-                else if (event.type === 'viva') badgeColor = '#BA7517';
+                else if (event.type === 'viva') badgeColor = '#C2A878';
                 else if (event.type === 'holiday') badgeColor = '#7C9B7A';
                 else if (event.type === 'fest') badgeColor = '#8B5CF6';
 
@@ -888,7 +920,7 @@ export default function ScheduleScreen() {
               {[
                 { type: 'exam', label: 'Exam', color: '#C47070' },
                 { type: 'internal', label: 'Internal', color: '#F59E0B' },
-                { type: 'viva', label: 'Viva', color: '#BA7517' },
+                { type: 'viva', label: 'Viva', color: '#C2A878' },
                 { type: 'holiday', label: 'Holiday', color: '#7C9B7A' },
                 { type: 'fest', label: 'Fest', color: '#8B5CF6' }
               ].map(item => (
@@ -913,7 +945,7 @@ export default function ScheduleScreen() {
                 <Text style={[styles.modalActionBtnText, { color: '#8B92A0' }]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={handleAddSemesterEvent}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Add</Text>
@@ -944,21 +976,21 @@ export default function ScheduleScreen() {
               <View style={{ gap: 16 }}>
                 {/* 4MB size tip */}
                 <View style={styles.aiTipBanner}>
-                  <Ionicons name="information-circle-outline" size={16} color="#BA7517" style={{ marginRight: 8, marginTop: 1 }} />
+                  <Ionicons name="information-circle-outline" size={16} color="#C2A878" style={{ marginRight: 8, marginTop: 1 }} />
                   <Text style={styles.aiTipText}>
-                    <Text style={{ fontFamily: 'PlusJakartaSans_700Bold', color: '#BA7517' }}>Tip: </Text>
+                    <Text style={{ fontFamily: 'PlusJakartaSans_700Bold', color: '#C2A878' }}>Tip: </Text>
                     Groq AI has a 4MB image limit. For large photos, the app auto-compresses to 0.8 quality. For best results, use a clear, well-lit photo of the calendar.
                   </Text>
                 </View>
 
                 {/* Upload Section */}
                 <View style={styles.calendarImportBox}>
-                  <Ionicons name="images" size={44} color="#BA7517" style={{ marginBottom: 12 }} />
+                  <Ionicons name="images" size={44} color="#C2A878" style={{ marginBottom: 12 }} />
                   <TouchableOpacity style={styles.calendarActionBtn} onPress={() => handleLaunchImportCalendar(false)}>
                     <Text style={styles.calendarActionBtnText}>Choose Calendar Photo</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={[styles.calendarActionBtn, { backgroundColor: '#171B22', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)' }]} onPress={() => handleLaunchImportCalendar(true)}>
-                    <Text style={[styles.calendarActionBtnText, { color: '#BA7517' }]}>Snap Photo</Text>
+                    <Text style={[styles.calendarActionBtnText, { color: '#C2A878' }]}>Snap Photo</Text>
                   </TouchableOpacity>
                 </View>
 
@@ -972,7 +1004,7 @@ export default function ScheduleScreen() {
                   placeholderTextColor="#5A6070"
                 />
                 <TouchableOpacity
-                  style={[styles.primaryBtn, { backgroundColor: '#BA7517' }]}
+                  style={[styles.primaryBtn, { backgroundColor: '#C2A878' }]}
                   onPress={() => {
                     if (importUrl.trim()) runCalendarOcr();
                   }}
@@ -1000,7 +1032,7 @@ export default function ScheduleScreen() {
                     : "Could not read image. Try again?"}
                 </Text>
                 <TouchableOpacity
-                  style={[styles.primaryBtn, { backgroundColor: '#BA7517', width: '100%', marginTop: 16 }]}
+                  style={[styles.primaryBtn, { backgroundColor: '#C2A878', width: '100%', marginTop: 16 }]}
                   onPress={() => runCalendarOcr(lastBase64)}
                 >
                   <Text style={[styles.primaryBtnText, { color: '#0F1115' }]}>Retry Scan</Text>
@@ -1020,7 +1052,7 @@ export default function ScheduleScreen() {
             {isImporting && (
               <View style={styles.scanningProgressContainer}>
                 <View style={styles.imageOverlayContainer}>
-                  <Ionicons name="document-text-outline" size={32} color="#BA7517" style={{ marginBottom: 8 }} />
+                  <Ionicons name="document-text-outline" size={32} color="#C2A878" style={{ marginBottom: 8 }} />
                   <Animated.View style={[styles.scanBeamLine, { transform: [{ translateY: importBeamAnim }] }]} />
                 </View>
                 <Text style={styles.scanningStatusTitle}>AI Academic Calendar Extracting...</Text>
@@ -1038,13 +1070,13 @@ export default function ScheduleScreen() {
                     {importStep >= 4 ? '✅' : '⏳'} Academic Calendar mapped!
                   </Text>
                 </View>
-                <ActivityIndicator size="small" color="#BA7517" style={{ marginTop: 16 }} />
+                <ActivityIndicator size="small" color="#C2A878" style={{ marginTop: 16 }} />
               </View>
             )}
 
             {showImportReview && (
               <ScrollView style={{ maxHeight: 300, marginBottom: 20 }}>
-                <Text style={[styles.eventInputLabel, { color: '#BA7517', marginBottom: 12 }]}>Review Extracted Calendar Events</Text>
+                <Text style={[styles.eventInputLabel, { color: '#C2A878', marginBottom: 12 }]}>Review Extracted Calendar Events</Text>
                 {importedEvents.map((item, idx) => (
                   <View key={item.id} style={styles.importReviewRow}>
                     <TextInput
@@ -1077,7 +1109,7 @@ export default function ScheduleScreen() {
                 ))}
                 
                 <TouchableOpacity 
-                  style={[styles.primaryBtn, { backgroundColor: '#BA7517', marginTop: 16 }]} 
+                  style={[styles.primaryBtn, { backgroundColor: '#C2A878', marginTop: 16 }]} 
                   onPress={handleConfirmImport}
                 >
                   <Text style={{ color: '#0F1115', fontFamily: 'PlusJakartaSans_700Bold' }}>Add to Schedule</Text>
@@ -1122,7 +1154,7 @@ export default function ScheduleScreen() {
                 <Text style={[styles.modalActionBtnText, { color: '#8B92A0' }]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={handleAddTask}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Schedule</Text>
@@ -1144,7 +1176,7 @@ export default function ScheduleScreen() {
           <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>
-                <Ionicons name="stats-chart" size={20} color="#BA7517" />
+                <Ionicons name="stats-chart" size={20} color="#C2A878" />
                 <Text style={styles.modalTitle}>Weekly Review</Text>
               </View>
               <TouchableOpacity onPress={() => setShowReviewModal(false)}>
@@ -1187,7 +1219,7 @@ export default function ScheduleScreen() {
                   <Text style={styles.gridStatLabel}>SPENT</Text>
                 </View>
                 <View style={styles.gridStatCard}>
-                  <Ionicons name="repeat-outline" size={20} color="#BA7517" style={{ marginBottom: 6 }} />
+                  <Ionicons name="repeat-outline" size={20} color="#C2A878" style={{ marginBottom: 6 }} />
                   <Text style={styles.gridStatVal}>{totalHabitCompletionsThisWeek}</Text>
                   <Text style={styles.gridStatLabel}>HABIT CHECKS</Text>
                 </View>
@@ -1196,16 +1228,16 @@ export default function ScheduleScreen() {
 
             <View style={{ flexDirection: 'row', gap: 12, marginTop: 16 }}>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#171B22', borderWidth: 1, borderColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#171B22', borderWidth: 1, borderColor: '#C2A878' }]} 
                 onPress={handleShareStats}
               >
                 <View style={{ flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                  <Ionicons name="share-social-outline" size={16} color="#BA7517" />
-                  <Text style={[styles.modalActionBtnText, { color: '#BA7517' }]}>Share Stats</Text>
+                  <Ionicons name="share-social-outline" size={16} color="#C2A878" />
+                  <Text style={[styles.modalActionBtnText, { color: '#C2A878' }]}>Share Stats</Text>
                 </View>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={() => setShowReviewModal(false)}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Chalo, Next Week!</Text>
@@ -1243,7 +1275,7 @@ const styles = StyleSheet.create({
 
   taskItem: { flexDirection: 'row', alignItems: 'center', marginBottom: 8, justifyContent: 'space-between' },
   checkbox: { width: 12, height: 12, borderRadius: 3, borderWidth: 1, borderColor: 'rgba(255,255,255,0.2)', marginRight: 8 },
-  checkboxChecked: { backgroundColor: '#BA7517', borderColor: '#BA7517' },
+  checkboxChecked: { backgroundColor: '#C2A878', borderColor: '#C2A878' },
   taskTitle: { fontFamily: 'PlusJakartaSans_500Medium', color: '#F3F1EC', fontSize: 11, flex: 1 },
   taskTitleCompleted: { color: '#5A6070', textDecorationLine: 'line-through' },
   deleteBtn: { padding: 4, marginLeft: 4 },
@@ -1272,7 +1304,7 @@ const styles = StyleSheet.create({
   },
   statVal: { 
     fontFamily: 'PlusJakartaSans_700Bold', 
-    color: '#BA7517', 
+    color: '#C2A878', 
     fontSize: 16, 
     marginBottom: 4 
   },
@@ -1285,7 +1317,7 @@ const styles = StyleSheet.create({
   },
   
   reviewBtn: { 
-    backgroundColor: '#BA7517', 
+    backgroundColor: '#C2A878', 
     paddingVertical: 12, 
     borderRadius: 12,
     alignItems: 'center',
@@ -1479,7 +1511,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12
   },
@@ -1501,7 +1533,7 @@ const styles = StyleSheet.create({
   },
   importCalendarBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
-    color: '#BA7517',
+    color: '#C2A878',
     fontSize: 13
   },
 
@@ -1523,8 +1555,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.03)'
   },
   weekPillActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   weekPillText: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -1636,7 +1668,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   calendarActionBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 10,
     paddingVertical: 10,
     width: '100%',
@@ -1649,7 +1681,7 @@ const styles = StyleSheet.create({
     fontSize: 13
   },
   primaryBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
@@ -1685,7 +1717,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 10,
     height: 3,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     opacity: 0.8
   },
   scanningStatusTitle: {
@@ -1753,7 +1785,7 @@ const styles = StyleSheet.create({
   configuratorTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 13,
-    color: '#BA7517',
+    color: '#C2A878',
     marginBottom: 12
   },
   configInputLabel: {
@@ -1778,7 +1810,7 @@ const styles = StyleSheet.create({
     marginBottom: 4
   },
   saveDatesBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
@@ -1799,7 +1831,7 @@ const styles = StyleSheet.create({
   emptyAddBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 9,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   suggestionBanner: {
     flexDirection: 'row',
@@ -1828,7 +1860,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   suggestionActionBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     paddingHorizontal: 10,
     paddingVertical: 5,
     borderRadius: 8

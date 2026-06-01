@@ -79,7 +79,7 @@ const MODULES = [
     title: 'Calculator',
     desc: 'GPA and target exam calculator',
     icon: 'calculator',
-    color: '#BA7517',
+    color: '#C2A878',
     bgColor: 'rgba(186, 117, 23, 0.15)'
   }
 ];

@@ -11,10 +11,42 @@ let deleteTimeout = null;
 
 // Initialize tasks and grid
 export function initTasks() {
+  syncHabitsToTasks();
   setupNavigation();
   renderGrid();
   setupModalEvents();
   setupDropZones();
+}
+
+function syncHabitsToTasks() {
+  const habits = getStorageItem('user_habits', []);
+  const tasks = getStorageItem(TASKS_KEY, []);
+  const todayStr = formatDate(new Date());
+
+  let updated = false;
+
+  habits.forEach(habit => {
+    const exists = tasks.some(t => t.date === todayStr && t.title.toLowerCase() === habit.name.toLowerCase());
+    if (!exists) {
+      const habitTask = {
+        id: 'task_h_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+        title: habit.name,
+        desc: `Daily Habit: ${habit.name}`,
+        date: todayStr,
+        startTime: '',
+        endTime: '',
+        category: 'health',
+        priority: 'low',
+        completed: false
+      };
+      tasks.push(habitTask);
+      updated = true;
+    }
+  });
+
+  if (updated) {
+    setStorageItem(TASKS_KEY, tasks);
+  }
 }
 
 export function renderGrid() {
@@ -198,6 +230,7 @@ function createTaskCard(task) {
 }
 
 import { addXP, logDailyActivity } from './gamification.js';
+import { addCoins } from './shop.js';
 
 function toggleTaskCompletion(id) {
   const tasks = getStorageItem(TASKS_KEY, []);
@@ -213,6 +246,7 @@ function toggleTaskCompletion(id) {
     addXP(10);
     logDailyActivity('task');
     addForestGrowth(20);
+    addCoins(5);
   }
 }
 

@@ -1,5 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { addXP, logDailyActivity } from './gamification.js';
+import { addCoins } from './shop.js';
 
 const POMO_STATS_KEY = 'pomodoro_stats';
 
@@ -255,6 +256,7 @@ function startTimer(stats) {
         // Add XP and log activity
         addXP(25);
         logDailyActivity('focus', 25);
+        addCoins(10);
 
         // Notify
         showBrowserNotification("Focus session complete!", "Time for a 5-minute break. Great work!");
@@ -836,4 +838,23 @@ export function getGrowingTreeSVG(seedType, progressPct, isResting) {
     // Blossoming / Fully Grown
     return getTreeSVG(seedType, 52);
   }
+}
+
+export function startVoiceTimer(minutes) {
+  const mins = parseInt(minutes) || 25;
+  secondsRemaining = mins * 60;
+  mode = 'work';
+  
+  // Show pomodoro modal so user sees it starting
+  const overlay = document.getElementById('pomodoro-modal-overlay');
+  if (overlay) {
+    overlay.classList.remove('hidden');
+  }
+
+  // Get active stats and start
+  const stats = getStorageItem(POMO_STATS_KEY, { totalFocusedTime: 0, completedSessions: 0 });
+  if (isRunning) {
+    pauseTimer();
+  }
+  startTimer(stats);
 }

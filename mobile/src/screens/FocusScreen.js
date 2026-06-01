@@ -23,7 +23,7 @@ const WORK_TIME = 25 * 60;
 const BREAK_TIME = 5 * 60;
 
 const AMBIENT_SOUNDS = [
-  { id: 'lofi', name: 'Calm Lofi Beats', icon: 'headset-outline', color: '#BA7517' },
+  { id: 'lofi', name: 'Calm Lofi Beats', icon: 'headset-outline', color: '#C2A878' },
   { id: 'rain', name: 'Soothing Rain', icon: 'rainy-outline', color: '#4B6BFB' },
   { id: 'sitar', name: 'Zen Flute', icon: 'musical-notes-outline', color: '#7C9B7A' },
   { id: 'tapri', name: 'Soft Cafe Ambience', icon: 'cafe-outline', color: '#C47070' }
@@ -230,7 +230,7 @@ export default function FocusScreen() {
       id: track.id,
       name: track.name,
       icon: 'download-outline',
-      color: '#BA7517',
+      color: '#C2A878',
       isCustom: true,
       localUri: track.localUri
     }))
@@ -668,7 +668,7 @@ export default function FocusScreen() {
           <View style={styles.header}>
             <Text style={styles.headerTitle}>Study desk</Text>
             <TouchableOpacity style={styles.settingsBtn} onPress={() => setShowSettingsModal(true)}>
-              <Ionicons name="options-outline" size={16} color="#BA7517" style={{ marginRight: 6 }} />
+              <Ionicons name="options-outline" size={16} color="#C2A878" style={{ marginRight: 6 }} />
               <Text style={styles.settingsBtnText}>Settings</Text>
             </TouchableOpacity>
           </View>
@@ -677,7 +677,7 @@ export default function FocusScreen() {
           {committedIntention ? (
             <View style={styles.intentionBanner}>
               <View style={styles.intentionIconBg}>
-                <Ionicons name="bookmark" size={16} color="#BA7517" />
+                <Ionicons name="bookmark" size={16} color="#C2A878" />
               </View>
               <View style={{ flex: 1 }}>
                 <Text style={styles.intentionBannerTitle}>Target Intention</Text>
@@ -692,7 +692,7 @@ export default function FocusScreen() {
           {/* Study Target Status Card */}
           <View style={styles.statsCard}>
             <View style={styles.statsIconCircle}>
-              <Ionicons name="trophy-sharp" size={20} color="#BA7517" />
+              <Ionicons name="trophy-sharp" size={20} color="#C2A878" />
             </View>
             <View style={{ flex: 1 }}>
               <Text style={styles.statsLabel}>STUDY TARGETS TODAY</Text>
@@ -747,7 +747,7 @@ export default function FocusScreen() {
 
             <Animated.View style={[
               styles.timerRing,
-              isActive && { borderColor: mode === 'work' ? '#BA7517' : '#7C9B7A', shadowOpacity: 0.15 },
+              isActive && { borderColor: mode === 'work' ? '#C2A878' : '#7C9B7A', shadowOpacity: 0.15 },
               { transform: [{ scale: pulseAnim }] }
             ]}>
               <Text style={styles.timeText}>{formatTime(timeLeft)}</Text>
@@ -816,7 +816,7 @@ export default function FocusScreen() {
               style={styles.mixerAddBtn}
               onPress={handleSelectLocalFile}
             >
-              <Ionicons name="add" size={14} color="#BA7517" style={{ marginRight: 4 }} />
+              <Ionicons name="add" size={14} color="#C2A878" style={{ marginRight: 4 }} />
               <Text style={styles.mixerAddBtnText}>Add Custom Audio Track</Text>
             </TouchableOpacity>
           </View>
@@ -848,7 +848,7 @@ export default function FocusScreen() {
             <Text style={styles.modalSectionLabel}>Select Focus Music</Text>
             <View style={styles.soundSelectorGrid}>
               {[
-                { id: 'lofi', name: 'Calm Lofi', icon: 'headset-outline', color: '#BA7517' },
+                { id: 'lofi', name: 'Calm Lofi', icon: 'headset-outline', color: '#C2A878' },
                 { id: 'rain', name: 'Soothing Rain', icon: 'rainy-outline', color: '#4B6BFB' },
                 { id: 'sitar', name: 'Zen Flute', icon: 'musical-notes-outline', color: '#7C9B7A' },
                 { id: 'tapri', name: 'Cafe Ambient', icon: 'cafe-outline', color: '#C47070' },
@@ -856,7 +856,7 @@ export default function FocusScreen() {
                   id: t.id,
                   name: t.name,
                   icon: 'download-outline',
-                  color: '#BA7517'
+                  color: '#C2A878'
                 }))),
                 { id: 'pick_file', name: 'Add Local File', icon: 'document-text-outline', color: '#8B92A0', isAction: true },
                 { id: 'none', name: 'Silence', icon: 'volume-mute-outline', color: '#8B92A0' }
@@ -900,7 +900,7 @@ export default function FocusScreen() {
                 <Text style={[styles.modalActionBtnText, { color: '#8B92A0' }]}>Cancel</Text>
               </TouchableOpacity>
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517' }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878' }]} 
                 onPress={handleCommitIntention}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Commit & Start</Text>
@@ -920,7 +920,7 @@ export default function FocusScreen() {
         <View style={styles.modalOverlay}>
           <View style={[styles.modalContent, { width: '90%' }]}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <Ionicons name="trophy-outline" size={22} color="#BA7517" />
+              <Ionicons name="trophy-outline" size={22} color="#C2A878" />
               <Text style={styles.modalTitle}>Study Round Completed!</Text>
             </View>
             <Text style={styles.modalSubtitle}>Excellent job focusing on your committed study task.</Text>
@@ -935,7 +935,7 @@ export default function FocusScreen() {
                 <Text style={styles.summaryItemLabel}>DISTRACTIONS</Text>
               </View>
               <View style={styles.summaryItemCol}>
-                <Text style={[styles.summaryItemVal, { color: '#BA7517' }]}>🪙 +{displayedXp} XP</Text>
+                <Text style={[styles.summaryItemVal, { color: '#C2A878' }]}>🪙 +{displayedXp} XP</Text>
                 <Text style={styles.summaryItemLabel}>BONUS XP</Text>
               </View>
             </View>
@@ -947,7 +947,7 @@ export default function FocusScreen() {
                   <Ionicons 
                     name={val <= starRating ? "star" : "star-outline"} 
                     size={28} 
-                    color="#BA7517" 
+                    color="#C2A878" 
                     style={{ marginRight: 8 }}
                   />
                 </TouchableOpacity>
@@ -995,7 +995,7 @@ export default function FocusScreen() {
                   style={styles.suggestionPill}
                   onPress={saveSessionSummary}
                 >
-                  <Ionicons name="book-outline" size={14} color="#BA7517" style={{ marginRight: 4 }} />
+                  <Ionicons name="book-outline" size={14} color="#C2A878" style={{ marginRight: 4 }} />
                   <Text style={styles.suggestionPillText}>Revise Cards</Text>
                 </TouchableOpacity>
               </View>
@@ -1081,8 +1081,8 @@ export default function FocusScreen() {
               <Text style={styles.modalSubDescription}>Select any music track from your phone's file manager.</Text>
               
               <TouchableOpacity style={[styles.downloadBtn, { backgroundColor: '#1D2430', borderWidth: 1, borderColor: 'rgba(255,255,255,0.05)', marginBottom: 12 }]} onPress={handleSelectLocalFile}>
-                <Ionicons name="document-text-outline" size={16} color="#BA7517" style={{ marginRight: 6 }} />
-                <Text style={[styles.downloadBtnText, { color: '#BA7517' }]}>Choose from File Manager</Text>
+                <Ionicons name="document-text-outline" size={16} color="#C2A878" style={{ marginRight: 6 }} />
+                <Text style={[styles.downloadBtnText, { color: '#C2A878' }]}>Choose from File Manager</Text>
               </TouchableOpacity>
 
               <Text style={styles.modalSectionLabel}>Download Custom Soundtrack</Text>
@@ -1106,7 +1106,7 @@ export default function FocusScreen() {
 
               {isDownloading ? (
                 <View style={styles.downloadProgressContainer}>
-                  <ActivityIndicator size="small" color="#BA7517" style={{ marginRight: 10 }} />
+                  <ActivityIndicator size="small" color="#C2A878" style={{ marginRight: 10 }} />
                   <Text style={styles.downloadProgressText}>Downloading MP3: {downloadProgress}%</Text>
                 </View>
               ) : (
@@ -1122,7 +1122,7 @@ export default function FocusScreen() {
                   {focusSettings.customSoundtracks.map(track => (
                     <View key={track.id} style={styles.downloadedTrackRow}>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Ionicons name="musical-note" size={14} color="#BA7517" style={{ marginRight: 6 }} />
+                        <Ionicons name="musical-note" size={14} color="#C2A878" style={{ marginRight: 6 }} />
                         <Text style={styles.downloadedTrackName}>{track.name}</Text>
                       </View>
                       <TouchableOpacity 
@@ -1143,7 +1143,7 @@ export default function FocusScreen() {
               )}
 
               <TouchableOpacity 
-                style={[styles.modalActionBtn, { backgroundColor: '#BA7517', marginTop: 20 }]} 
+                style={[styles.modalActionBtn, { backgroundColor: '#C2A878', marginTop: 20 }]} 
                 onPress={() => setShowSettingsModal(false)}
               >
                 <Text style={[styles.modalActionBtnText, { color: '#0F1115' }]}>Close & Save</Text>
@@ -1192,7 +1192,7 @@ const styles = StyleSheet.create({
   intentionBannerTitle: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 10,
-    color: '#BA7517',
+    color: '#C2A878',
     letterSpacing: 1,
     textTransform: 'uppercase'
   },
@@ -1268,8 +1268,8 @@ const styles = StyleSheet.create({
     borderRadius: 20
   },
   taskPillActive: {
-    backgroundColor: '#BA7517',
-    borderColor: '#BA7517'
+    backgroundColor: '#C2A878',
+    borderColor: '#C2A878'
   },
   taskPillText: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
@@ -1318,7 +1318,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 24,
-    shadowColor: '#BA7517',
+    shadowColor: '#C2A878',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0,
     shadowRadius: 12,
@@ -1348,7 +1348,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -1481,7 +1481,7 @@ const styles = StyleSheet.create({
   },
   holdProgressFill: {
     height: '100%',
-    backgroundColor: '#BA7517'
+    backgroundColor: '#C2A878'
   },
   exitBtn: {
     backgroundColor: '#1D2430',
@@ -1599,7 +1599,7 @@ const styles = StyleSheet.create({
   summaryItemVal: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 18,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   summaryItemLabel: {
     fontFamily: 'PlusJakartaSans_700Bold',
@@ -1625,7 +1625,7 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   saveSummaryBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 14,
     alignItems: 'center'
@@ -1648,7 +1648,7 @@ const styles = StyleSheet.create({
   settingsBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 12,
-    color: '#BA7517',
+    color: '#C2A878',
     marginLeft: 6
   },
   stepperSection: {
@@ -1697,7 +1697,7 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   downloadBtn: {
-    backgroundColor: '#BA7517',
+    backgroundColor: '#C2A878',
     borderRadius: 12,
     paddingVertical: 12,
     alignItems: 'center',
@@ -1724,7 +1724,7 @@ const styles = StyleSheet.create({
   downloadProgressText: {
     fontFamily: 'PlusJakartaSans_600SemiBold',
     fontSize: 13,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   downloadedTrackRow: {
     flexDirection: 'row',
@@ -1762,7 +1762,7 @@ const styles = StyleSheet.create({
   mixerAddBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
     fontSize: 11,
-    color: '#BA7517'
+    color: '#C2A878'
   },
   shareSessionBtn: {
     flexDirection: 'row',
