@@ -256,6 +256,15 @@ function setupHydrationEvents() {
   if (eventsInitialized) return;
   eventsInitialized = true;
 
+  // Direct click listener to ensure it always captures clicks reliably
+  const quickBtn = document.getElementById('sidebar-quick-water-btn');
+  if (quickBtn) {
+    quickBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      logBeverage(250, "Quick Water");
+    });
+  }
+
   document.body.addEventListener('click', (e) => {
     // 1. Sidebar widget click
     const widgetCard = e.target.closest('#sidebar-water-widget-card');
@@ -336,31 +345,35 @@ function setupHydrationEvents() {
 import { addXP, logDailyActivity } from './gamification.js';
 
 function logBeverage(amount, type) {
-  const settings = getStorageItem(HYDRATION_SETTINGS_KEY, defaultSettings);
-  const logs = getStorageItem(HYDRATION_KEY, []);
+  try {
+    const settings = getStorageItem(HYDRATION_SETTINGS_KEY, defaultSettings);
+    const logs = getStorageItem(HYDRATION_KEY, []);
 
-  const newLog = {
-    id: 'h_' + Date.now(),
-    amount: amount,
-    type: type,
-    date: formatDate(new Date()),
-    timestamp: new Date().toLocaleTimeString()
-  };
-  
-  logs.push(newLog);
-  setStorageItem(HYDRATION_KEY, logs);
-  
-  // Update hydration daily status for mobile sync
-  const todayStr = formatDate(new Date());
-  const todayVol = logs.filter(l => l.date === todayStr).reduce((sum, l) => sum + parseInt(l.amount), 0);
-  setStorageItem(HYDRATION_STATUS_KEY, { water: todayVol, target: settings.goal });
-  
-  initHydration();
-  showToast(amount > 0 ? `Logged +${amount}ml of hydration! 💧` : `Logged coffee: ${amount}ml deduction! ☕`);
-  
-  if (amount > 0) {
-    addXP(5);
-    logDailyActivity('water');
+    const newLog = {
+      id: 'h_' + Date.now(),
+      amount: parseInt(amount) || 250,
+      type: type,
+      date: formatDate(new Date()),
+      timestamp: new Date().toLocaleTimeString()
+    };
+    
+    logs.push(newLog);
+    setStorageItem(HYDRATION_KEY, logs);
+    
+    // Update hydration daily status for mobile sync
+    const todayStr = formatDate(new Date());
+    const todayVol = logs.filter(l => l.date === todayStr).reduce((sum, l) => sum + parseInt(l.amount), 0);
+    setStorageItem(HYDRATION_STATUS_KEY, { water: todayVol, target: settings.goal });
+    
+    initHydration();
+    showToast(amount > 0 ? `Logged +${amount}ml of hydration! 💧` : `Logged coffee: ${amount}ml deduction! ☕`);
+    
+    if (amount > 0) {
+      addXP(5);
+      logDailyActivity('water');
+    }
+  } catch (err) {
+    console.error("Error in logBeverage:", err);
   }
 }
 

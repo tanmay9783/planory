@@ -1,6 +1,6 @@
 import { getStorageItem, setStorageItem } from '../utils/storage.js';
 import { getStartOfWeek, getWeekDays, formatDate, formatTime, getDayName, getFormattedDateRange } from '../utils/date.js';
-import { setFocusTask } from './pomodoro.js';
+import { setFocusTask, addForestGrowth } from './pomodoro.js';
 import { renderMonthlyCalendar } from './monthly-cal.js';
 import { appendNotesButtonToHeader, renderPinnedNoteInsideColumn, openNotesDrawer } from './notes.js';
 
@@ -212,6 +212,7 @@ function toggleTaskCompletion(id) {
   if (tasks[index].completed) {
     addXP(10);
     logDailyActivity('task');
+    addForestGrowth(20);
   }
 }
 

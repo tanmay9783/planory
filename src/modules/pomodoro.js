@@ -196,15 +196,7 @@ function startTimer(stats) {
 
         // Notify
         showBrowserNotification("Focus session complete!", "Time for a 5-minute break. Great work!");
-        triggerConfettiCelebration();
-
-        // Push tree to forest
-        const trees = ['🌳', '🌸', '🌲', '🌴', '🍁', '🍂', '🎄'];
-        const chosenTree = trees[Math.floor(Math.random() * trees.length)];
-        const forest = getStorageItem('pomo_forest', []);
-        forest.push(chosenTree);
-        setStorageItem('pomo_forest', forest);
-        renderForestGarden();
+        addForestGrowth(100);
 
         // Switch to break
         mode = 'break';
@@ -235,7 +227,9 @@ function resetTimer() {
     const forest = getStorageItem('pomo_forest', []);
     forest.push('🪵');
     setStorageItem('pomo_forest', forest);
+    setStorageItem('forest_growth_progress', 0);
     renderForestGarden();
+    updateForestPageView();
   }
   isRunning = false;
   clearInterval(currentTimer);
@@ -511,4 +505,111 @@ export function renderForestGarden() {
     item.title = tree === '🪵' ? 'Failed focus session' : 'Successful focus session';
     grid.appendChild(item);
   });
+}
+
+const FOREST_STAGES = [
+  { minPct: 0, emoji: '🤎', name: 'Planted Seed' },
+  { minPct: 15, emoji: '🌱', name: 'Sprouting' },
+  { minPct: 35, emoji: '🌿', name: 'Growing Sapling' },
+  { minPct: 55, emoji: '🪴', name: 'Healthy Potted Plant' },
+  { minPct: 75, emoji: '🌳', name: 'Maturing Tree' },
+  { minPct: 95, emoji: '🌸', name: 'Blossoming Cherry Tree' }
+];
+
+function showPomoToast(msg) {
+  const toast = document.getElementById('notif-toast');
+  const msgEl = document.getElementById('notif-msg');
+  if (toast && msgEl) {
+    msgEl.textContent = msg;
+    toast.classList.remove('hidden');
+    setTimeout(() => toast.classList.add('hidden'), 3000);
+  }
+}
+
+export function addForestGrowth(pct) {
+  try {
+    let progress = getStorageItem('forest_growth_progress', 0);
+    progress = Math.min(100, Math.max(0, progress + pct));
+    
+    if (progress >= 100) {
+      const trees = ['🌳', '🌸', '🌲', '🌴', '🍁', '🍂', '🎄'];
+      const chosenTree = trees[Math.floor(Math.random() * trees.length)];
+      const forest = getStorageItem('pomo_forest', []);
+      forest.push(chosenTree);
+      setStorageItem('pomo_forest', forest);
+      
+      triggerConfettiCelebration();
+      
+      progress = 0;
+      showPomoToast(`Your plant fully blossomed into a ${chosenTree}! 🌲`);
+    }
+    
+    setStorageItem('forest_growth_progress', progress);
+    
+    renderForestGarden();
+    updateForestPageView();
+  } catch (err) {
+    console.error("Error in addForestGrowth:", err);
+  }
+}
+
+export function updateForestPageView() {
+  try {
+    const progress = getStorageItem('forest_growth_progress', 0);
+    const forest = getStorageItem('pomo_forest', []);
+    
+    const emojiEl = document.getElementById('forest-main-plant-emoji');
+    const stageEl = document.getElementById('forest-growth-stage');
+    const pctEl = document.getElementById('forest-growth-pct');
+    const fillEl = document.getElementById('forest-growth-fill');
+    const badgeCountEl = document.getElementById('forest-badge-count');
+    const gardenGridEl = document.getElementById('forest-page-garden-grid');
+    
+    if (badgeCountEl) {
+      badgeCountEl.textContent = `${forest.length} Tree${forest.length === 1 ? '' : 's'} grown`;
+    }
+    
+    let currentStage = FOREST_STAGES[0];
+    for (let i = FOREST_STAGES.length - 1; i >= 0; i--) {
+      if (progress >= FOREST_STAGES[i].minPct) {
+        currentStage = FOREST_STAGES[i];
+        break;
+      }
+    }
+    
+    if (emojiEl) {
+      emojiEl.textContent = currentStage.emoji;
+      const scale = 1 + (progress % 20) * 0.01;
+      emojiEl.style.transform = `scale(${scale})`;
+    }
+    
+    if (stageEl) {
+      stageEl.textContent = currentStage.name;
+    }
+    
+    if (pctEl) {
+      pctEl.textContent = `${Math.round(progress)}% Grow Progress`;
+    }
+    
+    if (fillEl) {
+      fillEl.style.width = `${progress}%`;
+    }
+    
+    if (gardenGridEl) {
+      gardenGridEl.innerHTML = '';
+      if (forest.length === 0) {
+        gardenGridEl.innerHTML = `<span style="grid-column: span 10; font-size: 12px; color: var(--text-muted); font-style: italic; text-align: center; width: 100%;">No trees in your forest yet. Start focus sessions and complete tasks to grow them!</span>`;
+      } else {
+        forest.forEach(tree => {
+          const item = document.createElement('span');
+          item.textContent = tree;
+          item.style.filter = tree === '🪵' ? 'grayscale(0.6)' : 'drop-shadow(0 2px 4px rgba(0,0,0,0.15))';
+          item.title = tree === '🪵' ? 'Failed focus session' : 'Grown from focus & tasks';
+          gardenGridEl.appendChild(item);
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Error in updateForestPageView:", err);
+  }
 }

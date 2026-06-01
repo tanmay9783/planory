@@ -163,6 +163,10 @@
             <span class="nav-icon" style="font-size:16px;">⏱️</span>
             <span class="nav-text">Focus Timer</span>
           </button>
+          <button class="nav-item" id="sidebar-nav-forest" style="text-align: left; padding: 10px 14px; display:flex; align-items:center; gap:10px; font-size:13px; font-weight:500; border-radius:8px;">
+            <span class="nav-icon" style="font-size:16px;">🌲</span>
+            <span class="nav-text">Focus Forest</span>
+          </button>
         </nav>
       </div>
 
@@ -316,6 +320,44 @@
         <div class="calendar-month-grid" id="calendar-month-grid"></div>
       </div>
 
+      <!-- Dedicated Focus Forest page view -->
+      <div class="monthly-calendar-container hidden" id="forest-garden-view" style="padding: 24px; display: flex; flex-direction: column; gap: 24px;">
+        <div class="calendar-header-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0; border-bottom: none; padding-bottom: 0;">
+          <h2 style="font-family: var(--font-display); background: linear-gradient(135deg, #fff, #BA7517); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0;">🌲 Focus Forest Garden</h2>
+          <span style="font-size:12px; color:var(--text-secondary); background:rgba(186,117,23,0.1); padding:4px 12px; border-radius:12px; font-weight:700; border:1px solid rgba(186,117,23,0.2);" id="forest-badge-count">0 Trees grown</span>
+        </div>
+
+        <!-- Ecosystem Center Card -->
+        <div class="budget-card" style="padding: 30px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; background: rgba(255,255,255,0.01); border: 1px solid var(--border-color); border-radius: var(--radius-lg); position: relative; overflow: hidden; min-height: 280px; justify-content: center; margin-top: 10px;">
+          <div style="font-size: 84px; filter: drop-shadow(0 0 16px rgba(186,117,23,0.45)); transform-origin: bottom center; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); display:inline-block;" id="forest-main-plant-emoji">🤎</div>
+          <div style="display:flex; flex-direction:column; gap:4px;">
+            <h3 id="forest-plant-title" style="font-size: 18px; font-weight: 800; color: #fff; margin: 0;">Your Focus Tree</h3>
+            <p id="forest-plant-desc" style="font-size: 13px; color: var(--text-secondary); max-width: 420px; line-height: 1.4; margin: 8px auto 0 auto;">This tree grows as you accumulate Pomodoro focus sessions (+100%) and complete your tasks (+20%). Grind hard to grow a lush forest!</p>
+          </div>
+
+          <!-- Growth Progress Indicator -->
+          <div style="width: 100%; max-width: 380px; margin: 0 auto;">
+            <div style="display:flex; justify-content:space-between; font-size:11px; font-weight:700; color:var(--text-secondary); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.05em;">
+              <span id="forest-growth-stage">Planted</span>
+              <span id="forest-growth-pct">0% Grow Progress</span>
+            </div>
+            <div style="height: 8px; background: rgba(255,255,255,0.04); border-radius: 4px; overflow: hidden; border:1px solid var(--border-color);">
+              <div id="forest-growth-fill" style="width: 0%; height: 100%; background: linear-gradient(135deg, var(--accent), #34d399); transition: width 0.5s ease;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- My Garden Grid -->
+        <h3 style="font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 10px; margin-bottom: 0; display:flex; align-items:center; gap:6px;">
+          <span>🏡</span> My Focus Forest Grid
+        </h3>
+        <div class="budget-card" style="padding: 24px; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+          <div id="forest-page-garden-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(48px, 1fr)); gap: 10px; justify-items: center; align-content: center; font-size: 28px; min-height: 80px;">
+            <!-- Emojis of grown trees will be inserted here -->
+          </div>
+        </div>
+      </div>
+
       <!-- Bottom Productivity Statistics Bar -->
       <div class="stat-bar" id="stat-bar">
         <div style="display: flex; gap: 24px; flex: 1;">
@@ -377,6 +419,16 @@
             </div>
             <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Pomodoro Focus Timer</h3>
             <p class="helper-text" style="line-height:1.4;">Start focus interval rounds, auto-track productivity, and assign active timetable tasks to countdown timers.</p>
+          </div>
+
+          <!-- 5. Focus Forest tile -->
+          <div class="budget-card hub-tile" id="hub-tile-forest" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <div class="hub-icon-circle">🌲</div>
+              <span class="badge" style="background: rgba(52, 211, 153, 0.1); color: #34d399; font-weight:600;">Forest Garden</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">My Focus Forest</h3>
+            <p class="helper-text" style="line-height:1.4;">Watch your plant grow as you complete tasks and run Pomodoros, and see your collection of grown trees.</p>
           </div>
         </div>
       </div>

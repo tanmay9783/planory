@@ -158,33 +158,50 @@ function setupGeneralUI() {
     });
   }
 
-  // View switches (Weekly Timetable vs Dedicated Month Calendar)
+  // View switches (Weekly Timetable vs Dedicated Month Calendar vs Focus Forest)
   const viewWeeklyBtn = document.getElementById('view-weekly-btn');
   const viewCalendarBtn = document.getElementById('view-calendar-btn');
+  const viewForestBtn = document.getElementById('sidebar-nav-forest');
   
   const weeklyGrid = document.getElementById('weekly-grid-view');
   const monthlyCalendar = document.getElementById('monthly-calendar-view');
+  const forestView = document.getElementById('forest-garden-view');
 
-  if (viewWeeklyBtn && viewCalendarBtn && weeklyGrid && monthlyCalendar) {
-    viewWeeklyBtn.addEventListener('click', () => {
-      viewWeeklyBtn.classList.add('active');
-      viewCalendarBtn.classList.remove('active');
+  function switchMainView(viewId) {
+    if (weeklyGrid) weeklyGrid.classList.add('hidden');
+    if (monthlyCalendar) monthlyCalendar.classList.add('hidden');
+    if (forestView) forestView.classList.add('hidden');
 
-      weeklyGrid.classList.remove('hidden');
-      monthlyCalendar.classList.add('hidden');
-
-      renderGrid(); // Rerender weekly grid
+    [viewWeeklyBtn, viewCalendarBtn, viewForestBtn].forEach(btn => {
+      if (btn) btn.classList.remove('active');
     });
 
-    viewCalendarBtn.addEventListener('click', () => {
-      viewCalendarBtn.classList.add('active');
-      viewWeeklyBtn.classList.remove('active');
+    if (viewId === 'weekly') {
+      if (weeklyGrid) weeklyGrid.classList.remove('hidden');
+      if (viewWeeklyBtn) viewWeeklyBtn.classList.add('active');
+      renderGrid();
+    } else if (viewId === 'calendar') {
+      if (monthlyCalendar) monthlyCalendar.classList.remove('hidden');
+      if (viewCalendarBtn) viewCalendarBtn.classList.add('active');
+      renderMonthlyCalendar();
+    } else if (viewId === 'forest') {
+      if (forestView) forestView.classList.remove('hidden');
+      if (viewForestBtn) viewForestBtn.classList.add('active');
+      import('./modules/pomodoro.js').then(m => m.updateForestPageView());
+    }
+  }
 
-      monthlyCalendar.classList.remove('hidden');
-      weeklyGrid.classList.add('hidden');
+  // Expose switchMainView on window for other modules
+  window.switchMainView = switchMainView;
 
-      renderMonthlyCalendar(); // Rerender monthly calendar
-    });
+  if (viewWeeklyBtn) {
+    viewWeeklyBtn.addEventListener('click', () => switchMainView('weekly'));
+  }
+  if (viewCalendarBtn) {
+    viewCalendarBtn.addEventListener('click', () => switchMainView('calendar'));
+  }
+  if (viewForestBtn) {
+    viewForestBtn.addEventListener('click', () => switchMainView('forest'));
   }
 
   // Settings Tab switches
@@ -292,6 +309,14 @@ function setupGeneralUI() {
     tilePomo.addEventListener('click', () => {
       hubOverlay.classList.add('hidden');
       document.getElementById('pomodoro-modal-overlay').classList.remove('hidden');
+    });
+  }
+
+  const tileForest = document.getElementById('hub-tile-forest');
+  if (tileForest) {
+    tileForest.addEventListener('click', () => {
+      hubOverlay.classList.add('hidden');
+      window.switchMainView('forest');
     });
   }
 
