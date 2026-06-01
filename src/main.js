@@ -3,6 +3,7 @@ import { preloadCache, getStorageItem } from './utils/storage.js';
 import { initProfile } from './modules/profile.js';
 import { initThemes } from './modules/themes.js';
 import { initQuotes } from './modules/quotes.js';
+import { initNotifications } from './modules/notifications.js';
 import { initBrainDump } from './modules/brain-dump.js';
 import { initVoiceInput } from './modules/voice.js';
 import { initPomodoro, stopAmbientSound } from './modules/pomodoro.js';
@@ -67,6 +68,7 @@ function runInit() {
   safeInit('Profile', initProfile);
   safeInit('Themes', initThemes);
   safeInit('Quotes', initQuotes);
+  safeInit('Notifications', initNotifications);
 
   // 2. Initialize Core Features
   safeInit('Gamification', initGamification);

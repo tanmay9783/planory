@@ -467,10 +467,24 @@ function setupIntervalReminders(settings) {
 }
 
 function triggerHydrationReminderToast(settings) {
+  const savedNotifs = getStorageItem('planory_notifications_enabled', {
+    water: true,
+    deadline: true,
+    habit: true
+  });
+  if (savedNotifs.water === false) return;
+
   const logs = getStorageItem(HYDRATION_KEY, []);
   const todayStr = formatDate(new Date());
   const todayVol = logs.filter(l => l.date === todayStr).reduce((sum, l) => sum + parseInt(l.amount), 0);
   
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    new Notification("Water Hydration Alert 💧", {
+      body: `Time to drink water! You're at ${todayVol} / ${settings.goal} ml today.`,
+      icon: '/favicon.svg'
+    });
+  }
+
   const toast = document.getElementById('notif-toast');
   const msgEl = document.getElementById('notif-msg');
   if (!toast || !msgEl) return;
@@ -482,10 +496,13 @@ function triggerHydrationReminderToast(settings) {
   
   toast.classList.remove('hidden');
   
-  document.getElementById('toast-quick-water-log').addEventListener('click', () => {
-    logBeverage(250, "Reminder Water", settings, logs);
-    toast.classList.add('hidden');
-  });
+  const logBtn = document.getElementById('toast-quick-water-log');
+  if (logBtn) {
+    logBtn.onclick = () => {
+      logBeverage(250, "Reminder Water", settings, logs);
+      toast.classList.add('hidden');
+    };
+  }
   
   setTimeout(() => toast.classList.add('hidden'), 8000);
 }

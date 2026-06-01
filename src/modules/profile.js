@@ -1,4 +1,6 @@
-import { getStorageItem, setStorageItem } from '../utils/storage.js';
+import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storage.js';
+import { auth } from '../db/firebase.js';
+import { deleteUser } from 'firebase/auth';
 
 const PROFILE_KEY = 'user_profile';
 
@@ -337,45 +339,6 @@ function setupWorkspaceSettings() {
     card.querySelector('#data-confirm-no').addEventListener('click', () => card.remove());
   }
 
-  // Export Data
-  if (exportBtn) {
-    exportBtn.addEventListener('click', () => {
-      try {
-        const keys = [
-          'user_profile', 'theme_settings', 'tasks', 'hydration',
-          'gamification', 'notes', 'habits', 'expenses',
-          'planory_study_prefs', 'planory_light_mode', 'planory_font_size',
-          'planory_notifications_enabled', 'pomo_forest', 'forest_growth_progress',
-          'forest_selected_seed', 'brain_dump_items', 'weekly_tasks'
-        ];
-        const data = { exported_at: new Date().toISOString(), version: '1.0' };
-        keys.forEach(k => {
-          try {
-            const val = localStorage.getItem(k);
-            if (val !== null) data[k] = JSON.parse(val);
-          } catch(e) {
-            const val = localStorage.getItem(k);
-            if (val !== null) data[k] = val;
-          }
-        });
-
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href     = url;
-        a.download = `planory-backup-${new Date().toISOString().slice(0,10)}.json`;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        showDataToast('Your data has been exported successfully.');
-      } catch(err) {
-        showDataToast('Export failed: ' + err.message, true);
-      }
-    });
-  }
-
   // Clear History
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
@@ -383,10 +346,10 @@ function setupWorkspaceSettings() {
         'This will clear your task history, hydration logs, habits progress, and expenses — but keep your profile and settings intact. This cannot be undone.',
         () => {
           const toClear = [
-            'tasks', 'hydration', 'gamification', 'habits', 'expenses',
-            'pomo_forest', 'forest_growth_progress', 'brain_dump_items', 'weekly_tasks'
+            'tasks', 'hydration_logs', 'gamification', 'user_habits', 'habit_logs', 'expenses',
+            'pomo_forest', 'forest_growth_progress', 'brain_dump', 'weekly_tasks'
           ];
-          toClear.forEach(k => localStorage.removeItem(k));
+          toClear.forEach(k => removeStorageItem(k));
           showDataToast('History cleared. Reloading in 2 seconds...');
           setTimeout(() => window.location.reload(), 2000);
         }
@@ -400,8 +363,28 @@ function setupWorkspaceSettings() {
       showInAppConfirm(
         'WARNING: This permanently deletes your profile and ALL data from this device. This action cannot be undone.',
         () => {
-          showDataToast('All data deleted. Reloading...');
-          setTimeout(() => {
+          showDataToast('Deleting account and all data. Please wait...');
+          setTimeout(async () => {
+            // Delete user in firebase if logged in
+            const user = auth.currentUser;
+            if (user) {
+              try {
+                await deleteUser(user);
+              } catch (err) {
+                console.warn('Firebase user delete failed (needs recent login), signing out instead:', err);
+                try {
+                  const { signOut } = await import('firebase/auth');
+                  await signOut(auth);
+                } catch (e) {}
+              }
+            }
+            // Clear IndexedDB
+            try {
+              const { localDB } = await import('../db/database.js');
+              await localDB.kv_store.clear();
+            } catch (err) {
+              console.error('Dexie clear failed:', err);
+            }
             localStorage.clear();
             sessionStorage.clear();
             window.location.reload();
