@@ -31,3 +31,9 @@ data/
 .env
 .env.*
 !.env.example
+
+# Scratch and IDE folders
+scratch/
+.gemini/
+.claude/
+.expo/
