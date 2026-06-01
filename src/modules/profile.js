@@ -270,53 +270,144 @@ function setupWorkspaceSettings() {
 
   // 5. Data Management
   const exportBtn = document.getElementById('data-export-btn');
-  const clearBtn = document.getElementById('data-clear-btn');
+  const clearBtn  = document.getElementById('data-clear-btn');
   const deleteBtn = document.getElementById('data-delete-btn');
-  
+
+  // Helper: show the app's notification toast
+  function showDataToast(msg, isError = false) {
+    const toast = document.getElementById('notif-toast');
+    const msgEl = document.getElementById('notif-msg');
+    if (!toast || !msgEl) return;
+    msgEl.textContent = msg;
+    toast.style.background = isError ? 'rgba(248,113,113,0.12)' : '';
+    toast.style.borderColor = isError ? 'rgba(248,113,113,0.3)' : '';
+    toast.style.color = isError ? '#f87171' : '';
+    toast.classList.remove('hidden');
+    clearTimeout(toast._hideTimer);
+    toast._hideTimer = setTimeout(() => {
+      toast.classList.add('hidden');
+      toast.style.background = '';
+      toast.style.borderColor = '';
+      toast.style.color = '';
+    }, 3500);
+  }
+
+  // Helper: in-app confirm dialog (no native browser dialogs)
+  function showInAppConfirm(message, onConfirm) {
+    const existing = document.getElementById('data-confirm-card');
+    if (existing) existing.remove();
+
+    const card = document.createElement('div');
+    card.id = 'data-confirm-card';
+    card.style.cssText = `
+      position: fixed; inset: 0; z-index: 200000;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(10px);
+    `;
+    card.innerHTML = `
+      <div style="
+        background: #1a1d24; border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 20px; padding: 32px 28px; max-width: 360px; width: 90%;
+        box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+        display: flex; flex-direction: column; gap: 20px;
+        animation: scaleIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      ">
+        <div style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">${message}</div>
+        <div style="display: flex; gap: 10px;">
+          <button id="data-confirm-yes" style="
+            flex:1; padding:10px; border-radius:10px; font-weight:700; font-size:13px;
+            background: #f87171; color:#fff; border:none; cursor:pointer;
+            transition: opacity 0.2s;
+          ">Confirm</button>
+          <button id="data-confirm-no" style="
+            flex:1; padding:10px; border-radius:10px; font-weight:600; font-size:13px;
+            background: rgba(255,255,255,0.05); color:var(--text-secondary);
+            border: 1px solid rgba(255,255,255,0.06); cursor:pointer;
+            transition: opacity 0.2s;
+          ">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    document.body.appendChild(card);
+    card.querySelector('#data-confirm-yes').addEventListener('click', () => {
+      card.remove();
+      onConfirm();
+    });
+    card.querySelector('#data-confirm-no').addEventListener('click', () => card.remove());
+  }
+
+  // Export Data
   if (exportBtn) {
     exportBtn.addEventListener('click', () => {
-      const keys = ['user_profile', 'theme_settings', 'tasks', 'hydration', 'gamification', 'notes', 'habits', 'expenses', 'planory_study_prefs', 'planory_light_mode', 'planory_font_size', 'planory_notifications_enabled'];
-      const data = {};
-      keys.forEach(k => {
-        try {
-          const val = localStorage.getItem(k);
-          if (val !== null) data[k] = JSON.parse(val);
-        } catch(e) {
-          data[k] = localStorage.getItem(k);
-        }
-      });
-      
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'planory-data-export.json';
-      a.click();
-      URL.revokeObjectURL(url);
+      try {
+        const keys = [
+          'user_profile', 'theme_settings', 'tasks', 'hydration',
+          'gamification', 'notes', 'habits', 'expenses',
+          'planory_study_prefs', 'planory_light_mode', 'planory_font_size',
+          'planory_notifications_enabled', 'pomo_forest', 'forest_growth_progress',
+          'forest_selected_seed', 'brain_dump_items', 'weekly_tasks'
+        ];
+        const data = { exported_at: new Date().toISOString(), version: '1.0' };
+        keys.forEach(k => {
+          try {
+            const val = localStorage.getItem(k);
+            if (val !== null) data[k] = JSON.parse(val);
+          } catch(e) {
+            const val = localStorage.getItem(k);
+            if (val !== null) data[k] = val;
+          }
+        });
+
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = `planory-backup-${new Date().toISOString().slice(0,10)}.json`;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        showDataToast('Your data has been exported successfully.');
+      } catch(err) {
+        showDataToast('Export failed: ' + err.message, true);
+      }
     });
   }
-  
+
+  // Clear History
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      if (confirm("Are you sure you want to clear your study history and logs? This will reset your streaks and daily progress, but keep your profile.")) {
-        localStorage.removeItem('tasks');
-        localStorage.removeItem('hydration');
-        localStorage.removeItem('gamification');
-        localStorage.removeItem('habits');
-        localStorage.removeItem('expenses');
-        alert("Study history cleared! Relaunching Planory...");
-        window.location.reload();
-      }
+      showInAppConfirm(
+        'This will clear your task history, hydration logs, habits progress, and expenses — but keep your profile and settings intact. This cannot be undone.',
+        () => {
+          const toClear = [
+            'tasks', 'hydration', 'gamification', 'habits', 'expenses',
+            'pomo_forest', 'forest_growth_progress', 'brain_dump_items', 'weekly_tasks'
+          ];
+          toClear.forEach(k => localStorage.removeItem(k));
+          showDataToast('History cleared. Reloading in 2 seconds...');
+          setTimeout(() => window.location.reload(), 2000);
+        }
+      );
     });
   }
-  
+
+  // Delete Account
   if (deleteBtn) {
     deleteBtn.addEventListener('click', () => {
-      if (confirm("WARNING: This will permanently delete your account profile and all data. This action cannot be undone. Proceed?")) {
-        localStorage.clear();
-        alert("All local data deleted. Good luck!");
-        window.location.reload();
-      }
+      showInAppConfirm(
+        'WARNING: This permanently deletes your profile and ALL data from this device. This action cannot be undone.',
+        () => {
+          showDataToast('All data deleted. Reloading...');
+          setTimeout(() => {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.reload();
+          }, 1500);
+        }
+      );
     });
   }
 }
