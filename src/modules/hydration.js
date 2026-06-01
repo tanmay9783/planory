@@ -35,11 +35,12 @@ export function initHydration() {
 }
 
 function updateHydrationUI(settings, logs) {
+  if (!Array.isArray(logs)) logs = [];
   const todayStr = formatDate(new Date());
   
   // Calculate today's volume
   const todayLogs = logs.filter(l => l.date === todayStr);
-  const totalToday = todayLogs.reduce((sum, l) => sum + parseInt(l.amount), 0);
+  const totalToday = todayLogs.reduce((sum, l) => sum + parseInt(l.amount || 0), 0);
   
   // 1. Update Sidebar Progress widget
   const progressPct = Math.min(100, Math.max(0, Math.round((totalToday / settings.goal) * 100)));
@@ -93,6 +94,7 @@ function updateHydrationUI(settings, logs) {
 }
 
 function renderWeeklyWaterChart(logs, goal) {
+  if (!Array.isArray(logs)) logs = [];
   const container = document.getElementById('water-weekly-chart');
   if (!container) return;
   container.innerHTML = '';
@@ -121,7 +123,7 @@ function renderWeeklyWaterChart(logs, goal) {
   weekDays.forEach((d, idx) => {
     const dStr = formatDate(d);
     const dayLogs = logs.filter(l => l.date === dStr);
-    const dayVol = Math.max(0, dayLogs.reduce((sum, l) => sum + parseInt(l.amount), 0));
+    const dayVol = Math.max(0, dayLogs.reduce((sum, l) => sum + parseInt(l.amount || 0), 0));
     
     totalSum += dayVol;
     if (dayVol > maxVolume) {
@@ -157,6 +159,7 @@ function renderWeeklyWaterChart(logs, goal) {
 }
 
 function calculateHydrationStreaks(logs, goal) {
+  if (!Array.isArray(logs)) logs = [];
   const streakLabel = document.getElementById('water-streak-label');
   const badgesList = document.getElementById('water-badges-list');
   if (!streakLabel || !badgesList) return;
@@ -165,7 +168,7 @@ function calculateHydrationStreaks(logs, goal) {
   const logsByDate = {};
   logs.forEach(l => {
     if (!logsByDate[l.date]) logsByDate[l.date] = 0;
-    logsByDate[l.date] += parseInt(l.amount);
+    logsByDate[l.date] += parseInt(l.amount || 0);
   });
   
   let streak = 0;
@@ -205,6 +208,7 @@ function calculateHydrationStreaks(logs, goal) {
 }
 
 function renderWaterLogsList(logs) {
+  if (!Array.isArray(logs)) logs = [];
   const container = document.getElementById('water-logs-list');
   if (!container) return;
   container.innerHTML = '';
@@ -214,8 +218,12 @@ function renderWaterLogsList(logs) {
     return;
   }
   
-  // Sort descending
-  const sorted = [...logs].sort((a,b) => b.timestamp.localeCompare(a.timestamp));
+  // Sort descending safely
+  const sorted = [...logs].sort((a,b) => {
+    const timeA = a.timestamp || '';
+    const timeB = b.timestamp || '';
+    return timeB.localeCompare(timeA);
+  });
   
   sorted.slice(0, 10).forEach(log => {
     const row = document.createElement('div');
