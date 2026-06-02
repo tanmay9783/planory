@@ -1,4 +1,4 @@
-// Shared design tokens for Planory (Web & Mobile consistency)
+// Shared design tokens for Planrova (Web & Mobile consistency)
 
 export const COLORS = {
   GOLD: "#BA7517",

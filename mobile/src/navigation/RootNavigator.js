@@ -32,8 +32,8 @@ function HeaderOverflowMenu() {
         {
           text: "Help & Support",
           onPress: () => Alert.alert(
-            "About Planory",
-            "Planory helps you manage your habits, study schedules, budget, hydration, and wake up alarms with motivational missions.\n\n• Pull-to-refresh any screen to sync with backend.\n• Use the Hub icon on the home tab to toggle between modules quickly."
+            "About Planrova",
+            "Planrova helps you manage your habits, study schedules, budget, hydration, and wake up alarms with motivational missions.\n\n• Pull-to-refresh any screen to sync with backend.\n• Use the Hub icon on the home tab to toggle between modules quickly."
           )
         },
         {

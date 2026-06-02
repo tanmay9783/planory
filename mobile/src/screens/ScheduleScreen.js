@@ -229,12 +229,12 @@ export default function ScheduleScreen() {
 
   const handleShareStats = async () => {
     try {
-      const message = `📊 My Weekly Study Stats on Planory:\n\n` +
+      const message = `📊 My Weekly Study Stats on Planrova:\n\n` +
         `✅ Tasks Done: ${completedThisWeek}/${totalThisWeek}\n` +
         `⏱️ Focus Time: ${hours}h ${minutes}m\n` +
         `💸 Spent: ₹${totalSpentThisWeek}\n` +
         `🔄 Habit Checks: ${totalHabitCompletionsThisWeek}\n\n` +
-        `Join me on Planory to supercharge your studies! 🚀`;
+        `Join me on Planrova to supercharge your studies! 🚀`;
       await Share.share({ message });
     } catch (error) {
       console.log('Error sharing stats:', error.message);

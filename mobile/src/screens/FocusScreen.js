@@ -125,7 +125,7 @@ export default function FocusScreen() {
   const handleShareSession = async () => {
     try {
       const taskStr = committedIntention ? `"${committedIntention}"` : "my study goals";
-      const msg = `🔥 Just finished a 25-minute Deep Study session on ${taskStr} with only ${distractionsCount} distractions on Planory! 🚀📚`;
+      const msg = `🔥 Just finished a 25-minute Deep Study session on ${taskStr} with only ${distractionsCount} distractions on Planrova! 🚀📚`;
       await Share.share({ message: msg });
       Vibration.vibrate(40);
     } catch (e) {

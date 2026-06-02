@@ -1,20 +1,20 @@
-# ✨ Planory
+# ✨ Planrova
 
-Planory is an ultra-premium, gamified, multi-platform personal planning, productivity, and real-time study ecosystem. Combining a gorgeous desktop web workspace, a highly responsive React Native mobile companion app, and a secure Groq-powered vision server, Planory is engineered to transform mundane habits and study sessions into an engaging, gamified RPG-style journey.
+Planrova is an ultra-premium, gamified, multi-platform personal planning, productivity, and real-time study ecosystem. Combining a gorgeous desktop web workspace, a highly responsive React Native mobile companion app, and a secure Groq-powered vision server, Planrova is engineered to transform mundane habits and study sessions into an engaging, gamified RPG-style journey.
 
 ---
 
 ## 🌌 Ecosystem Overview
 
-Planory is architected as three seamless, interconnected workspaces:
+Planrova is architected as three seamless, interconnected workspaces:
 
-1. **Planory Web Workspace (Vite + Modular ES6 + Firebase + Dexie)**  
+1. **Planrova Web Workspace (Vite + Modular ES6 + Firebase + Dexie)**  
    A beautiful, high-fidelity desktop workspace featuring premium HSL-tailored glassmorphism, fluid interactive micro-animations, time-of-day dynamic lighting, offline-first IndexedDB caching (via Dexie), and live synchronized study rooms.
    
-2. **Planory Mobile Companion (React Native + Expo)**  
+2. **Planrova Mobile Companion (React Native + Expo)**  
    A gorgeous native mobile experience featuring smooth swipe-gesture navigation, trophy level-up sparkle animations, full push notification setups, local AsyncStorage, custom interactive home-screen widgets (WidgetKit & AppWidgetProvider ready), and a scanner tool.
 
-3. **Planory OCR Proxy Server (Node.js + Groq Vision)**  
+3. **Planrova OCR Proxy Server (Node.js + Groq Vision)**  
    A lightweight, secure proxy server that protects your API credentials. It forwards vision payloads from the mobile companion app to the Groq Vision API to scan physical documents/notebooks and instantly convert them to digital markdown notes.
 
 ---
@@ -22,7 +22,7 @@ Planory is architected as three seamless, interconnected workspaces:
 ## 🚀 Key Modules & Feature Highlights
 
 ### 👥 1. Real-Time Social Studypool & Friends System
-Planory features a synchronized virtual study lounge powered by Firebase Firestore, complete with live user presences:
+Planrova features a synchronized virtual study lounge powered by Firebase Firestore, complete with live user presences:
 * **Global Study Room:** A live focus lounge showing all active online students alongside custom ambient study bots (**Aarav, Riya, Kabir**) that simulate real-time focus rounds and send motivational messages. Your friends are dynamically pinned to the top of the grid with a gorgeous blue glowing aura and active presence tags.
 * **Private Study Room:** A locked, zero-distraction study room. This room strictly excludes bots and strangers—only you and your verified added friends can enter, chat, and keep each other accountable.
 * **Synchronous Real-Time Chat:** Exchange thoughts, coordinate study breaks, and share focus goals in an active chat room.
@@ -100,8 +100,8 @@ Make sure you have [Node.js](https://nodejs.org) and [Git](https://git-scm.com) 
 ### 1. Repository Setup
 Clone this repository and navigate into it:
 ```bash
-git clone https://github.com/tanmay9783/planory.git
-cd planory
+git clone https://github.com/tanmay9783/planrova.git
+cd planrova
 ```
 
 ### 2. Run the Web App
@@ -155,7 +155,7 @@ cd planory
 ## 🌐 Production Deployment
 
 ### Web Deployment
-The Planory Web client is configured out-of-the-box for high-performance hosting on platforms like **Render**, **Vercel**, or **Netlify**.
+The Planrova Web client is configured out-of-the-box for high-performance hosting on platforms like **Render**, **Vercel**, or **Netlify**.
 * Build command: `npm run build`
 * Publish directory: `dist`
 
@@ -169,6 +169,6 @@ The Planory Web client is configured out-of-the-box for high-performance hosting
 
 ## 🔒 Security & Best Practices
 * **Secret Isolation:** The Groq API key lives strictly on the server backend. Payloads are proxied safely, ensuring no keys are decompiled or exposed on mobile client builds.
-* **Offline Resiliency:** Planory utilizes Dexie DB caching on the web client. If a Firestore connection drops, local actions are cached safely and loaded instantaneously.
+* **Offline Resiliency:** Planrova utilizes Dexie DB caching on the web client. If a Firestore connection drops, local actions are cached safely and loaded instantaneously.
 
 Let's crush some study hours! 🚀

@@ -86,7 +86,7 @@ export function startRealtimeSync() {
             deleted: false
           });
           
-          window.dispatchEvent(new CustomEvent('planory:cloud_update', { 
+          window.dispatchEvent(new CustomEvent('planrova:cloud_update', { 
             detail: { key: cloudData.id } 
           }));
           
@@ -98,7 +98,7 @@ export function startRealtimeSync() {
             sync_status: 'synced'
           });
           
-          window.dispatchEvent(new CustomEvent('planory:cloud_update', { 
+          window.dispatchEvent(new CustomEvent('planrova:cloud_update', { 
             detail: { key: cloudData.id } 
           }));
         }

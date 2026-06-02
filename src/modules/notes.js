@@ -1053,7 +1053,7 @@ function setupOCRScan() {
           showToast("Scanning image for text...");
           setTimeout(() => {
             const editor = document.getElementById('editor-content-area');
-            const ocrText = `<p><strong>Extracted Text (OCR Scan):</strong><br/>Planory Study Plan: Complete homework and practice mock exams.</p>`;
+            const ocrText = `<p><strong>Extracted Text (OCR Scan):</strong><br/>Planrova Study Plan: Complete homework and practice mock exams.</p>`;
             editor.innerHTML += ocrText;
             saveActiveNote(false);
             showToast("Text extracted successfully!");

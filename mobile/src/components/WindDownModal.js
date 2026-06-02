@@ -449,7 +449,7 @@ export default function WindDownModal({
                 <Ionicons name="moon" size={96} color="#FFE5B4" style={styles.moonGlow} />
               </Animated.View>
               
-              <Text style={[styles.title, { fontSize: 26, textAlign: 'center' }]}>Planory Complete.</Text>
+              <Text style={[styles.title, { fontSize: 26, textAlign: 'center' }]}>Planrova Complete.</Text>
               <Text style={[styles.subtitle, { textAlign: 'center', lineHeight: 24, paddingHorizontal: 12, marginBottom: 40 }]}>
                 "All done. Put the phone down. Sleep is your best study tool."
               </Text>

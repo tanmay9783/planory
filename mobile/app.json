@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "Planory",
-    "slug": "planory",
+    "name": "Planrova",
+    "slug": "planrova",
     "version": "1.0.0",
-    "description": "Planory — The student productivity workspace. Track tasks, focus sessions, hydration, habits and budget — built for school and college students.",
+    "description": "Planrova — The student productivity workspace. Track tasks, focus sessions, hydration, habits and budget — built for school and college students.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
@@ -15,10 +15,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.planory.app"
+      "bundleIdentifier": "com.planrova.app"
     },
     "android": {
-      "package": "com.planory.app",
+      "package": "com.planrova.app",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
@@ -59,8 +59,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Planory needs access to your gallery to set your profile photo and scan your timetable.",
-          "cameraPermission": "Planory needs camera access to scan your timetable image."
+          "photosPermission": "Planrova needs access to your gallery to set your profile photo and scan your timetable.",
+          "cameraPermission": "Planrova needs camera access to scan your timetable image."
         }
       ],
       "expo-asset"

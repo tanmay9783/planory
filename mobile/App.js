@@ -766,7 +766,7 @@ export default function App() {
           <Animated.View style={[styles.pulseContainer, { transform: [{ scale: pulseScale }] }]}>
             <Ionicons name="sync-outline" size={32} color="#C2A878" />
           </Animated.View>
-          <Text style={styles.unlockTitle}>Unlocking Planory</Text>
+          <Text style={styles.unlockTitle}>Unlocking Planrova</Text>
           <Text style={styles.unlockSubtitle}>{unlockMessage}</Text>
           
           <View style={styles.progressTrack}>
@@ -802,7 +802,7 @@ export default function App() {
           ]}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 4 }}>
               <Ionicons name="sparkles" size={28} color="#C2A878" style={{ marginRight: 8 }} />
-              <Text style={styles.brandTitle}>Planory</Text>
+              <Text style={styles.brandTitle}>Planrova</Text>
             </View>
             <Text style={styles.subtitle}>Your second brain & focus space.</Text>
             
@@ -870,7 +870,7 @@ export default function App() {
               onPress={handleLogin}
               disabled={isSubmitting}
               activeOpacity={0.8}
-              accessibilityLabel="Sign in to Planory"
+              accessibilityLabel="Sign in to Planrova"
             >
               {isSubmitting ? (
                 <ActivityIndicator color="#0F1115" size="small" />
@@ -884,7 +884,7 @@ export default function App() {
               onPress={handleSignup}
               disabled={isSubmitting}
               activeOpacity={0.8}
-              accessibilityLabel="Create a new Planory account"
+              accessibilityLabel="Create a new Planrova account"
             >
               <Text style={styles.btnGhostText}>Create New Desk</Text>
             </TouchableOpacity>
@@ -902,7 +902,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <StatusBar barStyle="light-content" backgroundColor="#0F1115" />
         <View style={styles.obHeader}>
-          <Text style={styles.obHeaderBrand}>PLANORY</Text>
+          <Text style={styles.obHeaderBrand}>PLANROVA</Text>
           <View style={styles.obProgressDots}>
             <View style={[styles.obDot, obStep >= 1 && styles.obDotActive]} />
             <View style={[styles.obDot, obStep >= 2 && styles.obDotActive]} />
@@ -969,7 +969,7 @@ export default function App() {
           {obStep === 2 && (
             <ScrollView contentContainerStyle={styles.obContent}>
               <Text style={styles.obTitle}>Build Your Routine</Text>
-              <Text style={styles.obSubtitle}>Select daily habits you want to track. Planory makes building consistency rewarding.</Text>
+              <Text style={styles.obSubtitle}>Select daily habits you want to track. Planrova makes building consistency rewarding.</Text>
               
               <View style={styles.obHabitsGrid}>
                 {obHabits.map((habit, idx) => (
@@ -1108,7 +1108,7 @@ export default function App() {
               <Animated.View style={[styles.pulseContainer, { transform: [{ scale: pulseScale }] }]}>
                 <Ionicons name="sync-outline" size={32} color="#C2A878" />
               </Animated.View>
-              <Text style={styles.unlockTitle}>Unlocking Planory</Text>
+              <Text style={styles.unlockTitle}>Unlocking Planrova</Text>
               <Text style={styles.unlockSubtitle}>{unlockMessage}</Text>
               
               <View style={styles.progressTrack}>

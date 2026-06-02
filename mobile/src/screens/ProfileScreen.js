@@ -128,7 +128,7 @@ export default function ProfileScreen() {
 
   const handleShareIDCard = async () => {
     try {
-      const text = `🪪 Planory Student ID\nName: ${profile.name}\nCollege: ${profile.college}\nBranch: ${profile.branch}\nSemester: ${profile.semester}\nLevel: ${gamification.level}`;
+      const text = `🪪 Planrova Student ID\nName: ${profile.name}\nCollege: ${profile.college}\nBranch: ${profile.branch}\nSemester: ${profile.semester}\nLevel: ${gamification.level}`;
       await Share.share({ message: text });
       Vibration.vibrate(40);
     } catch (e) {

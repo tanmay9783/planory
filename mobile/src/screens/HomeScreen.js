@@ -25,7 +25,7 @@ export default function HomeScreen() {
     fetch('https://api.quotable.io/random?tags=technology|education|productivity|inspirational')
       .then(res => res.json())
       .then(data => setQuote({ content: data.content, author: data.author }))
-      .catch(() => setQuote({ content: "Focus on the present.", author: "Planory" }));
+      .catch(() => setQuote({ content: "Focus on the present.", author: "Planrova" }));
   }, []);
 
   const handleAddTask = () => {

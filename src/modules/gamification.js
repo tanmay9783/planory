@@ -142,7 +142,7 @@ function setupShareButton() {
         
         const imgData = canvas.toDataURL('image/png');
         const link = document.createElement('a');
-        link.download = 'planory-week-wrapped.png';
+        link.download = 'planrova-week-wrapped.png';
         link.href = imgData;
         link.click();
         

@@ -231,7 +231,7 @@ export default function TabNavigator() {
   const handleShareStatus = async () => {
     try {
       await Share.share({
-        message: `I just leveled up to Level ${gamification.level} (${getLevelTitle(gamification.level)}) on Planory! Join my study workspace.`
+        message: `I just leveled up to Level ${gamification.level} (${getLevelTitle(gamification.level)}) on Planrova! Join my study workspace.`
       });
     } catch (error) {
       // ignore

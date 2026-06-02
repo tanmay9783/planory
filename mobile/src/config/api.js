@@ -1,5 +1,5 @@
 // src/config/api.js
-// Central configuration for the Planory OCR proxy server.
+// Central configuration for the Planrova OCR proxy server.
 //
 // HOW TO SWITCH ENVIRONMENTS:
 //   - Development (local PC):   Use PROXY_URLS_LOCAL  (default below)
@@ -8,7 +8,7 @@
 // The app tries each URL in order and uses the first one that responds.
 
 // ── Your deployed cloud proxy URL (set this after deploying to Railway/Render) ──
-// Example: 'https://planory-proxy.up.railway.app'
+// Example: 'https://planrova-proxy.up.railway.app'
 export const CLOUD_PROXY_URL = 'https://planory-ocr-proxy.onrender.com';   // ← Paste your Railway URL here after deploy
 
 // ── Fallback URLs for local development (emulator + simulator) ──

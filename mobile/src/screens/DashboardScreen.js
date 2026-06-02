@@ -889,7 +889,7 @@ export default function DashboardScreen() {
         return {
           backgroundColor: '#11141B', // Neutral dark
           borderColor: 'rgba(255, 255, 255, 0.04)',
-          title: 'Planory Desk',
+          title: 'Planrova Desk',
           streakColor: '#C2A878',
           textColor: '#C2A878'
         };
@@ -1822,7 +1822,7 @@ export default function DashboardScreen() {
             </View>
             <Text style={styles.tooltipText}>
               {tooltipStep === 1 ? "Commit to an intention task, play offline white noise mix, and study distraction-free. Completed sessions award XP!" :
-               tooltipStep === 2 ? "Build consistency rings by checking off your habits. Planory streak shields protect you on busy days." :
+               tooltipStep === 2 ? "Build consistency rings by checking off your habits. Planrova streak shields protect you on busy days." :
                "Set sensible hydration targets (e.g. 2000ml) and track your daily intake easily from the Habits deck."}
             </Text>
             <View style={styles.tooltipActions}>

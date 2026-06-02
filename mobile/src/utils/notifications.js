@@ -77,7 +77,7 @@ export async function scheduleHabitNudges() {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Routine Check",
-      body: "Have you checked off your daily habits today? Planory is waiting!",
+      body: "Have you checked off your daily habits today? Planrova is waiting!",
       data: { type: 'habits' },
     },
     trigger: {
@@ -124,7 +124,7 @@ export async function scheduleDailyTaskReminders() {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Today's Study Agenda 📝",
-      body: "Good morning! You have study tasks scheduled for today. Open Planory to check off your targets.",
+      body: "Good morning! You have study tasks scheduled for today. Open Planrova to check off your targets.",
       data: { type: 'tasks' },
     },
     trigger: {

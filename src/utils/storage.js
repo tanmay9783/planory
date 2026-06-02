@@ -1,5 +1,5 @@
 /**
- * storage.js — Planory Local-First Storage Layer
+ * storage.js — Planrova Local-First Storage Layer
  *
  * Primary:  Dexie.js (IndexedDB) for instant offline reads/writes
  * Sync:     Background Sync Engine (Firebase)
@@ -37,7 +37,7 @@ export async function preloadCache() {
 
 // ── 2. Listen for Cloud Updates ──────────────────────────
 // When Sync Engine pulls newer data from Firebase, update cache
-window.addEventListener('planory:cloud_update', async (e) => {
+window.addEventListener('planrova:cloud_update', async (e) => {
   const { key } = e.detail;
   try {
     const record = await localDB.kv_store.get(key);
@@ -45,7 +45,7 @@ window.addEventListener('planory:cloud_update', async (e) => {
       const parsedValue = typeof record.value === 'string' ? JSON.parse(record.value) : record.value;
       _cache.set(key, parsedValue);
       // Optional: Dispatch a global event here if UI needs to re-render immediately
-      window.dispatchEvent(new Event('planory:data_changed'));
+      window.dispatchEvent(new Event('planrova:data_changed'));
     } else if (record && record.deleted) {
       _cache.delete(key);
     }
