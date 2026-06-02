@@ -22,7 +22,7 @@ import { useFirestoreData } from '../hooks/useFirestoreData';
 import { getLevelTitle } from '../utils/gamification';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as Updates from 'expo-updates';
 export default function ProfileScreen() {
   const userId = auth.currentUser ? auth.currentUser.uid : 'guest';
   const emailPrefix = auth.currentUser?.email ? auth.currentUser.email.split('@')[0] : 'Student';
@@ -119,6 +119,44 @@ export default function ProfileScreen() {
         count: g.count
       };
     }).sort((a, b) => b.timestamp - a.timestamp);
+  };
+
+  // OTA Updates
+  const [isCheckingUpdate, setIsCheckingUpdate] = useState(false);
+
+  const handleCheckForUpdate = async () => {
+    try {
+      setIsCheckingUpdate(true);
+      const update = await Updates.checkForUpdateAsync();
+      if (update.isAvailable) {
+        Alert.alert(
+          'Update Available',
+          'A new version is available. Would you like to download it now?',
+          [
+            { text: 'Cancel', style: 'cancel' },
+            { 
+              text: 'Download & Install', 
+              onPress: async () => {
+                try {
+                  await Updates.fetchUpdateAsync();
+                  Alert.alert('Update Downloaded', 'The app will now restart to apply the update.', [
+                    { text: 'OK', onPress: () => Updates.reloadAsync() }
+                  ]);
+                } catch (e) {
+                  Alert.alert('Error', 'Failed to download the update.');
+                }
+              }
+            }
+          ]
+        );
+      } else {
+        Alert.alert('Up to Date', 'You are already on the latest version.');
+      }
+    } catch (e) {
+      Alert.alert('Error', 'Failed to check for updates. Make sure you are testing a published build.');
+    } finally {
+      setIsCheckingUpdate(false);
+    }
   };
 
   // Custom ID Card state additions
@@ -599,6 +637,12 @@ export default function ProfileScreen() {
 
 
 
+
+        {/* Update Button */}
+        <TouchableOpacity style={styles.updateBtn} onPress={handleCheckForUpdate} disabled={isCheckingUpdate}>
+          <Ionicons name="cloud-download-outline" size={18} color="#C2A878" style={{ marginRight: 8 }} />
+          <Text style={styles.updateText}>{isCheckingUpdate ? 'Checking for updates...' : 'Check for Updates'}</Text>
+        </TouchableOpacity>
 
         {/* Sign Out Button */}
         <TouchableOpacity style={styles.logoutBtn} onPress={() => auth.signOut()}>
@@ -1116,6 +1160,37 @@ const styles = StyleSheet.create({
   },
   modalActionBtnText: {
     fontFamily: 'PlusJakartaSans_700Bold',
+    fontSize: 14,
+  },
+  updateBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(186, 117, 23, 0.08)',
+    paddingVertical: 14,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(186, 117, 23, 0.2)',
+  },
+  updateText: {
+    fontFamily: 'PlusJakartaSans_700Bold',
+    color: '#C2A878',
+    fontSize: 14,
+  },
+  logoutBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(196, 112, 112, 0.08)',
+    paddingVertical: 14,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(196, 112, 112, 0.2)',
+  },
+  logoutText: {
+    fontFamily: 'PlusJakartaSans_700Bold',
+    color: '#C47070',
     fontSize: 14,
   },
 });
