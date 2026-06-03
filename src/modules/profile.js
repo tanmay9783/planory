@@ -1,6 +1,7 @@
 import { getStorageItem, setStorageItem, removeStorageItem } from '../utils/storage.js';
 import { auth } from '../db/firebase.js';
 import { deleteUser } from 'firebase/auth';
+import QRCode from 'qrcode';
 
 const PROFILE_KEY = 'user_profile';
 
@@ -408,7 +409,6 @@ async function initMobileAppConfig() {
   const settingsDate = document.getElementById('settings-apk-date');
   const settingsChangelog = document.getElementById('settings-apk-changelog');
   const settingsDownloadLink = document.getElementById('settings-apk-download-link');
-  const settingsQr = document.getElementById('settings-apk-qr');
   const otaInfoCard = document.getElementById('ota-info-card');
   const otaMinVersionText = document.getElementById('ota-min-version-text');
   const otaStatusText = document.getElementById('ota-status-text');
@@ -445,10 +445,21 @@ async function initMobileAppConfig() {
     settingsDownloadLink.setAttribute('href', apkConfig.apkUrl);
   }
 
-  // Static QR image — no dynamic generation, works offline
-  if (settingsQr && apkConfig.qrCodeImage) {
-    settingsQr.setAttribute('src', apkConfig.qrCodeImage);
-    settingsQr.setAttribute('alt', `Scan to download Planrova APK — ${apkConfig.qrCodeText}`);
+  const settingsQrWrapper = document.getElementById('settings-apk-qr-wrapper');
+
+  // Generate QR code canvas pointing to the real APK download URL
+  if (settingsQrWrapper) {
+    settingsQrWrapper.innerHTML = ''; // clear any previous content
+    const canvas = document.createElement('canvas');
+    settingsQrWrapper.appendChild(canvas);
+    QRCode.toCanvas(canvas, apkConfig.qrCodeText || apkConfig.apkUrl, {
+      width: 140,
+      margin: 2,
+      color: {
+        dark: '#000000',
+        light: '#ffffff'
+      }
+    }).catch(err => console.warn('QR generation failed:', err));
   }
 
   // OTA Update Info Card

@@ -17,6 +17,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "dexie": "^4.4.2",
-    "firebase": "^12.13.0"
+    "firebase": "^12.13.0",
+    "qrcode": "^1.5.4"
   }
 }
