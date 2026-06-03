@@ -26,10 +26,10 @@
     <div class="banner-content">
       <div class="banner-text">
         <span class="banner-badge">Android</span>
-        <span>Planrova is now on Android! Get the companion mobile app to stay productive on the go. 📱</span>
+        <span>📱 Planrova Android app is live — Download APK</span>
       </div>
       <div class="banner-actions">
-        <button id="banner-download-btn" class="btn-banner-download">Download APK</button>
+        <button id="banner-download-btn" class="btn-banner-download">⬇ Download APK</button>
         <button id="banner-close-btn" class="btn-banner-close" title="Dismiss banner">×</button>
       </div>
     </div>
@@ -1119,7 +1119,7 @@
                 </div>
                 
                 <div class="apk-changelog">
-                  <span class="apk-info-label">Changelog</span>
+                  <span class="apk-info-label">✨ What's New</span>
                   <span class="apk-changelog-text" id="settings-apk-changelog">—</span>
                 </div>
                 
@@ -1135,8 +1135,21 @@
                 <div class="qr-code-wrapper">
                   <img id="settings-apk-qr" src="/qr-planrova.png" alt="Scan to download APK" />
                 </div>
-                <span class="qr-help-text">Scan this QR code with your phone to download the APK directly.</span>
+                <span class="qr-help-text">Scan with your phone to download the APK directly.</span>
               </div>
+            </div>
+
+            <!-- OTA Update Info -->
+            <div class="ota-info-card" id="ota-info-card">
+              <div class="ota-info-header">
+                <span class="ota-icon">🔄</span>
+                <div>
+                  <div class="ota-title">Automatic Updates Enabled</div>
+                  <div class="ota-subtitle" id="ota-status-text">Installed app automatically receives feature updates.</div>
+                </div>
+              </div>
+              <div class="ota-note">Download a new APK only for major version upgrades. Day-to-day features update silently in the background.</div>
+              <div class="ota-min-version">Minimum required version: <span id="ota-min-version-text">—</span></div>
             </div>
             
             <div class="install-instructions">

@@ -409,14 +409,21 @@ async function initMobileAppConfig() {
   const settingsChangelog = document.getElementById('settings-apk-changelog');
   const settingsDownloadLink = document.getElementById('settings-apk-download-link');
   const settingsQr = document.getElementById('settings-apk-qr');
+  const otaInfoCard = document.getElementById('ota-info-card');
+  const otaMinVersionText = document.getElementById('ota-min-version-text');
+  const otaStatusText = document.getElementById('ota-status-text');
 
+  // Fallback defaults matching app-config.json schema
   let apkConfig = {
     version: '1.0.0',
     apkUrl: '/planrova.apk',
-    size: '~25 MB',
+    size: '24.8 MB',
     updatedDate: 'June 2026',
-    changelog: 'First companion release.',
-    qrCodeImage: '/qr-planrova.png'
+    changelog: 'First release — planner, water log, alarms, budget',
+    qrCodeImage: '/qr-planrova.png',
+    qrCodeText: 'https://planrova.com/planrova.apk',
+    supportsOTA: true,
+    minimumRequiredVersion: '1.0.0'
   };
 
   try {
@@ -430,18 +437,36 @@ async function initMobileAppConfig() {
   }
 
   // Populate settings modal fields
-  if (settingsVersion) settingsVersion.textContent = apkConfig.version;
+  if (settingsVersion) settingsVersion.textContent = `v${apkConfig.version}`;
   if (settingsSize) settingsSize.textContent = apkConfig.size;
   if (settingsDate) settingsDate.textContent = apkConfig.updatedDate;
   if (settingsChangelog) settingsChangelog.textContent = apkConfig.changelog;
   if (settingsDownloadLink) {
     settingsDownloadLink.setAttribute('href', apkConfig.apkUrl);
   }
+
+  // Static QR image — no dynamic generation, works offline
   if (settingsQr && apkConfig.qrCodeImage) {
     settingsQr.setAttribute('src', apkConfig.qrCodeImage);
+    settingsQr.setAttribute('alt', `Scan to download Planrova APK — ${apkConfig.qrCodeText}`);
   }
 
-  // Banner visibility
+  // OTA Update Info Card
+  if (otaInfoCard) {
+    if (apkConfig.supportsOTA) {
+      otaInfoCard.classList.remove('hidden');
+      if (otaMinVersionText) {
+        otaMinVersionText.textContent = apkConfig.minimumRequiredVersion || '1.0.0';
+      }
+      if (otaStatusText) {
+        otaStatusText.textContent = 'Installed app automatically receives feature updates.';
+      }
+    } else {
+      otaInfoCard.classList.add('hidden');
+    }
+  }
+
+  // Banner visibility — show once per session unless dismissed
   const isDismissed = getStorageItem('planrova_apk_banner_dismissed', false);
   if (banner && !isDismissed) {
     banner.classList.remove('hidden');
@@ -454,6 +479,7 @@ async function initMobileAppConfig() {
     });
   }
 
+  // Banner download button — triggers file download
   if (bannerDownload) {
     bannerDownload.addEventListener('click', () => {
       const link = document.createElement('a');
@@ -465,7 +491,7 @@ async function initMobileAppConfig() {
     });
   }
 
-  // Apps Hub tile click logic
+  // Apps Hub tile click — closes drawer and opens Settings → Mobile App tab
   if (hubTileMobile) {
     hubTileMobile.addEventListener('click', () => {
       // Close apps hub drawer

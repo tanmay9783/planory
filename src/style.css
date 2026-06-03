@@ -4212,3 +4212,69 @@ body.theme-light #auth-password {
   color: var(--accent);
   flex-shrink: 0;
 }
+
+/* OTA Update Info Card */
+.ota-info-card {
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.05) 0%, rgba(16, 185, 129, 0.03) 100%);
+  border: 1px solid rgba(52, 211, 153, 0.2);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ota-info-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ota-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+  animation: otaSpin 3s linear infinite;
+}
+
+@keyframes otaSpin {
+  0%, 80%, 100% { transform: rotate(0deg); }
+  10% { transform: rotate(360deg); }
+}
+
+.ota-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #34d399;
+}
+
+.ota-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+.ota-note {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  border-top: 1px solid rgba(52, 211, 153, 0.1);
+  padding-top: 10px;
+}
+
+.ota-min-version {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.ota-min-version span {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* When OTA is disabled, hide OTA card */
+.ota-info-card.hidden {
+  display: none !important;
+}
