@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
-  "apkUrl": "/planrova.apk",
-  "size": "24.8 MB",
+  "apkUrl": "https://github.com/tanmay9783/planrova/releases/download/v1.0.0/planrova.apk",
+  "size": "83.2 MB",
   "updatedDate": "June 2026",
   "qrCodeImage": "/qr-planrova.png",
-  "qrCodeText": "https://planrova.com/planrova.apk",
+  "qrCodeText": "https://github.com/tanmay9783/planrova/releases/download/v1.0.0/planrova.apk",
   "changelog": "First release — planner, water log, alarms, budget",
   "supportsOTA": true,
   "minimumRequiredVersion": "1.0.0"

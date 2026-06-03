@@ -37,3 +37,6 @@ scratch/
 .gemini/
 .claude/
 .expo/
+
+# APK binaries — always upload to GitHub Releases, never commit to git
+*.apk
