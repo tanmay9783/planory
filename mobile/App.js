@@ -11,7 +11,8 @@ import {
   Easing,
   ScrollView,
   Alert,
-  Linking
+  Linking,
+  Image
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -801,7 +802,7 @@ export default function App() {
             }
           ]}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginBottom: 4 }}>
-              <Ionicons name="sparkles" size={28} color="#C2A878" style={{ marginRight: 8 }} />
+              <Image source={require('./assets/icon.png')} style={{ width: 32, height: 32, marginRight: 10, borderRadius: 8 }} />
               <Text style={styles.brandTitle}>Planrova</Text>
             </View>
             <Text style={styles.subtitle}>Your second brain & focus space.</Text>
