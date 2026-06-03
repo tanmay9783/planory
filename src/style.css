@@ -138,24 +138,6 @@ a:hover {
 /* Layout */
 #app {
   display: flex;
- .auth-card {
-  background: linear-gradient(145deg, rgba(30, 26, 32, 0.8), rgba(15, 14, 18, 0.9));
-  border: 1px solid rgba(194, 168, 120, 0.15);
-  border-radius: var(--radius-xl);
-  padding: 40px;
-  width: 100%;
-  max-width: 420px;
-  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  position: relative;
-  z-index: 10;
-  animation: viewFadeIn 0.5s ease-out;
-}
-
-.auth-toggle-capsule button.active {
-  background: var(--surface-300);
-  color: var(--accent);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
   height: 100vh;
   width: 100vw;
   position: relative;
