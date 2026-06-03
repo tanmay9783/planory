@@ -31,6 +31,7 @@ export function initProfile() {
   
   setupSettingsProfileEvents(profile);
   setupWorkspaceSettings();
+  initMobileAppConfig();
 }
 
 function updateProfileUI(profile) {
@@ -391,6 +392,102 @@ function setupWorkspaceSettings() {
           }, 1500);
         }
       );
+    });
+  }
+}
+
+async function initMobileAppConfig() {
+  // Elements
+  const banner = document.getElementById('apk-promo-banner');
+  const bannerClose = document.getElementById('banner-close-btn');
+  const bannerDownload = document.getElementById('banner-download-btn');
+  const hubTileMobile = document.getElementById('hub-tile-mobile');
+  
+  const settingsVersion = document.getElementById('settings-apk-version');
+  const settingsSize = document.getElementById('settings-apk-size');
+  const settingsDate = document.getElementById('settings-apk-date');
+  const settingsChangelog = document.getElementById('settings-apk-changelog');
+  const settingsDownloadLink = document.getElementById('settings-apk-download-link');
+  const settingsQr = document.getElementById('settings-apk-qr');
+
+  let apkConfig = {
+    version: '1.0.0',
+    apkUrl: '/planrova.apk',
+    size: '~25 MB',
+    updatedDate: 'June 2026',
+    changelog: 'First companion release.',
+    qrCodeImage: '/qr-planrova.png'
+  };
+
+  try {
+    const res = await fetch('/app-config.json');
+    if (res.ok) {
+      const data = await res.json();
+      apkConfig = { ...apkConfig, ...data };
+    }
+  } catch (err) {
+    console.warn('Failed to load app-config.json, using defaults:', err);
+  }
+
+  // Populate settings modal fields
+  if (settingsVersion) settingsVersion.textContent = apkConfig.version;
+  if (settingsSize) settingsSize.textContent = apkConfig.size;
+  if (settingsDate) settingsDate.textContent = apkConfig.updatedDate;
+  if (settingsChangelog) settingsChangelog.textContent = apkConfig.changelog;
+  if (settingsDownloadLink) {
+    settingsDownloadLink.setAttribute('href', apkConfig.apkUrl);
+  }
+  if (settingsQr && apkConfig.qrCodeImage) {
+    settingsQr.setAttribute('src', apkConfig.qrCodeImage);
+  }
+
+  // Banner visibility
+  const isDismissed = getStorageItem('planrova_apk_banner_dismissed', false);
+  if (banner && !isDismissed) {
+    banner.classList.remove('hidden');
+  }
+
+  if (bannerClose && banner) {
+    bannerClose.addEventListener('click', () => {
+      banner.classList.add('hidden');
+      setStorageItem('planrova_apk_banner_dismissed', true);
+    });
+  }
+
+  if (bannerDownload) {
+    bannerDownload.addEventListener('click', () => {
+      const link = document.createElement('a');
+      link.href = apkConfig.apkUrl;
+      link.download = apkConfig.apkUrl.split('/').pop() || 'planrova.apk';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+
+  // Apps Hub tile click logic
+  if (hubTileMobile) {
+    hubTileMobile.addEventListener('click', () => {
+      // Close apps hub drawer
+      const appsHubOverlay = document.getElementById('apps-hub-overlay');
+      if (appsHubOverlay) {
+        appsHubOverlay.classList.add('hidden');
+      }
+
+      // Open settings modal
+      const settingsOverlay = document.getElementById('settings-modal-overlay');
+      if (settingsOverlay) {
+        settingsOverlay.classList.remove('hidden');
+      }
+
+      // Activate Mobile App settings tab and panel
+      document.querySelectorAll('.settings-tab').forEach(t => t.classList.remove('active'));
+      const mobileTab = document.querySelector('.settings-tab[data-tab="mobile-app"]');
+      if (mobileTab) mobileTab.classList.add('active');
+
+      document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+      const mobilePanel = document.getElementById('panel-mobile-app');
+      if (mobilePanel) mobilePanel.classList.add('active');
     });
   }
 }

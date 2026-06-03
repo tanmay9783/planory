@@ -20,6 +20,19 @@
   </script>
 </head>
 <body>
+  <!-- APK Promo Top Banner -->
+  <div id="apk-promo-banner" class="apk-promo-banner hidden">
+    <div class="banner-content">
+      <div class="banner-text">
+        <span class="banner-badge">Android</span>
+        <span>Planrova is now on Android! Get the companion mobile app to stay productive on the go. 📱</span>
+      </div>
+      <div class="banner-actions">
+        <button id="banner-download-btn" class="btn-banner-download">Download APK</button>
+        <button id="banner-close-btn" class="btn-banner-close" title="Dismiss banner">×</button>
+      </div>
+    </div>
+  </div>
   <div id="app">
     <!-- Onboarding / Profile Setup -->
     <div id="onboarding-overlay" class="hidden modal-overlay" style="background: rgba(0,0,0,0.85); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);">
@@ -521,6 +534,16 @@
             <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">My Focus Forest</h3>
             <p class="helper-text" style="line-height:1.4;">Watch your plant grow as you complete tasks and run Pomodoros, and see your collection of grown trees.</p>
           </div>
+
+          <!-- 6. Mobile App tile -->
+          <div class="budget-card hub-tile" id="hub-tile-mobile" style="cursor:pointer; transition: all 0.2s ease;">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+              <div class="hub-icon-circle">📱</div>
+              <span class="badge" style="background: rgba(251, 191, 36, 0.1); color: #fbbf24; font-weight:600;">Android App</span>
+            </div>
+            <h3 style="font-size:15px; font-weight:700; margin-bottom:4px;">Planrova Mobile APK</h3>
+            <p class="helper-text" style="line-height:1.4;">Download our native Android companion app. Sync your calendar, notes, water log, and study timers on your phone.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -930,6 +953,7 @@
           <button class="settings-tab" data-tab="study-pref" style="text-align: left; padding: 10px 14px; border-radius: 8px; font-weight: 500;">Study Prefs</button>
           <button class="settings-tab" data-tab="notifications" style="text-align: left; padding: 10px 14px; border-radius: 8px; font-weight: 500;">Notifications</button>
           <button class="settings-tab" data-tab="data-manage" style="text-align: left; padding: 10px 14px; border-radius: 8px; font-weight: 500;">Data & Privacy</button>
+          <button class="settings-tab" data-tab="mobile-app" style="text-align: left; padding: 10px 14px; border-radius: 8px; font-weight: 500;">Mobile App 📱</button>
         </div>
         
         <div style="flex: 1; overflow-y: auto; max-height: 50vh; padding-right: 8px;">
@@ -1068,6 +1092,60 @@
             <div style="display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap;">
               <button class="btn-ghost" id="data-clear-btn" style="padding: 10px 16px; font-size: 12px; color: #f87171; border-color: rgba(248,113,113,0.3);">Clear History</button>
               <button class="btn-ghost" id="data-delete-btn" style="padding: 10px 16px; font-size: 12px; color: #f87171; border-color: rgba(248,113,113,0.3);">Delete Account</button>
+            </div>
+          </div>
+          
+          <!-- 6. Mobile App Panel -->
+          <div class="settings-panel" id="panel-mobile-app" style="flex-direction: column; gap: 16px;">
+            <h3>Mobile Companion App</h3>
+            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.5;">Planrova is now available on Android! Get the companion mobile app to stay productive on the go. Sync your calendar, notes, water log, and study timers on your phone.</p>
+            
+            <div class="mobile-app-layout">
+              <div class="apk-info-card">
+                <div class="apk-info-grid">
+                  <div class="apk-info-item">
+                    <span class="apk-info-label">Version</span>
+                    <span class="apk-info-value" id="settings-apk-version">—</span>
+                  </div>
+                  <div class="apk-info-item">
+                    <span class="apk-info-label">Size</span>
+                    <span class="apk-info-value" id="settings-apk-size">—</span>
+                  </div>
+                  <div class="apk-info-item">
+                    <span class="apk-info-label">Updated</span>
+                    <span class="apk-info-value" id="settings-apk-date">—</span>
+                  </div>
+                </div>
+                
+                <div class="apk-changelog">
+                  <span class="apk-info-label">Changelog</span>
+                  <span class="apk-changelog-text" id="settings-apk-changelog">—</span>
+                </div>
+                
+                <div class="apk-download-btn-wrap">
+                  <a href="#" id="settings-apk-download-link" download class="btn-apk-download" style="text-decoration: none;">
+                    <svg viewBox="0 0 24 24" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 10V7h-2v5H8l4 4 4-4h-3z"/></svg>
+                    Download APK
+                  </a>
+                </div>
+              </div>
+              
+              <div class="qr-download-card">
+                <div class="qr-code-wrapper">
+                  <img id="settings-apk-qr" src="/qr-planrova.png" alt="Scan to download APK" />
+                </div>
+                <span class="qr-help-text">Scan this QR code with your phone to download the APK directly.</span>
+              </div>
+            </div>
+            
+            <div class="install-instructions">
+              <h4>Installation Instructions</h4>
+              <ul class="instructions-list">
+                <li data-step="1">Tap the <b>Download APK</b> button or scan the QR code to download the installation file.</li>
+                <li data-step="2">Open the downloaded <b>planrova.apk</b> file from your downloads folder.</li>
+                <li data-step="3">If prompted, enable <b>"Allow from this source"</b> or <b>"Install unknown apps"</b> in your browser/file manager settings to proceed.</li>
+                <li data-step="4">Tap <b>Install</b>, then launch Planrova from your home screen.</li>
+              </ul>
             </div>
           </div>
         </div>

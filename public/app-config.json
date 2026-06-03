@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "apkUrl": "/planrova.apk",
+  "size": "~25 MB",
+  "updatedDate": "June 2026",
+  "changelog": "First release — weekly planner, focus timer, water log, habit tracker, budget tracker & more.",
+  "supportsOTA": true,
+  "minimumRequiredVersion": "1.0.0",
+  "qrCodeImage": "/qr-planrova.png"
+}
