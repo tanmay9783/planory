@@ -51,7 +51,8 @@ const getTaskSubjectBadge = (title) => {
 const formatTaskDate = (dateStr) => {
   if (!dateStr) return 'No Date';
   try {
-    const d = new Date(dateStr);
+    // Append T12:00:00 to prevent UTC midnight timezone shift (e.g. IST is UTC+5:30)
+    const d = new Date(dateStr + 'T12:00:00');
     const options = { month: 'short', day: 'numeric', weekday: 'short' };
     return d.toLocaleDateString('en-US', options); // e.g. "Wed, Jun 3"
   } catch (e) {
@@ -368,11 +369,12 @@ export default function DashboardScreen() {
 
     const upcoming = tasks.filter(t => {
       if (t.completed || !t.date) return false;
-      const tDate = new Date(t.date);
+      // Append T12:00:00 to prevent UTC midnight timezone shift
+      const tDate = new Date(t.date + 'T12:00:00');
       return tDate >= startOfDay && tDate <= endOfWeek;
     });
 
-    upcoming.sort((a, b) => new Date(a.date) - new Date(b.date));
+    upcoming.sort((a, b) => new Date(a.date + 'T12:00:00') - new Date(b.date + 'T12:00:00'));
     return upcoming.slice(0, 3);
   };
 
